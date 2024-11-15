@@ -1,4 +1,5 @@
 import './App.css'
+import Testing from './pages/testing/Testing'
 
 function App() {
 
@@ -6,6 +7,7 @@ function App() {
     <>
       <div>
         <h1 className='text-3xl font-bold'>admin dashboard</h1>
+        <Testing/>
       </div>
     </>
   )
