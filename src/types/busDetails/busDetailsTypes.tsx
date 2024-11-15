@@ -4,7 +4,7 @@ interface busDetailsType{
     endLocation:string,
     routeNumber:string,
     fareEstimate:string,
-    status:boolean,
+    status?:boolean,
     type?:string
 }
 
