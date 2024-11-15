@@ -4,7 +4,7 @@ interface BusRouteTypes{
     startLocation: string
     endLocation: string
     routeStops: string[],
-    status: boolean
+    status?: boolean
 }
 
 export default BusRouteTypes

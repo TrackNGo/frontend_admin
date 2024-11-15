@@ -1,6 +1,6 @@
-import OptionType from "../../types/input/selectBox/SelectType";
+import OptionType from "../../types/input/selectBox/SelectType"
 
-const SelectBox = (option: OptionType) => {
+const SelectBox = (option: OptionType & { onChange?: (value: string) => void }) => {
     return (
         <div className="w-full">
             <label className="capitalize text-md font-medium text-gray-700">{option.title}</label>
@@ -9,6 +9,7 @@ const SelectBox = (option: OptionType) => {
                 required
                 defaultValue=""
                 name={option.name}
+                onChange={(e) => option.onChange?.(e.target.value)}
             >
                 <option className="text-black" value="" disabled>
                     {option.placeholder}
@@ -20,7 +21,7 @@ const SelectBox = (option: OptionType) => {
                 ))}
             </select>
         </div>
-    );
-};
+    )
+}
 
-export default SelectBox;
+export default SelectBox
