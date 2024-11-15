@@ -1,11 +1,10 @@
-import ChangePassword from "../auth/ChangePassword"
-import CreateAccount from "../auth/CreateAccount"
-import Login from "../auth/Login"
+import AddBus from "../addBus/AddBus"
+import AddRoutes from "../addRoutes/AddRoutes"
 
 const Testing = () => {
   return (
     <div>
-      <CreateAccount/>
+      <AddBus/>
     </div>
   )
 }

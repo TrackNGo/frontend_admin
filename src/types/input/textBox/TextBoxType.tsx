@@ -4,7 +4,8 @@ interface TextBoxType{
     placeholder:string,
     name:string,
     onChange?:any,
-    value?:string
+    value?:string,
+    readOnly?: boolean
 }
 
 export default TextBoxType
