@@ -5,6 +5,7 @@ interface busDetailsType{
     routeNumber:string,
     fareEstimate:string,
     status:boolean,
+    type?:string
 }
 
 export default busDetailsType
