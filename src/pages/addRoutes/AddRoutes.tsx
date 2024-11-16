@@ -15,8 +15,8 @@ const AddRoutes = () => {
   const [currentStop, setCurrentStop] = useState<string>("")
   const [error, setError] = useState<string>("")
   const [showStops, setShowStops] = useState<boolean>(false)
-  const [editingIndex, setEditingIndex] = useState<number | null>(null) 
-  const [originalStopValue, setOriginalStopValue] = useState<string>("") 
+  const [editingIndex, setEditingIndex] = useState<number | null>(null)
+  const [originalStopValue, setOriginalStopValue] = useState<string>("")
 
   const handleBusSelect = (event: any) => {
     const busNumber = event.target.value
@@ -56,11 +56,16 @@ const AddRoutes = () => {
       updatedRouteStops[editingIndex!] = originalStopValue
       return updatedRouteStops
     })
-    setEditingIndex(null) 
+    setEditingIndex(null)
   }
 
   const handleUpdateStop = () => {
-    setEditingIndex(null) 
+    setEditingIndex(null)
+  }
+
+  const handleDeleteStop = (index: number) => {
+    const updatedRouteStops = routeStops.filter((_, i) => i !== index)
+    setRouteStops(updatedRouteStops)
   }
 
   const handleSave = () => {
@@ -138,12 +143,12 @@ const AddRoutes = () => {
                 />
                 {editingIndex !== index && (
                   <div className="w-20 p-0">
-                  <PrimaryBtn
-                    title="Edit"
-                    onClick={() => handleEditStop(index)}
-                    type="button"
-                    classes="ml-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
-                  />
+                    <PrimaryBtn
+                      title="Edit"
+                      onClick={() => handleEditStop(index)}
+                      type="button"
+                      classes="ml-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
+                    />
                   </div>
                 )}
                 {editingIndex === index && (
@@ -162,6 +167,14 @@ const AddRoutes = () => {
                     />
                   </div>
                 )}
+                <div className="ml-2">
+                  <PrimaryBtn
+                    title="Delete"
+                    onClick={() => handleDeleteStop(index)}
+                    type="button"
+                    classes="ml-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  />
+                </div>
               </div>
             ))}
 
