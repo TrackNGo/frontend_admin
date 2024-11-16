@@ -142,7 +142,7 @@ const AddRoutes = () => {
                     title="Edit"
                     onClick={() => handleEditStop(index)}
                     type="button"
-                    classes="ml-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-700"
+                    classes="ml-2 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600"
                   />
                   </div>
                 )}
@@ -152,13 +152,13 @@ const AddRoutes = () => {
                       title="Cancel"
                       onClick={handleCancelEdit}
                       type="button"
-                      classes="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
+                      classes="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-800"
                     />
                     <PrimaryBtn
                       title="Update"
                       onClick={handleUpdateStop}
                       type="button"
-                      classes="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700"
+                      classes="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                     />
                   </div>
                 )}
@@ -181,13 +181,13 @@ const AddRoutes = () => {
                 title="Add"
                 onClick={handleAddStop}
                 type="button"
-                classes="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-700"
+                classes="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800"
               />
               <PrimaryBtn
                 title={showStops ? "Hide Stop" : "Show Stop"}
                 onClick={handleShowStop}
                 type="button"
-                classes={`px-4 py-2 ${showStops ? "bg-red-500" : "bg-blue-500"} text-white rounded-md hover:${showStops ? "bg-red-700" : "bg-blue-700"}`}
+                classes={`px-4 py-2 ${showStops ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700"} text-white rounded-md hover:${showStops ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700"}`}
               />
             </div>
 
