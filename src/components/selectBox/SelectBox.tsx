@@ -7,8 +7,8 @@ const SelectBox = (option: OptionType & { onChange?: (value: string) => void }) 
             <select
                 className="text-slate-400 w-full mt-1 px-2 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-150 ease-in-out"
                 required
-                defaultValue=""
                 name={option.name}
+                value={option.value}
                 onChange={(e) => option.onChange?.(e.target.value)}
             >
                 <option className="text-black" value="" disabled>
