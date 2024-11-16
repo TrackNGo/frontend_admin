@@ -102,7 +102,7 @@ const ChangePassword = () => {
                                 type={"button"}
                                 onClick={submit}
                                 title={"change password"}
-                                classes={"bg-gradient-to-r from-black to-black hover:from-slate-800 hover:to-slate-700 border-solid border-1 border-slate-950 text-white"}
+                                classes={"bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 border-solid border-1 border-blue-900 text-white"}
                             />
                         </div>
 
