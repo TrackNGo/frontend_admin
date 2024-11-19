@@ -6,16 +6,17 @@ import UserTypes from "../../types/user/UserTypes"
 
 const CreateAccount = () => {
   const [error, setError] = useState<{ [key: string]: string }>({})
+  const [confirmPassword, setConfirmPassword] = useState('abcd@123') // New state for confirm password
+
   const [formData, setFormData] = useState<UserTypes>({
     nic: '',
     username: '',
     firstName: '',
     lastName: '',
     mobile: '',
-    password: '',
+    password: 'abcd@123',
     accType: 'General',
   })
-  const [confirmPassword, setConfirmPassword] = useState('') // New state for confirm password
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target
