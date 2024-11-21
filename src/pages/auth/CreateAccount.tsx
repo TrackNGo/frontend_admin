@@ -192,7 +192,7 @@ const CreateAccount = () => {
             title="Create Account"
             type="submit"
             onClick={handleSubmit}
-            classes={"bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 border-solid border-1 border-blue-900 text-white"}
+            classes={"bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 border-solid border-1 border-black text-white"}
           />
         </div>
       </form>
