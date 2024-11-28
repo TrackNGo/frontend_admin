@@ -1,8 +1,10 @@
+import Headline from "../../components/headline/Headline"
+
 const Dashboard = () => {
   return (
-    <div>
-      Dashboard
-    </div>
+    <div className="px-2">
+            <Headline title={"Dashboard"} />
+        </div>
   )
 }
 

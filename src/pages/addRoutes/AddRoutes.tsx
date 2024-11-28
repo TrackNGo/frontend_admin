@@ -157,13 +157,13 @@ const AddRoutes = () => {
                       title="Cancel"
                       onClick={handleCancelEdit}
                       type="button"
-                      classes="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-800"
+                      classes="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-800 border-transparent"
                     />
                     <PrimaryBtn
                       title="Update"
                       onClick={handleUpdateStop}
                       type="button"
-                      classes="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                      classes="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 border-transparent"
                     />
                   </div>
                 )}
@@ -172,7 +172,7 @@ const AddRoutes = () => {
                     title="Delete"
                     onClick={() => handleDeleteStop(index)}
                     type="button"
-                    classes="ml-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                    classes="ml-1 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 border-transparent"
                   />
                 </div>
               </div>
@@ -194,13 +194,13 @@ const AddRoutes = () => {
                 title="Add"
                 onClick={handleAddStop}
                 type="button"
-                classes="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800"
+                classes="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 border-transparent"
               />
               <PrimaryBtn
                 title={showStops ? "Hide Stop" : "Show Stop"}
                 onClick={handleShowStop}
                 type="button"
-                classes={`px-4 py-2 ${showStops ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700"} text-white rounded-md hover:${showStops ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700"}`}
+                classes={`px-4 py-2 ${showStops ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700"} text-white rounded-md hover:${showStops ? "bg-red-500 hover:bg-red-700" : "bg-blue-500 hover:bg-blue-700 border-transparent"}`}
               />
             </div>
 

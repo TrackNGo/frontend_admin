@@ -156,7 +156,7 @@ const AddBus = () => {
             title="Add Bus"
             onClick={handleSubmit}
             type="submit"
-            classes="bg-blue-700 text-white font-semibold rounded-md hover:bg-blue-800"
+            classes="bg-blue-700 text-white border-transparent font-semibold rounded-md hover:bg-blue-800"
           />
         </form>
       </div>
