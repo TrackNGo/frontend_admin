@@ -1,6 +1,7 @@
 import { useState, ChangeEvent } from "react";
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn";
 import TextBox from "../../components/textBox/TextBox";
+import Headline from "../../components/headline/Headline";
 
 const ChangePassword = () => {
     const [error, setError] = useState<{ currentPassword?: string; newPassword?: string; confirmPassword?: string }>({})
@@ -54,7 +55,7 @@ const ChangePassword = () => {
                 <div className="flex items-center justify-center mb-6">
                     <form className="md:border md:border-slate-200 rounded-xl max-w-[500px] min-w-[400px] center p-4 pb-8 pt-10 md:pt-6 md:shadow-lg">
                         <div className="text-left md:text-center mb-8">
-                            <h1 className="capitalize text-3xl font-semibold mb-2">change your password</h1>
+                            <Headline title={"change your password"}/>
                         </div>
 
                         <div className="mt-2">
