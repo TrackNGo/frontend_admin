@@ -82,6 +82,7 @@ const AddBus = () => {
               {error.busNumber || "required"}
             </div>
           </div>
+          
           <div>
             <TextBox
               title="Start Location"
@@ -96,6 +97,7 @@ const AddBus = () => {
               {error.startLocation || "required"}
             </div>
           </div>
+
           <div>
             <TextBox
               title="End Location"
@@ -109,6 +111,7 @@ const AddBus = () => {
               {error.endLocation || "required"}
             </div>
           </div>
+
           <div>
             <TextBox
               title="Route Number"
@@ -122,6 +125,7 @@ const AddBus = () => {
               {error.routeNumber || "required"}
             </div>
           </div>
+
           <div>
             <TextBox
               title="Fare Estimate"
@@ -135,8 +139,8 @@ const AddBus = () => {
               {error.fareEstimate || "required"}
             </div>
           </div>
-          <div>
 
+          <div>
             <div>
               <SelectBox
                 title="Bus Type"

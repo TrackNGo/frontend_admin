@@ -5,6 +5,8 @@ import CreateAccount from "../auth/CreateAccount"
 import AddBus from "../addBus/AddBus"
 import AddRoutes from "../addRoutes/AddRoutes"
 import Dashboard from "../dashboard/Dashboard"
+import ManageTimeTable from "../timeTable/ManageTimeTable"
+import ViewTimeTable from "../timeTable/ViewTimeTable"
 
 const Testing = () => {
   return (
@@ -17,6 +19,8 @@ const Testing = () => {
           <Link to="/createaccount"><li>createaccount</li></Link>
           <Link to="/addbus"><li>addbus</li></Link>
           <Link to="/addbusroute"><li>addbusroute</li></Link>
+          <Link to="/timetable/add"><li>time table add</li></Link>
+          <Link to="/timetable"><li>view time table</li></Link>
         </ul>
         <hr />
         <br />
@@ -30,6 +34,8 @@ const Testing = () => {
           <Route path='/createaccount' element={<CreateAccount />} />
           <Route path='/addbus' element={<AddBus />} />
           <Route path='/addbusroute' element={<AddRoutes />} />
+          <Route path='/timetable/add' element={<ManageTimeTable/>} />
+          <Route path='/timetable' element={<ViewTimeTable/>} />
         </Routes>
       </BrowserRouter>
     </div>
