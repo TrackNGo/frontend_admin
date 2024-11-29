@@ -6,33 +6,48 @@ import TextBox from "../../components/textBox/TextBox"
 const ManageTimeTable = () => {
     return (
         /*
-interface BusData{
-    busRouteNumber:string,
-    busType:string,
-    price:number,
-    startTime:Date,
-    endTime:Date,
-}
-interface TimeTableType{
-    startLocation:string,
-    endLocation:string,
-    bus:BusData[]
-}
+            interface BusData{
+                busRouteNumber:string,
+                busType:string,
+                price:number,
+                startTime:Date,
+                endTime:Date,
+            }
+            interface TimeTableType{
+                startLocation:string,
+                endLocation:string,
+                bus:BusData[]
+            }
         */
         <div className="px-2">
             <Headline title={"Manage Time Table"} />
             <form className="py-2 pb-10">
                 <div>
                     <div>
-                        <TextBox title={"Start Location"} type={""} placeholder={""} name={""} />
+                        <TextBox
+                            title={"Start Location"}
+                            type={"text"}
+                            placeholder={"Enter Start Location"}
+                            name={"startLocation"}
+                        />
                     </div>
                     <div>
-                        <TextBox title={"End Location"} type={""} placeholder={""} name={""} />
+                        <TextBox
+                            title={"End Location"}
+                            type={"text"}
+                            placeholder={"Enter Start Location"}
+                            name={"endLocation"}
+                        />
                     </div>
                 </div>
                 <div>
                     <div>
-                        <TextBox title={"Route Number"} type={""} placeholder={""} name={""} />
+                        <TextBox
+                            title={"Route Number"}
+                            type={"text"}
+                            placeholder={"Enter Route Number"}
+                            name={""}
+                        />
                     </div>
                     <div>
 
@@ -51,16 +66,31 @@ interface TimeTableType{
                         </div>
                     </div>
                     <div>
-                        <TextBox title={"Price"} type={""} placeholder={""} name={""} />
+                        <TextBox
+                            title={"Ticket Price"}
+                            type={"text"}
+                            placeholder={"Enter Ticket Price"}
+                            name={"ticketPrice"}
+                        />
                     </div>
                 </div>
 
                 <div>
                     <div>
-                        <TextBox title={"Start Time"} type={""} placeholder={""} name={""} />
+                        <TextBox
+                            title={"Start Time"}
+                            type={"text"}
+                            placeholder={"HH:MM"}
+                            name={"startTime"}
+                        />
                     </div>
                     <div>
-                        <TextBox title={"End Time"} type={""} placeholder={""} name={""} />
+                        <TextBox
+                            title={"End Time"}
+                            type={"text"}
+                            placeholder={"HH:MM"}
+                            name={"endTime"}
+                        />
                     </div>
                 </div>
                 <div className="mt-4">
@@ -71,7 +101,6 @@ interface TimeTableType{
                     />
                 </div>
             </form>
-
         </div>
     )
 }
