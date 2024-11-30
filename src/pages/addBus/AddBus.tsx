@@ -4,6 +4,9 @@ import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import TextBox from "../../components/textBox/TextBox"
 import SelectBox from "../../components/selectBox/SelectBox"
 import busDetailsType from "../../types/busDetails/busDetailsTypes"
+import axios from "axios"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const AddBus = () => {
   const [busDetails, setBusDetails] = useState<busDetailsType>({
@@ -35,7 +38,7 @@ const AddBus = () => {
     setError((prev) => ({ ...prev, type: "" }))
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
     const newError: { [key in keyof busDetailsType]?: string } = {}
 
@@ -51,15 +54,22 @@ const AddBus = () => {
       setError({})
       console.log("Bus Details Submitted:", busDetails)
       // backend connection for adding bus
-      setBusDetails({
-        busNumber: "",
-        startLocation: "",
-        endLocation: "",
-        routeNumber: "",
-        fareEstimate: "",
-        type: "Normal",
-        status: false,
-      })
+      const response = await axios.post('http://localhost:3000/api-bus/bus', busDetails)
+      if (response.status === 201) {
+        console.log("bus added okk!")
+        toast.success('Bus added successfully!')
+        setBusDetails({
+          busNumber: "",
+          startLocation: "",
+          endLocation: "",
+          routeNumber: "",
+          fareEstimate: "",
+          type: "Normal",
+          status: false,
+        })
+      } else {
+        console.log("bus added problem!")
+      }
     }
   }
 
@@ -82,7 +92,7 @@ const AddBus = () => {
               {error.busNumber || "required"}
             </div>
           </div>
-          
+
           <div>
             <TextBox
               title="Start Location"
@@ -128,7 +138,7 @@ const AddBus = () => {
 
           <div>
             <TextBox
-              title="Fare Estimate"
+              title="Max Fare Estimate"
               type="text"
               placeholder="Enter Fare Estimate"
               name="fareEstimate"
@@ -164,6 +174,7 @@ const AddBus = () => {
           />
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   )
 }
