@@ -1,6 +1,8 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import summaryApi from "../../common/summaryApi"
 import BusDetailsTable from "../../components/busDetailTable/BusDetailsTable"
 import ErrorMessage from "../../components/errorMessage/ErrorMessage"
@@ -20,27 +22,28 @@ const BusDetail = () => {
 
     const navigate = useNavigate()
 
+    const fetchBusDetails = async () => {
+        try {
+            const response = await axios({
+                method: summaryApi.bus.getBusByBusNumber.method,
+                url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber)
+            })
+            if (response.data) {
+                setBusDetails(response.data)
+                setOriginalBusDetails(response.data) // Store the original bus details
+                setError('') // Clear error if data is fetched
+            } else {
+                setError('No bus found with that number')
+            }
+        } catch (error) {
+            setError('Failed to fetch bus details')
+        } finally {
+            setLoading(false)
+        }
+    }
+
     useEffect(() => {
         if (busNumber) {
-            const fetchBusDetails = async () => {
-                try {
-                    const response = await axios({
-                        method: summaryApi.bus.getBusByBusNumber.method,
-                        url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber)
-                    })
-                    if (response.data) {
-                        setBusDetails(response.data)
-                        setOriginalBusDetails(response.data) // Store the original bus details
-                        setError('') // Clear error if data is fetched
-                    } else {
-                        setError('No bus found with that number')
-                    }
-                } catch (error) {
-                    setError('Failed to fetch bus details')
-                } finally {
-                    setLoading(false)
-                }
-            }
 
             fetchBusDetails()
         }
@@ -56,17 +59,9 @@ const BusDetail = () => {
     }
 
     const handleReset = () => {
+        toast.warning('Bus reset successfully!')
         // Reset the form fields to original bus details
         setBusDetails({ ...originalBusDetails! })
-    }
-
-    const handleChange = (e: any) => {
-        if (busDetails) {
-            setBusDetails({
-                ...busDetails,
-                [e.target.name]: e.target.value,
-            })
-        }
     }
 
     const handleSaveChanges = async () => {
@@ -77,15 +72,17 @@ const BusDetail = () => {
                     url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber),
                     data: busDetails,
                 })
-                setBusDetails(response.data)
-                setIsEditing(false)
+                // Update the busDetails state with the response data
+                setBusDetails(response.data) 
                 setOriginalBusDetails(response.data) // Update original bus details after saving
-                window.location.reload()
+                setIsEditing(false) // Exit editing mode
+                toast.success('Bus updated successfully!')
             } catch (error) {
                 setError('Failed to save bus details')
             }
+            fetchBusDetails()
         }
-    }
+    }    
 
     const fetchBusDetailsBySearch = async () => {
         try {
@@ -121,6 +118,15 @@ const BusDetail = () => {
         setSearchBusNumber(e.target.value)
     }
 
+    const handleChange = (e: any) => {
+        if (busDetails) {
+            setBusDetails({
+                ...busDetails,
+                [e.target.name]: e.target.value,
+            })
+        }
+    }
+
     // Function to check if any changes have been made
     const isSaveEnabled = (): boolean => {
         if (!busDetails || !originalBusDetails) return false
@@ -130,6 +136,25 @@ const BusDetail = () => {
     }
 
     if (loading) return <LoadingSpinner />
+
+    // Function to handle deleting the bus
+    const handleDelete = async () => {
+        if (busDetails) {
+            const confirmDelete = window.confirm('Are you sure you want to delete this bus?')
+            if (confirmDelete) {
+                try {
+                    await axios({
+                        method: 'DELETE',
+                        url: summaryApi.bus.deleteBusByBusNumber.url.replace(':busNumber', busNumber),
+                    })
+                    navigate('/bus/buses') // Navigate to the bus list page after deletion
+                    toast.done('Bus delete successfully!')
+                } catch (error) {
+                    setError('Failed to delete bus details')
+                }
+            }
+        }
+    }
 
     return (
         <div className="container mx-auto p-5">
@@ -180,14 +205,24 @@ const BusDetail = () => {
                         </button>
                     </div>
                 ) : (
-                    <button
-                        onClick={handleEditClick}
-                        disabled={!busDetails} // Disable the button if busDetails is null
-                        className={`${!busDetails ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-600 hover:bg-yellow-700'
-                            } text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500`}
-                    >
-                        Edit
-                    </button>
+                    <div className="flex justify-end space-x-2">
+                        <button
+                            onClick={handleEditClick}
+                            disabled={!busDetails}
+                            className={`${!busDetails ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-600 hover:bg-yellow-700'
+                                } text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            onClick={handleDelete}
+                            disabled={!busDetails}
+                            className="bg-red-600 text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:bg-red-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                            Delete
+                        </button>
+                    </div>
                 )}
             </div>
 
@@ -201,6 +236,7 @@ const BusDetail = () => {
             ) : (
                 <div className="text-center text-red-500 mt-5">No bus details to display</div>
             )}
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
     )
 }

@@ -1,6 +1,7 @@
 import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
 import EditableField from "../editableField/EditableField"
 import CheckField from "../editableField/CheckField"
+import React from "react"
 
 interface BusDetailsTableProps {
     busDetails: BusDetailsType
@@ -8,16 +9,12 @@ interface BusDetailsTableProps {
     handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void
 }
 
-const BusDetailsTable: React.FC<BusDetailsTableProps> = ({
-    busDetails,
-    isEditing,
-    handleChange,
-}) => (
+const BusDetailsTable = React.memo(({ busDetails, isEditing, handleChange }: BusDetailsTableProps) => (
     <table className="mb-4 min-w-full table-auto border-collapse bg-white rounded-lg overflow-hidden shadow-lg">
         <thead>
-            <tr className="bg-zinc-800 text-white">
-                <th className="py-3 px-6 text-sm font-medium text-left">Field</th>
-                <th className="py-3 px-6 text-sm font-medium text-left">Value</th>
+            <tr className="bg-zinc-600 text-white">
+                <th className="py-3 px-6 text-md font-medium text-left">Field</th>
+                <th className="py-3 px-6 text-md font-medium text-left">Value</th>
             </tr>
         </thead>
         <tbody>
@@ -122,6 +119,6 @@ const BusDetailsTable: React.FC<BusDetailsTableProps> = ({
             )}
         </tbody>
     </table>
-)
+))
 
 export default BusDetailsTable
