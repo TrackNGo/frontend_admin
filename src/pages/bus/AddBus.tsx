@@ -1,15 +1,16 @@
 import { useState, ChangeEvent, FormEvent } from "react"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Headline from "../../components/headline/Headline"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import TextBox from "../../components/textBox/TextBox"
 import SelectBox from "../../components/selectBox/SelectBox"
-import busDetailsType from "../../types/busDetails/busDetailsTypes"
 import axios from "axios"
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import summaryApi from "../../common/summaryApi"
+import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
 
 const AddBus = () => {
-  const [busDetails, setBusDetails] = useState<busDetailsType>({
+  const [busDetails, setBusDetails] = useState<BusDetailsType>({
     busNumber: "",
     startLocation: "",
     endLocation: "",
@@ -19,7 +20,7 @@ const AddBus = () => {
     status: false,
   })
 
-  const [error, setError] = useState<{ [key in keyof busDetailsType]?: string }>({})
+  const [error, setError] = useState<{ [key in keyof BusDetailsType]?: string }>({})
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -40,7 +41,7 @@ const AddBus = () => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    const newError: { [key in keyof busDetailsType]?: string } = {}
+    const newError: { [key in keyof BusDetailsType]?: string } = {}
 
     if (!busDetails.busNumber) newError.busNumber = "Bus Number Required!"
     if (!busDetails.startLocation) newError.startLocation = "Start Location Required!"
@@ -52,9 +53,17 @@ const AddBus = () => {
       setError(newError)
     } else {
       setError({})
-      console.log("Bus Details Submitted:", busDetails)
+      //console.log("Bus Details Submitted:", busDetails)
+
       // backend connection for adding bus
-      const response = await axios.post('http://localhost:3000/api-bus/bus', busDetails)
+      const response = await axios({
+        method: summaryApi.bus.addBus.method,
+        url: summaryApi.bus.addBus.url,
+        data: busDetails,
+      })
+
+      console.log(response.data)
+
       if (response.status === 201) {
         console.log("bus added okk!")
         toast.success('Bus added successfully!')
