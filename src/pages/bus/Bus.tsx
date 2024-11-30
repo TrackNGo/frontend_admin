@@ -7,7 +7,7 @@ const Bus = () => {
             <div>
                 <div>View Buses</div>{/*front end ok backend connection ok */}
                 <div>Add Bus</div>{/*front end ok backend connection ok */}
-                <div>Update & Modify Bus Details</div>
+                <div>Update & Modify Bus Details</div>{/*front end ok backend connection ok */}
                 <div>Delete Bus</div>
                 <div>Assign & Update Route for Buses</div>{/*front end ok*/}
             </div>

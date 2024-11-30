@@ -209,7 +209,7 @@ const ViewBuses = () => {
                 <td className="py-3 px-4">
                   {/* View Button */}
                   <Link
-                    to={`/bus/${bus.busNumber}`}
+                    to={`/bus/view/${bus.busNumber}`}
                     className="inline-block py-2 px-4 text-sm font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 hover:shadow-lg transition-all duration-300 ease-in-out"
                   >
                     View

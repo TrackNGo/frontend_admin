@@ -1,258 +1,244 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
-import { useParams, Link, useNavigate } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import summaryApi from "../../common/summaryApi"
+import BusDetailsTable from "../../components/busDetailTable/BusDetailsTable"
+import ErrorMessage from "../../components/errorMessage/ErrorMessage"
+import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner "
 import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
 
 const BusDetail = () => {
-  const { busNumber } = useParams<{ busNumber: any }>() // Extract busNumber from URL
-  const navigate = useNavigate() // Use navigate instead of useHistory
-  const [busDetails, setBusDetails] = useState<BusDetailsType | null>(null)
-  const [loading, setLoading] = useState<boolean>(true)
-  const [error, setError] = useState<string>('')
+    const { busNumber } = useParams<{ busNumber: any }>()
+    const [busDetails, setBusDetails] = useState<BusDetailsType | null>(null)
+    const [loading, setLoading] = useState<boolean>(true)
+    const [error, setError] = useState<string>('')
 
-  const [isEditing, setIsEditing] = useState<boolean>(false) // Toggle edit mode
+    const [isEditing, setIsEditing] = useState<boolean>(false)
+    const [searchBusNumber, setSearchBusNumber] = useState<string>('')
 
-  useEffect(() => {
-    if (busNumber) {
-      // Fetch bus details based on busNumber
-      const fetchBusDetails = async () => {
+    const [originalBusDetails, setOriginalBusDetails] = useState<BusDetailsType | null>(null) // New state to store original bus details
+
+    const navigate = useNavigate()
+
+    const fetchBusDetails = async () => {
         try {
-          const response = await axios({
-            method: summaryApi.bus.getBusByBusNumber.method,
-            // Replace :busNumber with the actual busNumber
-            url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber) 
-          })
-          setBusDetails(response.data)
+            const response = await axios({
+                method: summaryApi.bus.getBusByBusNumber.method,
+                url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber)
+            })
+            if (response.data) {
+                setBusDetails(response.data)
+                setOriginalBusDetails(response.data) // Store the original bus details
+                setError('') // Clear error if data is fetched
+            } else {
+                setError('No bus found with that number')
+            }
         } catch (error) {
-          setError('Failed to fetch bus details')
+            setError('Failed to fetch bus details')
         } finally {
-          setLoading(false)
+            setLoading(false)
         }
-      }
-
-      fetchBusDetails()
     }
-  }, [busNumber])
 
-  const handleEditClick = () => {
-    setIsEditing(true)
-  }
+    useEffect(() => {
+        if (busNumber) {
 
-  const handleCancelEdit = () => {
-    setIsEditing(false)
-    setBusDetails({ ...busDetails! }) // Ensure busDetails is not null/undefined
-  }
+            fetchBusDetails()
+        }
+    }, [busNumber])
 
-  const handleChange = (e: any) => {
-    if (busDetails) {
-      setBusDetails({
-        ...busDetails,
-        [e.target.name]: e.target.value,
-      })
+    const handleEditClick = () => {
+        setIsEditing(true)
     }
-  }
 
-  const handleSaveChanges = async () => {
-    if (busDetails) {
-      try {
-        const response = await axios({
-          method: 'PUT',
-          url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber),
-          data: busDetails,
-        })
-        setBusDetails(response.data)
+    const handleCancelEdit = () => {
         setIsEditing(false)
-        navigate("/") // Navigate to all buses page after save
-      } catch (error) {
-        setError('Failed to save bus details')
-      }
+        setBusDetails({ ...originalBusDetails! }) // Restore the original bus details
     }
-  }
 
-  if (loading) {
+    const handleReset = () => {
+        toast.warning('Bus reset successfully!')
+        // Reset the form fields to original bus details
+        setBusDetails({ ...originalBusDetails! })
+    }
+
+    const handleSaveChanges = async () => {
+        if (busDetails) {
+            try {
+                const response = await axios({
+                    method: 'PUT',
+                    url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', busNumber),
+                    data: busDetails,
+                })
+                // Update the busDetails state with the response data
+                setBusDetails(response.data) 
+                setOriginalBusDetails(response.data) // Update original bus details after saving
+                setIsEditing(false) // Exit editing mode
+                toast.success('Bus updated successfully!')
+            } catch (error) {
+                setError('Failed to save bus details')
+            }
+            fetchBusDetails()
+        }
+    }    
+
+    const fetchBusDetailsBySearch = async () => {
+        try {
+            const response = await axios({
+                method: summaryApi.bus.getBusByBusNumber.method,
+                url: summaryApi.bus.getBusByBusNumber.url.replace(':busNumber', searchBusNumber.trim().toLowerCase()) // Ensure lowercased search input
+            })
+
+            if (response.status === 200 && response.data) {
+                setBusDetails(response.data)
+                setError('') // Clear any existing errors
+                window.location.reload()
+                navigate(`/bus/view/${searchBusNumber.trim().toLowerCase()}`) // Navigate to the search result page
+            } else {
+                setBusDetails(null)
+                setError('No bus found with that bus number')
+            }
+        } catch (error) {
+            setBusDetails(null)
+            setError('Failed to fetch bus details')
+        }
+    }
+
+    const handleSearchClick = () => {
+        if (searchBusNumber) {
+            fetchBusDetailsBySearch()
+        } else {
+            setError('Please enter a bus number to search')
+        }
+    }
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchBusNumber(e.target.value)
+    }
+
+    const handleChange = (e: any) => {
+        if (busDetails) {
+            setBusDetails({
+                ...busDetails,
+                [e.target.name]: e.target.value,
+            })
+        }
+    }
+
+    // Function to check if any changes have been made
+    const isSaveEnabled = (): boolean => {
+        if (!busDetails || !originalBusDetails) return false
+
+        // Compare fields of busDetails with originalBusDetails
+        return JSON.stringify(busDetails) !== JSON.stringify(originalBusDetails)
+    }
+
+    if (loading) return <LoadingSpinner />
+
+    // Function to handle deleting the bus
+    const handleDelete = async () => {
+        if (busDetails) {
+            const confirmDelete = window.confirm('Are you sure you want to delete this bus?')
+            if (confirmDelete) {
+                try {
+                    await axios({
+                        method: 'DELETE',
+                        url: summaryApi.bus.deleteBusByBusNumber.url.replace(':busNumber', busNumber),
+                    })
+                    navigate('/bus/buses') // Navigate to the bus list page after deletion
+                    toast.done('Bus delete successfully!')
+                } catch (error) {
+                    setError('Failed to delete bus details')
+                }
+            }
+        }
+    }
+
     return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500"></div>
-      </div>
-    )
-  }
+        <div className="container mx-auto p-5">
+            <div className="flex items-center justify-center space-x-3">
+                <input
+                    type="text"
+                    placeholder="Enter bus number"
+                    value={searchBusNumber}
+                    onChange={handleSearchChange}
+                    className="p-3 w-64 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                />
+                <button
+                    onClick={handleSearchClick}
+                    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md transform transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                    Search
+                </button>
+            </div>
 
-  if (error) {
-    return <div className="text-center text-red-500 font-semibold text-lg">{error}</div>
-  }
+            {error && <ErrorMessage message={error} />}
 
-  if (!busDetails) {
-    return <div className="text-center font-semibold text-xl">No bus details found</div>
-  }
-
-  return (
-    <div className="bg-gray-100 p-8 min-h-screen">
-      <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-8">
-        <h1 className="text-4xl font-bold text-gray-800 text-center mb-6">Bus Details</h1>
-        
-        <div className="space-y-6">
-            <table className="min-w-full table-auto border-collapse bg-white rounded-lg overflow-hidden shadow-lg">
-              <thead>
-                <tr className="bg-blue-600 text-white">
-                  <th className="py-3 px-6 text-sm font-medium">Field</th>
-                  <th className="py-3 px-6 text-sm font-medium">Value</th>
-                </tr>
-              </thead>
-              <tbody>
+            <div className="flex justify-between items-center mt-2 mb-3">
+                <h2 className="text-2xl font-semibold">Bus Details</h2>
                 {isEditing ? (
-                  <>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Bus Number</td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="text"
-                          name="busNumber"
-                          value={busDetails.busNumber}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Route Number</td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="text"
-                          name="routeNumber"
-                          value={busDetails.routeNumber}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Start Location</td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="text"
-                          name="startLocation"
-                          value={busDetails.startLocation}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">End Location</td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="text"
-                          name="endLocation"
-                          value={busDetails.endLocation}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Fare Estimate</td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="number"
-                          name="fareEstimate"
-                          value={busDetails.fareEstimate}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Status</td>
-                      <td className="py-3 px-6">
-                        <select
-                          name="status"
-                          value={busDetails.status ? "Active" : "Inactive"}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    <div className="flex justify-end mt-5 space-x-2">
+                        <button
+                            onClick={handleSaveChanges}
+                            disabled={!isSaveEnabled()} // Disable Save button if no changes were made
+                            className={`${!isSaveEnabled()
+                                    ? 'bg-gray-400 cursor-not-allowed' // Disabled color and cursor
+                                    : 'bg-green-600 hover:bg-green-700'
+                                } text-white px-4 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500`}
                         >
-                          <option value="Active">Active</option>
-                          <option value="Inactive">Inactive</option>
-                        </select>
-                      </td>
-                    </tr>
-                    <tr className="hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Type</td>
-                      <td className="py-3 px-6">
-                        <input
-                          type="text"
-                          name="type"
-                          value={busDetails.type}
-                          onChange={handleChange}
-                          className="w-full border-2 rounded-lg p-3 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </td>
-                    </tr>
-                  </>
-                ) : (
-                  <>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Bus Number</td>
-                      <td className="py-3 px-6">{busDetails.busNumber}</td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Route Number</td>
-                      <td className="py-3 px-6">{busDetails.routeNumber}</td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Start Location</td>
-                      <td className="py-3 px-6">{busDetails.startLocation}</td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">End Location</td>
-                      <td className="py-3 px-6">{busDetails.endLocation}</td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Fare Estimate</td>
-                      <td className="py-3 px-6">{busDetails.fareEstimate}</td>
-                    </tr>
-                    <tr className="border-b hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Status</td>
-                      <td className="py-3 px-6">{busDetails.status ? "Active" : "Inactive"}</td>
-                    </tr>
-                    <tr className="hover:bg-gray-100">
-                      <td className="py-3 px-6 font-medium text-gray-700">Type</td>
-                      <td className="py-3 px-6">{busDetails.type}</td>
-                    </tr>
-                  </>
-                )}
-              </tbody>
-            </table>
-          </div>
+                            Save Changes
+                        </button>
 
-        <div className="mt-8 flex justify-between">
-          {isEditing ? (
-            <>
-              <button
-                onClick={handleSaveChanges}
-                className="py-3 px-6 text-lg font-semibold text-white bg-green-500 rounded-lg shadow-md hover:bg-green-600 transition-all duration-300"
-              >
-                Save Changes
-              </button>
-              <button
-                onClick={handleCancelEdit}
-                className="py-3 px-6 text-lg font-semibold text-white bg-gray-500 rounded-lg shadow-md hover:bg-gray-600 transition-all duration-300"
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <button
-              onClick={handleEditClick}
-              className="py-3 px-6 text-lg font-semibold text-white bg-blue-500 rounded-lg shadow-md hover:bg-blue-600 transition-all duration-300"
-            >
-              Edit Details
-            </button>
-          )}
+                        <button
+                            onClick={handleCancelEdit}
+                            className="bg-gray-600 text-white px-4 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:bg-gray-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={handleReset}
+                            className="bg-orange-600 text-white px-4 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:bg-orange-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        >
+                            Reset
+                        </button>
+                    </div>
+                ) : (
+                    <div className="flex justify-end space-x-2">
+                        <button
+                            onClick={handleEditClick}
+                            disabled={!busDetails}
+                            className={`${!busDetails ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-600 hover:bg-yellow-700'
+                                } text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                        >
+                            Edit
+                        </button>
+
+                        <button
+                            onClick={handleDelete}
+                            disabled={!busDetails}
+                            className="bg-red-600 text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:bg-red-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                )}
+            </div>
+
+            {/* Conditionally render the table if bus details exist */}
+            {busDetails ? (
+                <BusDetailsTable
+                    busDetails={busDetails}
+                    isEditing={isEditing}
+                    handleChange={handleChange}
+                />
+            ) : (
+                <div className="text-center text-red-500 mt-5">No bus details to display</div>
+            )}
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
-      </div>
-    </div>
-  )
+    )
 }
 
 export default BusDetail

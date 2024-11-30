@@ -10,6 +10,7 @@ import ViewTimeTable from "../timeTable/ViewTimeTable"
 import Bus from "../bus/Bus"
 import ViewBuses from "../bus/ViewBuses"
 import BusDetail from "../bus/BusDetail"
+import BusSearch from "../bus/BusSearch"
 
 const Testing = () => {
   return (
@@ -23,6 +24,7 @@ const Testing = () => {
           <Link to="/account/createaccount"><li>createaccount</li></Link>
 
           <Link to="/bus"><li>bus</li></Link>
+          <Link to="/bus/view"><li>bus search</li></Link>
           <Link to="/bus/addbus"><li>addbus</li></Link>
           <Link to="/bus/addbusroute"><li>addbusroute</li></Link>
 
@@ -44,7 +46,8 @@ const Testing = () => {
           <Route path='/bus' element={<Bus />} />
           <Route path='/bus/addbus' element={<AddBus />} />
           <Route path='/bus/buses' element={<ViewBuses />} />
-          <Route path='/bus/:busNumber' element={<BusDetail />} />
+          <Route path='/bus/view' element={<BusSearch />} />
+          <Route path='/bus/view/:busNumber' element={<BusDetail />} />
           <Route path='/bus/addbusroute' element={<AddBusRoutes />} />
 
           <Route path='/timetable/add' element={<ManageTimeTable/>} />
