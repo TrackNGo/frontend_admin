@@ -1,12 +1,16 @@
 import { useState, ChangeEvent, FormEvent } from "react"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Headline from "../../components/headline/Headline"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import TextBox from "../../components/textBox/TextBox"
 import SelectBox from "../../components/selectBox/SelectBox"
-import busDetailsType from "../../types/busDetails/busDetailsTypes"
+import axios from "axios"
+import summaryApi from "../../common/summaryApi"
+import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
 
 const AddBus = () => {
-  const [busDetails, setBusDetails] = useState<busDetailsType>({
+  const [busDetails, setBusDetails] = useState<BusDetailsType>({
     busNumber: "",
     startLocation: "",
     endLocation: "",
@@ -16,7 +20,7 @@ const AddBus = () => {
     status: false,
   })
 
-  const [error, setError] = useState<{ [key in keyof busDetailsType]?: string }>({})
+  const [error, setError] = useState<{ [key in keyof BusDetailsType]?: string }>({})
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -35,9 +39,9 @@ const AddBus = () => {
     setError((prev) => ({ ...prev, type: "" }))
   }
 
-  const handleSubmit = (event: FormEvent) => {
+  const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    const newError: { [key in keyof busDetailsType]?: string } = {}
+    const newError: { [key in keyof BusDetailsType]?: string } = {}
 
     if (!busDetails.busNumber) newError.busNumber = "Bus Number Required!"
     if (!busDetails.startLocation) newError.startLocation = "Start Location Required!"
@@ -49,17 +53,32 @@ const AddBus = () => {
       setError(newError)
     } else {
       setError({})
-      console.log("Bus Details Submitted:", busDetails)
+      //console.log("Bus Details Submitted:", busDetails)
+
       // backend connection for adding bus
-      setBusDetails({
-        busNumber: "",
-        startLocation: "",
-        endLocation: "",
-        routeNumber: "",
-        fareEstimate: "",
-        type: "Normal",
-        status: false,
+      const response = await axios({
+        method: summaryApi.bus.addBus.method,
+        url: summaryApi.bus.addBus.url,
+        data: busDetails,
       })
+
+      console.log(response.data)
+
+      if (response.status === 201) {
+        console.log("bus added okk!")
+        toast.success('Bus added successfully!')
+        setBusDetails({
+          busNumber: "",
+          startLocation: "",
+          endLocation: "",
+          routeNumber: "",
+          fareEstimate: "",
+          type: "Normal",
+          status: false,
+        })
+      } else {
+        console.log("bus added problem!")
+      }
     }
   }
 
@@ -82,7 +101,7 @@ const AddBus = () => {
               {error.busNumber || "required"}
             </div>
           </div>
-          
+
           <div>
             <TextBox
               title="Start Location"
@@ -128,7 +147,7 @@ const AddBus = () => {
 
           <div>
             <TextBox
-              title="Fare Estimate"
+              title="Max Fare Estimate"
               type="text"
               placeholder="Enter Fare Estimate"
               name="fareEstimate"
@@ -164,6 +183,7 @@ const AddBus = () => {
           />
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   )
 }

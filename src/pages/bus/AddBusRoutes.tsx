@@ -9,7 +9,7 @@ const buses: BusRouteTypes[] = [
   { busNumber: "456", routeNumber: "R2", startLocation: "City C", endLocation: "City D", routeStops: [], status: false },
 ]
 
-const AddRoutes = () => {
+const AddBusRoutes = () => {
   const [selectedBus, setSelectedBus] = useState<BusRouteTypes | null>(null)
   const [routeStops, setRouteStops] = useState<string[]>([])
   const [currentStop, setCurrentStop] = useState<string>("")
@@ -232,4 +232,4 @@ const AddRoutes = () => {
   )
 }
 
-export default AddRoutes
+export default AddBusRoutes

@@ -2,11 +2,14 @@ import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
 import Login from "../auth/Login"
 import ChangePassword from "../auth/ChangePassword"
 import CreateAccount from "../auth/CreateAccount"
-import AddBus from "../addBus/AddBus"
-import AddRoutes from "../addRoutes/AddRoutes"
+import AddBus from "../bus/AddBus"
+import AddBusRoutes from "../bus/AddBusRoutes"
 import Dashboard from "../dashboard/Dashboard"
 import ManageTimeTable from "../timeTable/ManageTimeTable"
 import ViewTimeTable from "../timeTable/ViewTimeTable"
+import Bus from "../bus/Bus"
+import ViewBuses from "../bus/ViewBuses"
+import BusDetail from "../bus/BusDetail"
 
 const Testing = () => {
   return (
@@ -15,10 +18,14 @@ const Testing = () => {
         <ul>
           <Link to="/"><li>dashboard</li></Link>
           <Link to="/login"><li>login</li></Link>
-          <Link to="/changepassword"><li>changepassword</li></Link>
-          <Link to="/createaccount"><li>createaccount</li></Link>
-          <Link to="/addbus"><li>addbus</li></Link>
-          <Link to="/addbusroute"><li>addbusroute</li></Link>
+
+          <Link to="/account/changepassword"><li>changepassword</li></Link>
+          <Link to="/account/createaccount"><li>createaccount</li></Link>
+
+          <Link to="/bus"><li>bus</li></Link>
+          <Link to="/bus/addbus"><li>addbus</li></Link>
+          <Link to="/bus/addbusroute"><li>addbusroute</li></Link>
+
           <Link to="/timetable/add"><li>time table add</li></Link>
           <Link to="/timetable"><li>view time table</li></Link>
         </ul>
@@ -30,10 +37,16 @@ const Testing = () => {
         <Routes>
           <Route path='/' element={<Dashboard />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/changepassword' element={<ChangePassword />} />
-          <Route path='/createaccount' element={<CreateAccount />} />
-          <Route path='/addbus' element={<AddBus />} />
-          <Route path='/addbusroute' element={<AddRoutes />} />
+
+          <Route path='/account/changepassword' element={<ChangePassword />} />
+          <Route path='/account/createaccount' element={<CreateAccount />} />
+
+          <Route path='/bus' element={<Bus />} />
+          <Route path='/bus/addbus' element={<AddBus />} />
+          <Route path='/bus/buses' element={<ViewBuses />} />
+          <Route path='/bus/:busNumber' element={<BusDetail />} />
+          <Route path='/bus/addbusroute' element={<AddBusRoutes />} />
+
           <Route path='/timetable/add' element={<ManageTimeTable/>} />
           <Route path='/timetable' element={<ViewTimeTable/>} />
         </Routes>
