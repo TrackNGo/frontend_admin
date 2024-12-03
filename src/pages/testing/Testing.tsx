@@ -11,11 +11,14 @@ import Bus from "../bus/Bus"
 import ViewBuses from "../bus/ViewBuses"
 import BusDetail from "../bus/BusDetail"
 import BusSearch from "../bus/BusSearch"
+import Header from "../../components/header/Header"
 
 const Testing = () => {
   return (
     <div>
       <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <Header/>
+
         <ul>
           <Link to="/"><li>dashboard</li></Link>
           <Link to="/login"><li>login</li></Link>
