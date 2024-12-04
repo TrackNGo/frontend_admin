@@ -73,7 +73,7 @@ const BusDetail = () => {
                     data: busDetails,
                 })
                 // Update the busDetails state with the response data
-                setBusDetails(response.data) 
+                setBusDetails(response.data)
                 setOriginalBusDetails(response.data) // Update original bus details after saving
                 setIsEditing(false) // Exit editing mode
                 toast.success('Bus updated successfully!')
@@ -82,7 +82,7 @@ const BusDetail = () => {
             }
             fetchBusDetails()
         }
-    }    
+    }
 
     const fetchBusDetailsBySearch = async () => {
         try {
@@ -184,8 +184,8 @@ const BusDetail = () => {
                             onClick={handleSaveChanges}
                             disabled={!isSaveEnabled()} // Disable Save button if no changes were made
                             className={`${!isSaveEnabled()
-                                    ? 'bg-gray-400 cursor-not-allowed' // Disabled color and cursor
-                                    : 'bg-green-600 hover:bg-green-700'
+                                ? 'bg-gray-400 cursor-not-allowed' // Disabled color and cursor
+                                : 'bg-green-600 hover:bg-green-700'
                                 } text-white px-4 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500`}
                         >
                             Save Changes
