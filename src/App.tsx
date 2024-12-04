@@ -1,4 +1,5 @@
 import './App.css'
+import '@fortawesome/fontawesome-free/css/all.min.css'
 import Testing from './pages/testing/Testing'
 
 function App() {
