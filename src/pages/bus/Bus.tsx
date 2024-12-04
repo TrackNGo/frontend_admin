@@ -17,12 +17,14 @@ const Card: React.FC<CardProps> = ({ title, description, iconClass, iconColor, o
         </div>
         <h3 className="text-xl font-bold text-gray-800 mb-2">{title}</h3>
         <p className="text-gray-600 text-sm">{description}</p>
+        <div className='text-center'>
         <button
             onClick={onManage} // Handle button click
             className={`mt-4 px-4 py-2 rounded-lg text-white bg-zinc-800 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-600 transition-all`}
         >
             Manage
         </button>
+        </div>
     </div>
 )
 
@@ -37,37 +39,37 @@ const Bus: React.FC = () => {
         {
             title: 'View Buses',
             description: 'Check and view the list of all buses in the system.',
+            iconClass: 'fas fa-search',
+            iconColor: 'text-blue-500',
+            action: () => handleManage('/bus/buses'), // Route to "View Buses" page
+        },
+        {
+            title: 'Search Bus',
+            description: 'Check and view the list of all buses in the system.',
             iconClass: 'fas fa-bus',
             iconColor: 'text-blue-500',
-            action: () => handleManage('/buses/view'), // Route to "View Buses" page
+            action: () => handleManage('/bus/view'), // Route to "View Buses" page
         },
         {
             title: 'Add Bus',
             description: 'Register a new bus to the system with all details.',
             iconClass: 'fas fa-plus-circle',
             iconColor: 'text-green-500',
-            action: () => handleManage('/buses/add'), // Route to "Add Bus" page
+            action: () => handleManage('/bus/addbus'), // Route to "Add Bus" page
         },
         {
             title: 'Update & Modify Bus Details',
             description: 'Edit existing bus information as needed.',
             iconClass: 'fas fa-edit',
             iconColor: 'text-yellow-500',
-            action: () => handleManage('/buses/update'), // Route to "Update Bus" page
+            action: () => handleManage('/bus/view'), // Route to "Update Bus" page
         },
         {
             title: 'Delete Bus',
             description: 'Remove bus records that are no longer needed.',
             iconClass: 'fas fa-trash',
             iconColor: 'text-red-500',
-            action: () => handleManage('/buses/delete'), // Route to "Delete Bus" page
-        },
-        {
-            title: 'Assign & Update Route for Buses',
-            description: 'Assign or update bus routes to keep schedules organized.',
-            iconClass: 'fas fa-route',
-            iconColor: 'text-indigo-500',
-            action: () => handleManage('/buses/routes'), // Route to "Assign Routes" page
+            action: () => handleManage('/bus/view'), // Route to "Delete Bus" page
         },
     ]
 
