@@ -1,27 +1,48 @@
+import { useState, ChangeEvent, FormEvent } from "react"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import Headline from "../../components/headline/Headline"
 import SelectBox from "../../components/selectBox/SelectBox"
 import TextBox from "../../components/textBox/TextBox"
+import TimeTableType from "../../types/timeTable/TimeTableType"
 
 const ManageTimeTable = () => {
+    const [formData, setFormData] = useState<TimeTableType>({
+        startLocation: "",
+        endLocation: "",
+        busRouteNumber: "",
+        busType: "Normal", // Default value for bus type
+        price: 0,
+        startTime: "",
+        endTime: "",
+    })
+
+    // Handle input changes and update the state
+    const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const { name, value } = event.target
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }))
+    }
+
+    const handleSelectChange = (value: string) => {
+        setFormData((prev) => ({
+          ...prev,
+          type: value,
+        }))
+      }
+
+    // Handle form submission
+    const handleSubmit = (event: FormEvent) => {
+        event.preventDefault()
+        console.log(formData) // This is where the form data will be available
+        // You can send formData to an API or perform other actions here
+    }
+
     return (
-        /*
-            interface BusData{
-                busRouteNumber:string,
-                busType:string,
-                price:number,
-                startTime:Date,
-                endTime:Date,
-            }
-            interface TimeTableType{
-                startLocation:string,
-                endLocation:string,
-                bus:BusData[]
-            }
-        */
         <div className="px-2">
             <Headline title={"Manage Time Table"} />
-            <form className="py-2 pb-10">
+            <form className="py-2 pb-10" onSubmit={handleSubmit}>
                 <div>
                     <div>
                         <TextBox
@@ -29,14 +50,18 @@ const ManageTimeTable = () => {
                             type={"text"}
                             placeholder={"Enter Start Location"}
                             name={"startLocation"}
+                            value={formData.startLocation}
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
                         <TextBox
                             title={"End Location"}
                             type={"text"}
-                            placeholder={"Enter Start Location"}
+                            placeholder={"Enter End Location"}
                             name={"endLocation"}
+                            value={formData.endLocation}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -46,31 +71,29 @@ const ManageTimeTable = () => {
                             title={"Route Number"}
                             type={"text"}
                             placeholder={"Enter Route Number"}
-                            name={""}
+                            name={"busRouteNumber"}
+                            value={formData.busRouteNumber}
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
-
-                        <div>
-                            <SelectBox
-                                title="Bus Type"
-                                name="type"
-                                options={["Normal", "Semi-Luxury", "Luxury"]}
-                                placeholder="Select Bus Type"
-                            />
-                            {/*
-                            <div className={`text-sm capitalize ${error.type ? "text-red-600" : "text-slate-400"}`}>
-                                {error.type || "required"}
-                            </div>
-                             */}
-                        </div>
+                        <SelectBox
+                            title="Bus Type"
+                            name="busType"
+                            options={["Normal", "Semi-Luxury", "Luxury"]}
+                            value={formData.busType}
+                            placeholder="Select Bus Type"
+                            onChange={handleSelectChange}
+                        />
                     </div>
                     <div>
                         <TextBox
                             title={"Ticket Price"}
-                            type={"text"}
+                            type={"number"}
                             placeholder={"Enter Ticket Price"}
-                            name={"ticketPrice"}
+                            name={"price"}
+                            value={formData.price.toString()}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -79,17 +102,19 @@ const ManageTimeTable = () => {
                     <div>
                         <TextBox
                             title={"Start Time"}
-                            type={"text"}
-                            placeholder={"HH:MM"}
+                            type={"time"}
                             name={"startTime"}
+                            value={formData.startTime}
+                            onChange={handleChange}
                         />
                     </div>
                     <div>
                         <TextBox
                             title={"End Time"}
-                            type={"text"}
-                            placeholder={"HH:MM"}
+                            type={"time"}
                             name={"endTime"}
+                            value={formData.endTime}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
