@@ -4,6 +4,8 @@ import Headline from "../../components/headline/Headline"
 import SelectBox from "../../components/selectBox/SelectBox"
 import TextBox from "../../components/textBox/TextBox"
 import TimeTableType from "../../types/timeTable/TimeTableType"
+import axios from "axios"
+import summaryApi from "../../common/summaryApi"
 
 const ManageTimeTable = () => {
     const [formData, setFormData] = useState<TimeTableType>({
@@ -33,10 +35,16 @@ const ManageTimeTable = () => {
       }
 
     // Handle form submission
-    const handleSubmit = (event: FormEvent) => {
+    const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
         console.log(formData) // This is where the form data will be available
         // You can send formData to an API or perform other actions here
+        try {
+            const response=await axios.post(summaryApi.timeTable.createTimeTable.url,formData)
+             console.log("Time Table created successfully:", response.data)
+        } catch (error:any) {
+            console.error("Error creating time table:", error)
+        }
     }
 
     return (
