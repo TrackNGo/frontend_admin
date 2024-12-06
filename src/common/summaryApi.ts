@@ -30,6 +30,36 @@ const summaryApi = {
       url: `${backendUrl}api-bus/bus/status/:busNumber`, 
       method: "put"
     }
+  },
+  timeTable: {
+    createTimeTable: {
+      url: `${backendUrl}api-bustimetable/add`, 
+      method: "post"
+    },
+    getAllTimeTables: {
+      url: `${backendUrl}api-bustimetable/view`, 
+      method: "get"
+    },
+    getTimeTableByLocations:{
+      url: `${backendUrl}api-bustimetable/locations`, 
+      method: "get"
+    },
+    getTimeTableByRouteAndType:{
+      url: `${backendUrl}api-bustimetable/bus-type`, 
+      method: "get"
+    },
+    getTimeTableById:{
+      url: `${backendUrl}api-bustimetable/:id`, 
+      method: "get"
+    },
+    updateTimeTable:{
+      url: `${backendUrl}api-bustimetable/update/:id`, 
+      method: "put"
+    },
+    deleteTimeTable:{
+      url: `${backendUrl}api-bustimetable/delete/:id`, 
+      method: "delete"
+    }
   }
 }
 
