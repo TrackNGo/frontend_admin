@@ -1,4 +1,5 @@
 interface TimeTableType{
+    _id?: any,
     startLocation:string,
     endLocation:string,
     busRouteNumber:string,

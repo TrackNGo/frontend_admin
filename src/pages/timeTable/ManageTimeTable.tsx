@@ -29,10 +29,10 @@ const ManageTimeTable = () => {
 
     const handleSelectChange = (value: string) => {
         setFormData((prev) => ({
-          ...prev,
-          type: value,
+            ...prev,
+            type: value,
         }))
-      }
+    }
 
     // Handle form submission
     const handleSubmit = async (event: FormEvent) => {
@@ -40,9 +40,9 @@ const ManageTimeTable = () => {
         console.log(formData) // This is where the form data will be available
         // You can send formData to an API or perform other actions here
         try {
-            const response=await axios.post(summaryApi.timeTable.createTimeTable.url,formData)
-             console.log("Time Table created successfully:", response.data)
-        } catch (error:any) {
+            const response = await axios.post(summaryApi.timeTable.createTimeTable.url, formData)
+            console.log("Time Table created successfully:", response.data)
+        } catch (error: any) {
             console.error("Error creating time table:", error)
         }
     }
@@ -105,7 +105,6 @@ const ManageTimeTable = () => {
                         />
                     </div>
                 </div>
-
                 <div>
                     <div>
                         <TextBox
