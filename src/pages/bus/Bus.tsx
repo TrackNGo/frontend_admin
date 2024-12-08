@@ -1,34 +1,8 @@
-import React from 'react'
 import { useNavigate } from 'react-router-dom' // Import useNavigate for navigation
 import Headline from '../../components/headline/Headline'
+import Card from '../../components/card/Card'
 
-interface CardProps {
-    title: string
-    description: string
-    iconClass: string
-    iconColor: string
-    onManage?: () => void
-}
-
-const Card: React.FC<CardProps> = ({ title, description, iconClass, iconColor, onManage }) => (
-    <div className="bg-white shadow-lg rounded-2xl p-6 hover:shadow-2xl transition-shadow transform hover:scale-101">
-        <div className={`flex items-center justify-center ${iconColor} mb-4`}>
-            <i className={`${iconClass} text-5xl`}></i>
-        </div>
-        <h3 className="text-xl font-bold text-gray-800 mb-2">{title}</h3>
-        <p className="text-gray-600 text-sm">{description}</p>
-        <div className='text-center'>
-        <button
-            onClick={onManage} // Handle button click
-            className={`mt-4 px-4 py-2 rounded-lg text-white bg-zinc-800 hover:bg-zinc-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-600 transition-all`}
-        >
-            Manage
-        </button>
-        </div>
-    </div>
-)
-
-const Bus: React.FC = () => {
+const Bus = () => {
     const navigate = useNavigate() // Hook for navigation
 
     const handleManage = (path: string) => {
@@ -74,7 +48,7 @@ const Bus: React.FC = () => {
     ]
 
     return (
-        <div>
+        <div className='px-2'>
             <Headline title="Bus" />
             <div className="bg-gray-50 min-h-screen p-10">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
