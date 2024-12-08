@@ -46,7 +46,7 @@ const ViewTimeTable = () => {
 
             <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
                 <table className="min-w-full table-auto text-sm text-left">
-                    <thead className="bg-blue-600 text-white">
+                    <thead className="bg-zinc-800 text-white">
                         <tr>
                             <th className="py-3 px-4">Start Location</th>
                             <th className="py-3 px-4">End Location</th>
@@ -71,7 +71,7 @@ const ViewTimeTable = () => {
                                 <td className="py-3 px-4">
                                     <button
                                         onClick={() => { navigate(`/timetable/view/${timeTable._id}`) }} // Route to "Edit Time Table" page
-                                        className="px-4 py-2 bg-yellow-400 hover:bg-yellow-500 text-white rounded-md border-2 border-transparent hover:border-yellow-600 hover:ring-2 hover:ring-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all duration-300"
+                                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md border-2 border-transparent hover:border-yellow-600 hover:ring-2 hover:ring-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all duration-300"
                                     >
                                         <FontAwesomeIcon icon={faEdit} className="w-5 h-5" />
                                     </button>
