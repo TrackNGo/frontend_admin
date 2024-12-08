@@ -14,6 +14,8 @@ import BusSearch from "../bus/BusSearch"
 import Header from "../../components/header/Header"
 import EditTimeTable from "../timeTable/EditTimeTable"
 import TimeTable from "../timeTable/TimeTable"
+import Account from "../account/Account"
+import ViewAccount from "../account/ViewAccount"
 
 const Testing = () => {
   return (
@@ -48,7 +50,8 @@ const Testing = () => {
           <Route path='/' element={<Dashboard />} />
           <Route path='/login' element={<Login />} />
 
-          {/* <Route path='/account/' element={< />} /> account*/}
+          <Route path='/account/' element={<Account />} />
+          <Route path='/account/view' element={<ViewAccount />} />
           <Route path='/account/changepassword' element={<ChangePassword />} />
           <Route path='/account/createaccount' element={<CreateAccount />} />
 
@@ -59,7 +62,7 @@ const Testing = () => {
           <Route path='/bus/view/:busNumber' element={<BusDetail />} />
           <Route path='/bus/addbusroute' element={<AddBusRoutes />} />
 
-          <Route path='/timetable' element={<TimeTable/>} /> timetable
+          <Route path='/timetable' element={<TimeTable/>} />
           <Route path='/timetable/view' element={<ViewTimeTable/>} />
           <Route path='/timetable/view/:id' element={<EditTimeTable/>} />
           <Route path='/timetable/add' element={<ManageTimeTable/>} />
