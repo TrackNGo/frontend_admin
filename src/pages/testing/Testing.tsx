@@ -28,6 +28,7 @@ const Testing = () => {
           <Link to="/login"><li>login</li></Link>
 
           <Link to="/account"><li>account</li></Link>
+          <Link to="/account/view"><li>view account</li></Link>
           <Link to="/account/changepassword"><li>changepassword</li></Link>
           <Link to="/account/createaccount"><li>createaccount</li></Link>
 
