@@ -13,6 +13,7 @@ import BusDetail from "../bus/BusDetail"
 import BusSearch from "../bus/BusSearch"
 import Header from "../../components/header/Header"
 import EditTimeTable from "../timeTable/EditTimeTable"
+import TimeTable from "../timeTable/TimeTable"
 
 const Testing = () => {
   return (
@@ -58,7 +59,7 @@ const Testing = () => {
           <Route path='/bus/view/:busNumber' element={<BusDetail />} />
           <Route path='/bus/addbusroute' element={<AddBusRoutes />} />
 
-          {/* <Route path='/timetable' element={</>} /> timetable*/}
+          <Route path='/timetable' element={<TimeTable/>} /> timetable
           <Route path='/timetable/view' element={<ViewTimeTable/>} />
           <Route path='/timetable/view/:id' element={<EditTimeTable/>} />
           <Route path='/timetable/add' element={<ManageTimeTable/>} />
