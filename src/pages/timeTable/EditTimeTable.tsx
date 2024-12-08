@@ -26,6 +26,18 @@ const EditTimeTable = () => {
         endTime: ''
     })
 
+    const formClear=()=>{
+        setFormData({
+            startLocation: '',
+            endLocation: '',
+            busRouteNumber: '',
+            busType: '',
+            price: 0,
+            startTime: '',
+            endTime: ''
+        })
+    }
+
     useEffect(() => {
         const fetchTimeTable = async () => {
             try {
@@ -77,6 +89,7 @@ const EditTimeTable = () => {
             setError("Error updating time table.")
             toast.warning('Time Table Update Problem!')
         }
+        formClear()
     }
 
     // Handle delete time table
@@ -95,6 +108,7 @@ const EditTimeTable = () => {
                 setError("Error deleting time table.")
                 toast.warning('Time Table Delete Problem!')
             }
+            formClear()
         }
     }
 

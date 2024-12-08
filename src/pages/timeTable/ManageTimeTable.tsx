@@ -35,6 +35,18 @@ const ManageTimeTable = () => {
         }))
     }
 
+    const formClear=()=>{
+        setFormData({
+            startLocation: '',
+            endLocation: '',
+            busRouteNumber: '',
+            busType: '',
+            price: 0,
+            startTime: '',
+            endTime: ''
+        })
+    }
+
     // Handle form submission
     const handleSubmit = async (event: FormEvent) => {
         event.preventDefault()
@@ -48,6 +60,7 @@ const ManageTimeTable = () => {
             console.error("Error creating time table:", error)
             toast.warning('Time Table Added Problem!')
         }
+        formClear()
     }
 
     return (
