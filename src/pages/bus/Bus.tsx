@@ -50,9 +50,9 @@ const Bus = () => {
     return (
         <div className='px-2'>
             <Headline title="Bus" />
-            <div className="bg-gray-50 min-h-screen p-10">
+            <div className="min-h-screen p-10 text-center">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {cards.map((card, index) => (
+                    {cards && cards.map((card, index) => (
                         <Card
                             key={index}
                             title={card.title}

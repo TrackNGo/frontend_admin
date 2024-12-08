@@ -31,7 +31,7 @@ const TimeTable = () => {
             <Headline title="Bus" />
             <div className="min-h-screen p-10">
                 <div className="flex items-center gap-8 justify-center">
-                    {cards.map((card, index) => (
+                    {cards&&cards.map((card, index) => (
                         <Card
                             key={index}
                             title={card.title}
