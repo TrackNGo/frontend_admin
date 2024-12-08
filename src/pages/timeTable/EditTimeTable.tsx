@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import { useNavigate, useParams } from "react-router-dom"
+import { ToastContainer, toast } from 'react-toastify'
 import summaryApi from "../../common/summaryApi"
 import TimeTableType from "../../types/timeTable/TimeTableType"
 import SelectBox from "../../components/selectBox/SelectBox"
@@ -40,7 +41,6 @@ const EditTimeTable = () => {
                 setLoading(false)
             }
         }
-
         fetchTimeTable()
     }, [id])
 
@@ -71,9 +71,11 @@ const EditTimeTable = () => {
                 url: summaryApi.timeTable.updateTimeTable.url.replace(':id', id || ''),
                 data: formData
             })
-            navigate("/timetable/view");  // Navigate back to the time table list page after updating
+            toast.success('Time Table Updated Successfully!')
+            navigate("/timetable/view")  // Navigate back to the time table list page after updating
         } catch (error) {
-            setError("Error updating time table.");
+            setError("Error updating time table.")
+            toast.warning('Time Table Update Problem!')
         }
     }
 
@@ -87,9 +89,11 @@ const EditTimeTable = () => {
                     method: summaryApi.timeTable.deleteTimeTable.method,
                     url: summaryApi.timeTable.deleteTimeTable.url.replace(':id', id || '')
                 })
+                toast.success('Time Table Deleted Successfully!')
                 navigate("/timetable/view")  // Navigate back to the time table list page after deletion
             } catch (error) {
                 setError("Error deleting time table.")
+                toast.warning('Time Table Delete Problem!')
             }
         }
     }
@@ -196,6 +200,7 @@ const EditTimeTable = () => {
                 </form>
             )}
             </div>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
     )
 }

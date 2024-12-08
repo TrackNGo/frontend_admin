@@ -1,4 +1,5 @@
 import { useState, ChangeEvent, FormEvent } from "react"
+import { ToastContainer, toast } from 'react-toastify'
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import Headline from "../../components/headline/Headline"
 import SelectBox from "../../components/selectBox/SelectBox"
@@ -42,8 +43,10 @@ const ManageTimeTable = () => {
         try {
             const response = await axios.post(summaryApi.timeTable.createTimeTable.url, formData)
             console.log("Time Table created successfully:", response.data)
+            toast.success('Time Table Added Successfully!')
         } catch (error: any) {
             console.error("Error creating time table:", error)
+            toast.warning('Time Table Added Problem!')
         }
     }
 
@@ -133,6 +136,7 @@ const ManageTimeTable = () => {
                     />
                 </div>
             </form>
+            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
         </div>
     )
 }
