@@ -63,23 +63,23 @@ const summaryApi = {
   },
   account:{
     createAccount: {
-      url: `${backendUrl}/api-user/create`, 
+      url: `${backendUrl}api-user/create`, 
       method: "post"
     },
     getAllAccounts: {
-      url: `${backendUrl}/api-user/users`, 
+      url: `${backendUrl}api-user/users`, 
       method: "get"
     },
     getAccountByUsername: {
-      url: `${backendUrl}a/api-user/user/:username`, 
+      url: `${backendUrl}api-user/user/:username`, 
       method: "get"
     },
     updateAccount: {
-      url: `${backendUrl}/api-user/user/:username`, 
+      url: `${backendUrl}api-user/user/:username`, 
       method: "put"
     },
     deleteAccount: {
-      url: `${backendUrl}/api-user/delete/:username`, 
+      url: `${backendUrl}api-user/delete/:username`, 
       method: "delete"
     },
   }
