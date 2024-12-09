@@ -174,11 +174,11 @@ const ViewBuses = () => {
               <th className="py-3 px-4 text-left">Fare Estimate(Rs.)</th>
               <th className="py-3 px-4 text-left">Status</th>
               <th className="py-3 px-4 text-left">Type</th>
-              <th className="py-3 px-4 text-left">Actions</th> {/* New column for actions */}
+              <th className="py-3 px-4 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {currentBuses.map((bus, index) => (
+            {currentBuses && currentBuses.map((bus, index) => (
               <tr key={index} className="border-t hover:bg-gray-50 capitalize">
                 <td className="py-3 px-4 uppercase">{bus.busNumber}</td>
                 <td className="py-3 px-4">{bus.startLocation}</td>
@@ -215,7 +215,6 @@ const ViewBuses = () => {
                     View
                   </Link>
                 </td>
-
               </tr>
             ))}
           </tbody>
