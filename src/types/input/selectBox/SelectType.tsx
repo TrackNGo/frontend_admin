@@ -1,5 +1,5 @@
 interface SelectType {
-    title:string,
+    title?:string,
     placeholder?:string,
     name:string,
     options?:string[],
