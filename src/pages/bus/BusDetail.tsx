@@ -6,7 +6,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import summaryApi from "../../common/summaryApi"
 import BusDetailsTable from "../../components/busDetailTable/BusDetailsTable"
 import ErrorMessage from "../../components/errorMessage/ErrorMessage"
-import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner "
+import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner"
 import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
 
 const BusDetail = () => {
