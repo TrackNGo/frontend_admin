@@ -1,11 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from "react"
 import { ToastContainer, toast } from 'react-toastify'
+import axios from "axios"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import Headline from "../../components/headline/Headline"
 import SelectBox from "../../components/selectBox/SelectBox"
 import TextBox from "../../components/textBox/TextBox"
 import TimeTableType from "../../types/timeTable/TimeTableType"
-import axios from "axios"
 import summaryApi from "../../common/summaryApi"
 
 const ManageTimeTable = () => {
