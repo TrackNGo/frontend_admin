@@ -109,13 +109,11 @@ const AccountDetails = () => {
 
     return (
         <div className="container mx-auto p-5">
-            <div className="flex items-center justify-center space-x-3">
-                <h2 className="text-2xl font-semibold">Account Details</h2>
-            </div>
 
             {error && <ErrorMessage message={error} />}
 
             <div className="flex justify-between items-center mt-2 mb-3">
+                <h2 className="text-2xl font-semibold">Account Details</h2>
                 {isEditing ? (
                     <div className="flex justify-end mt-5 space-x-2">
                         <button
@@ -147,7 +145,8 @@ const AccountDetails = () => {
                         <button
                             onClick={handleEditClick}
                             disabled={!userDetails}
-                            className={`${!userDetails ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-600 hover:bg-yellow-700'} text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500`}
+                            className={`${!userDetails ? 'bg-gray-400 cursor-not-allowed' : 'bg-yellow-600 hover:bg-yellow-700'
+                                } text-white px-4 mt-5 py-2 rounded-lg shadow-md transform transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-gray-500`}
                         >
                             Edit
                         </button>
