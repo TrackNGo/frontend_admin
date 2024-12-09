@@ -16,6 +16,7 @@ import EditTimeTable from "../timeTable/EditTimeTable"
 import TimeTable from "../timeTable/TimeTable"
 import Account from "../account/Account"
 import ViewAccount from "../account/ViewAccount"
+import AccountDetails from "../account/AccountDetails"
 
 const Testing = () => {
   return (
@@ -53,6 +54,7 @@ const Testing = () => {
 
           <Route path='/account/' element={<Account />} />
           <Route path='/account/view' element={<ViewAccount />} />
+          <Route path='/account/view/:username' element={<AccountDetails />} />
           <Route path='/account/changepassword' element={<ChangePassword />} />
           <Route path='/account/createaccount' element={<CreateAccount />} />
 
