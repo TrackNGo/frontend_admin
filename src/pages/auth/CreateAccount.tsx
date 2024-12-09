@@ -1,13 +1,15 @@
 import { ChangeEvent, useState } from "react"
+import axios from "axios"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import SelectBox from "../../components/selectBox/SelectBox"
 import TextBox from "../../components/textBox/TextBox"
 import UserTypes from "../../types/user/UserTypes"
 import Headline from "../../components/headline/Headline"
+import summaryApi from "../../common/summaryApi"
 
 const CreateAccount = () => {
   const [error, setError] = useState<{ [key: string]: string }>({})
-  const [confirmPassword, setConfirmPassword] = useState('abcd@123') // New state for confirm password
+  const [confirmPassword, setConfirmPassword] = useState('Abcd@123') // New state for confirm password
 
   const [formData, setFormData] = useState<UserTypes>({
     nic: '',
@@ -15,7 +17,7 @@ const CreateAccount = () => {
     firstName: '',
     lastName: '',
     mobile: '',
-    password: 'abcd@123',
+    password: 'Abcd@123',
     accType: 'General',
   })
 
@@ -66,8 +68,14 @@ const CreateAccount = () => {
         password: formData.password,
         accType: formData.accType,
       }
-      console.log("Creating account with data:", data)
+      //console.log("Creating account with data:", data)
       // backend connection here
+      try {
+      const response=await axios.post(summaryApi.account.createAccount.url,data)
+      console.log("Account created successfully:", response.data) 
+      } catch (error:any) {
+        console.log("Error creating account:", error)
+      }
     }
   }
 
