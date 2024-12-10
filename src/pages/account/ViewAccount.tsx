@@ -9,24 +9,84 @@ import summaryApi from "../../common/summaryApi"
 
 const ViewAccount = () => {
     const navigate = useNavigate()
-    const [accounts, setAccounts] = useState<UserTypes[]>([]) // Initialize with an empty array
+    const [accounts, setAccounts] = useState<UserTypes[]>([])
+    const [filteredAccounts, setFilteredAccounts] = useState<UserTypes[]>([])
+    const [selectedType, setSelectedType] = useState<string>("default")
+    const [usernameSearchQuery, setUsernameSearchQuery] = useState<string>("")
+    const [nicSearchQuery, setNicSearchQuery] = useState<string>("")
+    const [mobileSearchQuery, setMobileSearchQuery] = useState<string>("")
 
     const fetchAccounts = async () => {
         try {
             const response = await axios.get(summaryApi.account.getAllAccounts.url)
-    
-            // Extract the 'users' array from the response if it exists
             if (response.data && Array.isArray(response.data.users)) {
                 setAccounts(response.data.users)
+                setFilteredAccounts(response.data.users)
             } else {
                 console.error("Unexpected API response:", response.data)
-                setAccounts([]) // Fallback to an empty array
+                setAccounts([])
+                setFilteredAccounts([])
             }
         } catch (error) {
             console.error("Error fetching accounts:", error)
-            setAccounts([]) // Fallback to an empty array on error
+            setAccounts([])
+            setFilteredAccounts([])
         }
-    }    
+    }
+
+    const handleFilterChange = (type: string) => {
+        setSelectedType(type)
+        applySearchQuery(accounts, usernameSearchQuery, nicSearchQuery, mobileSearchQuery, type)
+    }
+
+    const handleUsernameSearchChange = (query: string) => {
+        setUsernameSearchQuery(query)
+        applySearchQuery(accounts, query, nicSearchQuery, mobileSearchQuery, selectedType)
+    }
+
+    const handleNicSearchChange = (query: string) => {
+        setNicSearchQuery(query)
+        applySearchQuery(accounts, usernameSearchQuery, query, mobileSearchQuery, selectedType)
+    }
+
+    const handleMobileSearchChange = (query: string) => {
+        setMobileSearchQuery(query)
+        applySearchQuery(accounts, usernameSearchQuery, nicSearchQuery, query, selectedType)
+    }
+
+    const applySearchQuery = (
+        sourceAccounts: UserTypes[],
+        usernameQuery: string,
+        nicQuery: string,
+        mobileQuery: string,
+        type: string
+    ) => {
+        const filteredByType = type === "default"
+            ? sourceAccounts
+            : sourceAccounts.filter(account => account.accType.toLowerCase() === type.toLowerCase())
+
+        const filteredByUsername = usernameQuery
+            ? filteredByType.filter(account => account.username.toLowerCase().includes(usernameQuery.toLowerCase()))
+            : filteredByType
+
+        const filteredByNic = nicQuery
+            ? filteredByUsername.filter(account => account.nic.toLowerCase().includes(nicQuery.toLowerCase()))
+            : filteredByUsername
+
+        const filteredByMobile = mobileQuery
+            ? filteredByNic.filter(account => account.mobile.toLowerCase().includes(mobileQuery.toLowerCase()))
+            : filteredByNic
+
+        setFilteredAccounts(filteredByMobile)
+    }
+
+    const handleResetFilters = () => {
+        setSelectedType("default")
+        setUsernameSearchQuery("")
+        setNicSearchQuery("")
+        setMobileSearchQuery("")
+        setFilteredAccounts(accounts) // Reset to the original list
+    }
 
     useEffect(() => {
         fetchAccounts()
@@ -37,6 +97,57 @@ const ViewAccount = () => {
             <Headline title="View Account" />
 
             <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
+                <div className="flex items-center space-x-4 mb-2">
+                    <label className="text-gray-600">Clear Filter:</label>
+                    <button
+                        onClick={handleResetFilters}
+                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-normal rounded-lg shadow-md transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-red-200"
+                    >
+                        Reset
+                    </button>
+
+                </div>
+
+                <div className="flex items-center space-x-4 mb-4">
+                    <label className="text-gray-600">Filter by Type:</label>
+                    <select
+                        value={selectedType}
+                        onChange={(e) => handleFilterChange(e.target.value)}
+                        className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all"
+                    >
+                        <option value="default">All</option>
+                        <option value="admin">Admin</option>
+                        <option value="general">General</option>
+                    </select>
+
+                    <label className="text-gray-600">Search by Username:</label>
+                    <input
+                        type="text"
+                        placeholder="Search by Username"
+                        value={usernameSearchQuery}
+                        onChange={(e) => handleUsernameSearchChange(e.target.value)}
+                        className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                    />
+
+                    <label className="text-gray-600">Search by NIC:</label>
+                    <input
+                        type="text"
+                        placeholder="Search by NIC"
+                        value={nicSearchQuery}
+                        onChange={(e) => handleNicSearchChange(e.target.value)}
+                        className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                    />
+
+                    <label className="text-gray-600">Search by Mobile:</label>
+                    <input
+                        type="text"
+                        placeholder="Search by Mobile"
+                        value={mobileSearchQuery}
+                        onChange={(e) => handleMobileSearchChange(e.target.value)}
+                        className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                    />
+                </div>
+
                 <table className="min-w-full table-auto text-sm text-left">
                     <thead className="bg-zinc-800 text-white">
                         <tr>
@@ -50,8 +161,8 @@ const ViewAccount = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {accounts.length > 0 ? (
-                            accounts.map((account, key) => (
+                        {filteredAccounts.length > 0 ? (
+                            filteredAccounts.map((account, key) => (
                                 <tr key={key} className="border-t hover:bg-gray-100 transition-all">
                                     <td className="py-3 px-4">{account.username}</td>
                                     <td className="py-3 px-4">{account.firstName}</td>
