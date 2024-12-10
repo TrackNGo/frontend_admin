@@ -1,5 +1,7 @@
 import { ChangeEvent, useState } from "react"
 import axios from "axios"
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import SelectBox from "../../components/selectBox/SelectBox"
 import TextBox from "../../components/textBox/TextBox"
@@ -72,6 +74,17 @@ const CreateAccount = () => {
       try {
         const response = await axios.post(summaryApi.account.createAccount.url, data)
         console.log('Account created successfully:', response.data)
+        toast.success('Account created successfully!')
+        setFormData({
+          nic: '',
+          username: '',
+          firstName: '',
+          lastName: '',
+          mobile: '',
+          password: 'Abcd@123',
+          accType: 'General',
+        })
+        setConfirmPassword('Abcd@123')
         // Optionally reset the form or redirect the user
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -80,8 +93,10 @@ const CreateAccount = () => {
           // Check if the error is due to the username already existing
           if (error.response?.data?.error === "Username already exists") {
             setError((prev) => ({ ...prev, username: "Username already exists" }))
+            toast.warning('Account already exists!')
           } else {
             setError((prev) => ({ ...prev, general: error.response?.data?.error || 'Something went wrong' }))
+            toast.warning('Something went wrong!')
           }
         }
       }
@@ -218,6 +233,7 @@ const CreateAccount = () => {
           </div>
         </form>
       </div>
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   )
 }
