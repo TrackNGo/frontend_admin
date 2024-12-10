@@ -15,6 +15,8 @@ const ViewAccount = () => {
     const [usernameSearchQuery, setUsernameSearchQuery] = useState<string>("")
     const [nicSearchQuery, setNicSearchQuery] = useState<string>("")
     const [mobileSearchQuery, setMobileSearchQuery] = useState<string>("")
+    const [currentPage, setCurrentPage] = useState<number>(1)
+    const rowsPerPage = 4 // Number of rows per page
 
     const fetchAccounts = async () => {
         try {
@@ -86,6 +88,17 @@ const ViewAccount = () => {
         setNicSearchQuery("")
         setMobileSearchQuery("")
         setFilteredAccounts(accounts) // Reset to the original list
+    }
+
+    // Pagination logic
+    const totalPages = Math.ceil(filteredAccounts.length / rowsPerPage)
+    const startIndex = (currentPage - 1) * rowsPerPage
+    const currentAccount = filteredAccounts.slice(startIndex, startIndex + rowsPerPage)
+
+    const handlePageChange = (page: number) => {
+        if (page > 0 && page <= totalPages) {
+            setCurrentPage(page)
+        }
     }
 
     useEffect(() => {
@@ -161,8 +174,8 @@ const ViewAccount = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredAccounts.length > 0 ? (
-                            filteredAccounts.map((account, key) => (
+                        {currentAccount.length > 0 ? (
+                            currentAccount.map((account, key) => (
                                 <tr key={key} className="border-t hover:bg-gray-100 transition-all">
                                     <td className="py-3 px-4">{account.username}</td>
                                     <td className="py-3 px-4">{account.firstName}</td>
@@ -189,6 +202,42 @@ const ViewAccount = () => {
                         )}
                     </tbody>
                 </table>
+                {/* Displaying the number of results */}
+                <div className="mt-4 text-sm text-gray-600 capitalize">
+                    Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredAccounts.length)} of {filteredAccounts.length} <b className='capitalize'>accounts</b>
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex justify-between items-center mt-6">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50"
+                    >
+                        Previous
+                    </button>
+
+                    {/* Page Number Buttons */}
+                    <div className="flex space-x-2">
+                        {[...Array(totalPages).keys()].map((i) => (
+                            <button
+                                key={i}
+                                onClick={() => handlePageChange(i + 1)}
+                                className={`px-3 py-2 rounded-lg ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
         </div>
     )
