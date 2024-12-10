@@ -53,7 +53,7 @@ const CreateAccount = () => {
     if (!formData.lastName) newError.lastName = "Last Name is required"
     if (!formData.mobile) newError.mobile = "Mobile number is required"
     if (!formData.password) newError.password = "Password is required"
-    if (formData.password !== confirmPassword) newError.confirmPassword = "Passwords do not match" // Validation for confirm password
+    if (formData.password !== confirmPassword) newError.confirmPassword = "Passwords do not match"
 
     if (Object.keys(newError).length > 0) {
       setError(newError)
@@ -68,25 +68,35 @@ const CreateAccount = () => {
         password: formData.password,
         accType: formData.accType,
       }
-      //console.log("Creating account with data:", data)
-      // backend connection here
+
       try {
-      const response=await axios.post(summaryApi.account.createAccount.url,data)
-      console.log("Account created successfully:", response.data) 
-      } catch (error:any) {
-        console.log("Error creating account:", error)
+        const response = await axios.post(summaryApi.account.createAccount.url, data)
+        console.log('Account created successfully:', response.data)
+        // Optionally reset the form or redirect the user
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('Error creating account:', error.response?.data || error.message)
+
+          // Check if the error is due to the username already existing
+          if (error.response?.data?.error === "Username already exists") {
+            setError((prev) => ({ ...prev, username: "Username already exists" }))
+          } else {
+            setError((prev) => ({ ...prev, general: error.response?.data?.error || 'Something went wrong' }))
+          }
+        }
       }
     }
   }
+
 
   return (
     <div className="container mx-auto mb-10 md:mt-5">
       <div className="flex items-center justify-center mb-6">
         <form onSubmit={handleSubmit} className="md:border md:border-slate-200 rounded-xl max-w-[500px] min-w-[400px] center p-4 pb-8 pt-10 md:pt-6 md:shadow-lg">
-          <div className="text-left md:text-center mb-8">
+          <div className="text-left md:text-center mb-6">
             <Headline title={"create account"} />
+            {error.general && <div className="text-red-600 text-sm">{error.general}</div>}
           </div>
-
           <div>
             <TextBox
               title="NIC"
