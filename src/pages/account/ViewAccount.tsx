@@ -122,17 +122,6 @@ const ViewAccount = () => {
                 </div>
 
                 <div className="flex items-center space-x-4 mb-4">
-                    <label className="text-gray-600">Filter by Type:</label>
-                    <select
-                        value={selectedType}
-                        onChange={(e) => handleFilterChange(e.target.value)}
-                        className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all"
-                    >
-                        <option value="default">All</option>
-                        <option value="admin">Admin</option>
-                        <option value="general">General</option>
-                    </select>
-
                     <label className="text-gray-600">Search by Username:</label>
                     <input
                         type="text"
@@ -159,6 +148,17 @@ const ViewAccount = () => {
                         onChange={(e) => handleMobileSearchChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
+
+                    <label className="text-gray-600">Filter by Type:</label>
+                    <select
+                        value={selectedType}
+                        onChange={(e) => handleFilterChange(e.target.value)}
+                        className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all"
+                    >
+                        <option value="default">All</option>
+                        <option value="admin">Admin</option>
+                        <option value="general">General</option>
+                    </select>
                 </div>
 
                 <table className="min-w-full table-auto text-sm text-left">
