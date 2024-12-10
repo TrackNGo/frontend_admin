@@ -88,7 +88,6 @@ const CreateAccount = () => {
     }
   }
 
-
   return (
     <div className="container mx-auto mb-10 md:mt-5">
       <div className="flex items-center justify-center mb-6">
