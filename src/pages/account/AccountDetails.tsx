@@ -41,12 +41,6 @@ const AccountDetails = () => {
         }
     }
 
-    useEffect(() => {
-        if (username) {
-            fetchUserDetails()
-        }
-    }, [username])
-
     const handleEditClick = () => {
         setIsEditing(true)
     }
@@ -64,7 +58,7 @@ const AccountDetails = () => {
     const handleSaveChanges = async () => {
         if (userDetails) {
             try {
-                const response = await axios.put(summaryApi.account.getAccountByUsername.url.replace(':username', username), userDetails)
+                const response = await axios.put(summaryApi.account.updateAccount.url.replace(':username', username), userDetails)
                 setUserDetails(response.data)
                 setOriginalUserDetails(response.data)
                 setIsEditing(false)
@@ -83,7 +77,6 @@ const AccountDetails = () => {
             })
         }
     }
-
 
     const isSaveEnabled = (): boolean => {
         if (!userDetails || !originalUserDetails) return false
@@ -104,6 +97,12 @@ const AccountDetails = () => {
             }
         }
     }
+
+    useEffect(() => {
+        if (username) {
+            fetchUserDetails()
+        }
+    }, [username,isEditing])
 
     if (loading) return <LoadingSpinner />
 

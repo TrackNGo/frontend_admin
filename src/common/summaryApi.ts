@@ -75,7 +75,7 @@ const summaryApi = {
       method: "get"
     },
     updateAccount: {
-      url: `${backendUrl}api-user/user/:username`, 
+      url: `${backendUrl}api-user/update/:username`, 
       method: "put"
     },
     deleteAccount: {
