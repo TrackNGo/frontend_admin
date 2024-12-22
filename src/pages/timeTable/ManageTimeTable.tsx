@@ -31,16 +31,17 @@ const ManageTimeTable = () => {
     const handleSelectChange = (value: string) => {
         setFormData((prev) => ({
             ...prev,
-            type: value,
+            busType: value,
         }))
     }
+    
 
-    const formClear=()=>{
+    const formClear = () => {
         setFormData({
             startLocation: '',
             endLocation: '',
             busRouteNumber: '',
-            busType: '',
+            busType: 'Normal',
             price: 0,
             startTime: '',
             endTime: ''
