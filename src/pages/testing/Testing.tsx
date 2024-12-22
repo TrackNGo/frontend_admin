@@ -17,60 +17,65 @@ import TimeTable from "../timeTable/TimeTable"
 import Account from "../account/Account"
 import ViewAccount from "../account/ViewAccount"
 import AccountDetails from "../account/AccountDetails"
+import { AuthProvider } from "../../context/AuthContext"
+import ProtectedRoute from "../../components/protectedRoute/ProtectedRoute"
 
 const Testing = () => {
   return (
     <div>
-      <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <Header/>
+      <AuthProvider>
+        <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+          <Header />
 
-        <ul>
-          <Link to="/"><li>dashboard</li></Link>
-          <Link to="/login"><li>login</li></Link>
+          <ul>
+            <Link to="/"><li>dashboard</li></Link>
+            <Link to="/login"><li>login</li></Link>
 
-          <Link to="/account"><li>account</li></Link>
-          <Link to="/account/view"><li>view account</li></Link>
-          <Link to="/account/changepassword"><li>changepassword</li></Link>
-          <Link to="/account/createaccount"><li>createaccount</li></Link>
+            <Link to="/account"><li>account</li></Link>
+            <Link to="/account/view"><li>view account</li></Link>
+            <Link to="/account/changepassword"><li>changepassword</li></Link>
+            <Link to="/account/createaccount"><li>createaccount</li></Link>
 
-          <Link to="/bus"><li>bus</li></Link>
-          <Link to="/bus/view"><li>bus search</li></Link>
-          <Link to="/bus/buses"><li>buses</li></Link>
-          <Link to="/bus/addbus"><li>addbus</li></Link>
-          <Link to="/bus/addbusroute"><li>addbusroute</li></Link>
+            <Link to="/bus"><li>bus</li></Link>
+            <Link to="/bus/view"><li>bus search</li></Link>
+            <Link to="/bus/buses"><li>buses</li></Link>
+            <Link to="/bus/addbus"><li>addbus</li></Link>
+            <Link to="/bus/addbusroute"><li>addbusroute</li></Link>
 
-          <Link to="/timetable"><li>time table</li></Link>
-          <Link to="/timetable/view"><li>view time table</li></Link>
-          <Link to="/timetable/add"><li>time table add</li></Link>
-        </ul>
-        <hr />
-        <br />
-        <hr />
-        <br />
-        <hr />
-        <Routes>
-          <Route path='/' element={<Dashboard />} />
-          <Route path='/login' element={<Login />} />
+            <Link to="/timetable"><li>time table</li></Link>
+            <Link to="/timetable/view"><li>view time table</li></Link>
+            <Link to="/timetable/add"><li>time table add</li></Link>
+          </ul>
+          <hr />
+          <br />
+          <hr />
+          <br />
+          <hr />
+          <Routes>
+            <Route path='/' element={<Dashboard />} />
+            <Route path='/login' element={<Login />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path='/account/' element={<Account />} />
+              <Route path='/account/view' element={<ViewAccount />} />
+              <Route path='/account/view/:username' element={<AccountDetails />} />
+              <Route path='/account/changepassword' element={<ChangePassword />} />
+              <Route path='/account/createaccount' element={<CreateAccount />} />
 
-          <Route path='/account/' element={<Account />} />
-          <Route path='/account/view' element={<ViewAccount />} />
-          <Route path='/account/view/:username' element={<AccountDetails />} />
-          <Route path='/account/changepassword' element={<ChangePassword />} />
-          <Route path='/account/createaccount' element={<CreateAccount />} />
+              <Route path='/bus' element={<Bus />} />
+              <Route path='/bus/addbus' element={<AddBus />} />
+              <Route path='/bus/buses' element={<ViewBuses />} />
+              <Route path='/bus/view' element={<BusSearch />} />
+              <Route path='/bus/view/:busNumber' element={<BusDetail />} />
+              <Route path='/bus/addbusroute' element={<AddBusRoutes />} />
 
-          <Route path='/bus' element={<Bus />} />
-          <Route path='/bus/addbus' element={<AddBus />} />
-          <Route path='/bus/buses' element={<ViewBuses />} />
-          <Route path='/bus/view' element={<BusSearch />} />
-          <Route path='/bus/view/:busNumber' element={<BusDetail />} />
-          <Route path='/bus/addbusroute' element={<AddBusRoutes />} />
-
-          <Route path='/timetable' element={<TimeTable/>} />
-          <Route path='/timetable/view' element={<ViewTimeTable/>} />
-          <Route path='/timetable/view/:id' element={<EditTimeTable/>} />
-          <Route path='/timetable/add' element={<ManageTimeTable/>} />
-        </Routes>
-      </BrowserRouter>
+              <Route path='/timetable' element={<TimeTable />} />
+              <Route path='/timetable/view' element={<ViewTimeTable />} />
+              <Route path='/timetable/view/:id' element={<EditTimeTable />} />
+              <Route path='/timetable/add' element={<ManageTimeTable />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </div>
   )
 }
