@@ -2,9 +2,11 @@ import { Link } from "react-router-dom"
 import NavBar from "../navbar/NavBar"
 import { useState } from "react"
 import trackngologo from '../../assets/img/trackngo_logo.png'
+import { useAuth } from "../../context/AuthContext"
 
 const Header = () => {
     const [navOpen, setNavOpen] = useState<boolean>(false)
+    const { logout, isAuthenticated } = useAuth()
 
     const toggleNav = () => setNavOpen(!navOpen)
     return (
@@ -24,9 +26,15 @@ const Header = () => {
                         <NavBar navOpen={navOpen} />
                     </div>
 
-                    <Link to="/login" className="btn1 btn1-secondary max-md:hidden md:justify-self-end">
-                        Login
-                    </Link>
+                    {isAuthenticated ? (
+                        <Link to="/" onClick={logout} className="btn1 btn1-secondary max-md:hidden md:justify-self-end">
+                            Logout
+                        </Link>
+                    ) : (
+                        <Link to="/login" className="btn1 btn1-secondary max-md:hidden md:justify-self-end">
+                            Login
+                        </Link>
+                    )}
                 </div>
             </header>
         </div>
