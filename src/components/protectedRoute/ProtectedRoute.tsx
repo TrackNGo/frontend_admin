@@ -1,48 +1,18 @@
-import { createContext, useContext, useEffect, useState } from "react"
-import AuthContextType from "../../types/auth/AuthContextType"
-import AuthProviderPropsType from "../../types/auth/AuthProviderPropsType"
+import { Navigate, Outlet } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext"
 
-export const AuthContext = createContext<AuthContextType>({
-    isAuthenticated: false,
-    jwtToken: null,
-    loading: true,
-    login: () => { },
-    logout: () => { }
-})
+function ProtectedRoute() {
+    const { isAuthenticated, loading } = useAuth()
 
-export function AuthProvider({ children }: AuthProviderPropsType) {
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
-    const [jwtToken, setJwtToken] = useState<string | null>(null)
-    const [loading, setLoading] = useState<boolean>(true)
-
-    function login(jwtToken: string) {
-        setIsAuthenticated(true)
-        setJwtToken(jwtToken)
-        localStorage.setItem("token", jwtToken)
-    }
-
-    function logout() {
-        setIsAuthenticated(false)
-        setJwtToken(null)
-        localStorage.removeItem("token")
-    }
-
-    useEffect(() => {
-        const token = localStorage.getItem("token")
-        if (token != null) {
-            setIsAuthenticated(true)
-            setJwtToken(token)
-            setLoading(false)
-        }else{
-            setLoading(false)
+    if (!loading) {
+        if (isAuthenticated) {
+            return <Outlet />
+        } else {
+            return (
+                <Navigate to="/login" />
+            )
         }
-    }, [])
-
-    return (
-        <AuthContext.Provider value={{ isAuthenticated, jwtToken, loading, login, logout }}>
-            {children}
-        </AuthContext.Provider>
-    )
+    }
 }
 
-export const useAuth = () => useContext(AuthContext)
+export default ProtectedRoute
