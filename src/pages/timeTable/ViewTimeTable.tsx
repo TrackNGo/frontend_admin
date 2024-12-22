@@ -64,6 +64,14 @@ const ViewTimeTable = () => {
         }
     }
 
+    const handleResetFilters = () => {
+        setBusType("") // Reset busType to an empty string
+        setSearchStart("") // Reset searchStart
+        setSearchEnd("") // Reset searchEnd
+        setSearchRouteNumber("") // Reset searchRouteNumber
+        setPriceSort("none") // Reset priceSort to its default state
+    }    
+
     if (loading) {
         return <div>Loading...</div>
     }
@@ -78,6 +86,13 @@ const ViewTimeTable = () => {
             <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
                 <div className="flex flex-wrap items-center space-x-4 mb-4">
                     <div className="flex items-center space-x-4 mt-4 px-4">
+                        <label className="text-gray-600">Clear Filter:</label>
+                        <button
+                            onClick={handleResetFilters}
+                            className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-normal rounded-lg shadow-md transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-red-200"
+                        >
+                            Reset
+                        </button>
                         <label className="text-gray-600">Filter by Type:</label>
                         <select
                             value={busType}
