@@ -5,6 +5,7 @@ import SelectBox from "../../components/selectBox/SelectBox"
 import axios from "axios"
 import summaryApi from "../../common/summaryApi"
 import { useAuth } from "../../context/AuthContext"
+import { useNavigate } from "react-router-dom"
 
 const Login = () => {
   const { login } = useAuth()
@@ -15,6 +16,8 @@ const Login = () => {
     accType: "General",
   })
 
+  const navigate = useNavigate()
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
     setCredentials((prev) => ({
@@ -22,6 +25,14 @@ const Login = () => {
       [name]: value
     }))
     setError((prev) => ({ ...prev, [name]: "" }))
+  }
+
+  const clearForm=()=>{
+    setCredentials({
+      credentialsUsername: "",
+      password: "",
+      accType: "General",
+    })
   }
 
   const handleSelectChange = (value: string) => {
@@ -60,9 +71,11 @@ const Login = () => {
         if (response.status === 200) {
           console.log("Login Success")
           login(response.data) // Assuming `login` saves the token and user data
+          navigate("/") // Redirect to dashboard
         } else {
           console.error("Unexpected response status:", response.status)
         }
+        clearForm()
       } catch (err: any) {
         if (err.response) {
           console.error("Login failed:", err.response.data)
