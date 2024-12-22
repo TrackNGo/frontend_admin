@@ -150,7 +150,7 @@ const ViewTimeTable = () => {
                             <th className="py-3 px-4">End Location</th>
                             <th className="py-3 px-4">Bus Route Number</th>
                             <th className="py-3 px-4">Bus Type</th>
-                            <th className="py-3 px-4">Price</th>
+                            <th className="py-3 px-4">Max Price</th>
                             <th className="py-3 px-4">Start Time</th>
                             <th className="py-3 px-4">End Time</th>
                             <th className="py-3 px-4">Action</th>
