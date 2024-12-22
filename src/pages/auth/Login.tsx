@@ -2,8 +2,12 @@ import { ChangeEvent, useState } from "react"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import TextBox from "../../components/textBox/TextBox"
 import SelectBox from "../../components/selectBox/SelectBox"
+import axios from "axios"
+import summaryApi from "../../common/summaryApi"
+import { useAuth } from "../../context/AuthContext"
 
 const Login = () => {
+  const { login } = useAuth()
   const [error, setError] = useState<{ credentialsUsername?: string; password?: string; accType?: string }>({})
   const [credentials, setCredentials] = useState<{ credentialsUsername: string; password: string; accType: string }>({
     credentialsUsername: "",
@@ -31,28 +35,42 @@ const Login = () => {
   async function submit(event: any) {
     event.preventDefault()
     const newError: { credentialsUsername?: string; password?: string; accType?: string } = {}
-
+  
     if (!credentials.credentialsUsername) {
       newError.credentialsUsername = "Username Required!"
     }
     if (!credentials.password) {
       newError.password = "Password Required!"
     }
-    if (!credentials.accType) {
-      newError.accType = "Account Type Required!"
-    }
-
+  
     if (Object.keys(newError).length > 0) {
       setError(newError)
     } else {
       setError({})
       const data = {
-        credentialsUsername: credentials.credentialsUsername,
-        password: credentials.password,
-        accType: credentials.accType
+        loginIdentifier: credentials.credentialsUsername, // Correct key
+        password: credentials.password,                  // Correct key
+        accType: credentials.accType,                    // Include accType if your backend handles it
       }
       console.log("Logging in with data:", data)
-      // backend connection
+  
+      try {
+        const response = await axios.post(summaryApi.auth.login.url, data)
+  
+        if (response.status === 200) {
+          console.log("Login Success")
+          login(response.data) // Assuming `login` saves the token and user data
+        } else {
+          console.error("Unexpected response status:", response.status)
+        }
+      } catch (err: any) {
+        if (err.response) {
+          console.error("Login failed:", err.response.data)
+          setError({ credentialsUsername: "Invalid login details" }) // Display a generic error
+        } else {
+          console.error("Error during login:", err)
+        }
+      }
     }
   }
 
