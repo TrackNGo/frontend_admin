@@ -1,6 +1,16 @@
 const backendUrl = "http://localhost:3000/"
 
 const summaryApi = {
+  auth:{
+    login:{
+      url: `${backendUrl}api-user/login`,
+      method: "post"
+    },
+    logout:{
+      url: `${backendUrl}api-user/logout`,
+      method: "post"
+    }
+  },
   bus: {
     addBus: {//connected okk
       url: `${backendUrl}api-bus/bus`, 
