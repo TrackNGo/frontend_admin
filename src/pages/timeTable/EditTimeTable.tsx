@@ -68,7 +68,7 @@ const EditTimeTable = () => {
     const handleSelectChange = (value: string) => {
         setFormData((prev) => ({
             ...prev,
-            type: value,
+            busType: value,
         }))
     }
 
