@@ -27,9 +27,14 @@ const Header = () => {
                     </div>
 
                     {isAuthenticated ? (
-                        <Link to="/" onClick={logout} className="btn1 btn1-secondary max-md:hidden md:justify-self-end">
+                        <Link
+                            to="/"
+                            onClick={logout}
+                            className="max-w-max h-10 flex items-center gap-2 px-4 rounded-xl font-medium text-sm ring-1 ring-zinc-500 ring-inset transition-[background-color] text-white bg-zinc-800 active:bg-zinc-700 capitalize hover:bg-red-600 max-md:hidden md:justify-self-end"
+                        >
                             Logout
                         </Link>
+
                     ) : (
                         <Link to="/login" className="btn1 btn1-secondary max-md:hidden md:justify-self-end">
                             Login
