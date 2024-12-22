@@ -11,19 +11,20 @@ const ViewTimeTable = () => {
     const [timeTables, setTimeTables] = useState<TimeTableType[]>([])
     const [loading, setLoading] = useState<boolean>(true)
     const [error, setError] = useState<string | null>(null)
-    const [busType, setBusType] = useState<string>("") // State for bus type filter
-    const [searchStart, setSearchStart] = useState<string>("") // State for start location search
-    const [searchEnd, setSearchEnd] = useState<string>("") // State for end location search
-    const [searchRouteNumber, setSearchRouteNumber] = useState<string>("") // State for route number search
-    const [priceSort, setPriceSort] = useState<string>("none") // State for price sorting
+    const [busType, setBusType] = useState<string>("")
+    const [searchStart, setSearchStart] = useState<string>("")
+    const [searchEnd, setSearchEnd] = useState<string>("")
+    const [searchRouteNumber, setSearchRouteNumber] = useState<string>("")
+    const [priceSort, setPriceSort] = useState<string>("none")
+    const [currentPage, setCurrentPage] = useState<number>(1) // Current page state
+    const rowsPerPage = 4 // Number of rows to display per page
 
-    const navigate = useNavigate() // Hook for navigation
+    const navigate = useNavigate()
 
-    // Fetch all time tables when the component mounts
     useEffect(() => {
         const fetchTimeTables = async () => {
             try {
-                const response = await axios.get(summaryApi.timeTable.getAllTimeTables.url) // Update the URL if necessary
+                const response = await axios.get(summaryApi.timeTable.getAllTimeTables.url)
                 setTimeTables(response.data)
                 setLoading(false)
             } catch (error: any) {
@@ -35,22 +36,14 @@ const ViewTimeTable = () => {
         fetchTimeTables()
     }, [])
 
-    // Apply filtering logic
     const filteredTimeTables = timeTables.filter((timeTable) => {
         const matchesBusType = busType ? timeTable.busType?.toLowerCase() === busType.toLowerCase() : true
-        const matchesStartLocation = timeTable.startLocation
-            .toLowerCase()
-            .includes(searchStart.toLowerCase())
-        const matchesEndLocation = timeTable.endLocation
-            .toLowerCase()
-            .includes(searchEnd.toLowerCase())
-        const matchesRouteNumber = timeTable.busRouteNumber
-            .toLowerCase()
-            .includes(searchRouteNumber.toLowerCase())
+        const matchesStartLocation = timeTable.startLocation.toLowerCase().includes(searchStart.toLowerCase())
+        const matchesEndLocation = timeTable.endLocation.toLowerCase().includes(searchEnd.toLowerCase())
+        const matchesRouteNumber = timeTable.busRouteNumber.toLowerCase().includes(searchRouteNumber.toLowerCase())
         return matchesBusType && matchesStartLocation && matchesEndLocation && matchesRouteNumber
     })
 
-    // Sort filtered time tables by price
     const sortedTimeTables = filteredTimeTables.sort((a, b) => {
         if (priceSort === "asc") {
             return a.price - b.price
@@ -60,7 +53,17 @@ const ViewTimeTable = () => {
         return 0
     })
 
-    // Render loading or error message
+    // Pagination calculations
+    const totalPages = Math.ceil(sortedTimeTables.length / rowsPerPage)
+    const startIndex = (currentPage - 1) * rowsPerPage
+    const currentTimeTables = sortedTimeTables.slice(startIndex, startIndex + rowsPerPage)
+
+    const handlePageChange = (page: number) => {
+        if (page > 0 && page <= totalPages) {
+            setCurrentPage(page)
+        }
+    }
+
     if (loading) {
         return <div>Loading...</div>
     }
@@ -69,7 +72,6 @@ const ViewTimeTable = () => {
         return <div>{error}</div>
     }
 
-    // Render time table data or editing form
     return (
         <div>
             <Headline title={"View Time Table"} />
@@ -124,8 +126,8 @@ const ViewTimeTable = () => {
                             className="p-2 border rounded-lg"
                         />
                     </div>
-
                 </div>
+
                 <table className="min-w-full table-auto text-sm text-left">
                     <thead className="bg-zinc-800 text-white">
                         <tr>
@@ -140,7 +142,7 @@ const ViewTimeTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {sortedTimeTables.map((timeTable) => (
+                        {currentTimeTables.map((timeTable) => (
                             <tr key={timeTable._id} className="border-t hover:bg-gray-100 transition-all">
                                 <td className="py-3 px-4">{timeTable.startLocation}</td>
                                 <td className="py-3 px-4">{timeTable.endLocation}</td>
@@ -163,6 +165,43 @@ const ViewTimeTable = () => {
                         ))}
                     </tbody>
                 </table>
+
+                {/* Displaying the number of results */}
+                <div className="mt-4 text-sm text-gray-600 capitalize">
+                    Showing {startIndex + 1} to {Math.min(startIndex + rowsPerPage, filteredTimeTables.length)} of {filteredTimeTables.length} <b className='capitalize'>time tables</b>
+                </div>
+
+                {/* Pagination Controls */}
+                <div className="flex justify-between items-center mt-6">
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50"
+                    >
+                        Previous
+                    </button>
+
+                    {/* Page Number Buttons */}
+                    <div className="flex space-x-2">
+                        {[...Array(totalPages).keys()].map((i) => (
+                            <button
+                                key={i}
+                                onClick={() => handlePageChange(i + 1)}
+                                className={`px-3 py-2 rounded-lg ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-300 text-gray-700'}`}
+                            >
+                                {i + 1}
+                            </button>
+                        ))}
+                    </div>
+
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                        className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
             </div>
         </div>
     )
