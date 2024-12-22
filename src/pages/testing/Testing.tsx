@@ -52,9 +52,11 @@ const Testing = () => {
           <br />
           <hr />
           <Routes>
-            <Route path='/' element={<Dashboard />} />
             <Route path='/login' element={<Login />} />
             <Route element={<ProtectedRoute />}>
+              <Route path='/' element={<Dashboard />} />
+              <Route path='/dashboard' element={<Dashboard />} />
+
               <Route path='/account/' element={<Account />} />
               <Route path='/account/view' element={<ViewAccount />} />
               <Route path='/account/view/:username' element={<AccountDetails />} />
