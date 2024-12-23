@@ -1,7 +1,9 @@
+import Headline from "../../components/headline/Headline"
+
 const AddFareEstimates = () => {
   return (
-    <div>
-      AddFareEstimates
+    <div className='px-2'>
+      <Headline title="Add Fare Estimate" />
     </div>
   )
 }
