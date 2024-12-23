@@ -19,6 +19,10 @@ import ViewAccount from "../account/ViewAccount"
 import AccountDetails from "../account/AccountDetails"
 import { AuthProvider } from "../../context/AuthContext"
 import ProtectedRoute from "../../components/protectedRoute/ProtectedRoute"
+import FareEstimate from "../addFareEstimates/FareEstimate"
+import AddFareEstimates from "../addFareEstimates/AddFareEstimates"
+import ViewFareEstimate from "../addFareEstimates/ViewFareEstimate"
+import EditFareEstimate from "../addFareEstimates/EditFareEstimate"
 
 const Testing = () => {
   return (
@@ -45,6 +49,10 @@ const Testing = () => {
             <Link to="/timetable"><li>time table</li></Link>
             <Link to="/timetable/view"><li>view time table</li></Link>
             <Link to="/timetable/add"><li>time table add</li></Link>
+
+            <Link to="/fareestimate"><li>fareestimate</li></Link>
+            <Link to="/fareestimate/add"><li>fareestimate add</li></Link>
+            <Link to="/fareestimate/view"><li>fareestimate view</li></Link>
           </ul>
           <hr />
           <br />
@@ -74,6 +82,11 @@ const Testing = () => {
               <Route path='/timetable/view' element={<ViewTimeTable />} />
               <Route path='/timetable/view/:id' element={<EditTimeTable />} />
               <Route path='/timetable/add' element={<ManageTimeTable />} />
+              
+              <Route path='/fareestimate' element={<FareEstimate />} />
+              <Route path='/fareestimate/add' element={<AddFareEstimates />} />
+              <Route path='/fareestimate/view' element={<ViewFareEstimate />} />
+              <Route path='/fareestimate/view/:id' element={<EditFareEstimate />} />
             </Route>
           </Routes>
         </BrowserRouter>
