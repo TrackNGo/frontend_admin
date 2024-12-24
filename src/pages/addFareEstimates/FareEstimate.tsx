@@ -3,12 +3,12 @@ import Card from "../../components/card/Card"
 import Headline from "../../components/headline/Headline"
 
 const FareEstimate = () => {
-        const navigate = useNavigate() // Hook for navigation
-    
-        const handleManage = (path: string) => {
-            navigate(path) // Navigate to the specified route
-        }
-        
+    const navigate = useNavigate() // Hook for navigation
+
+    const handleManage = (path: string) => {
+        navigate(path) // Navigate to the specified route
+    }
+
     const cards = [
         {
             title: 'View Fare Estimate',
