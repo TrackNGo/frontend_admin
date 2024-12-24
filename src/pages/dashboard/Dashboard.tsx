@@ -1,15 +1,7 @@
-import { useNavigate } from "react-router-dom"
-import Card from "../../components/card/Card"
 import Headline from "../../components/headline/Headline"
 import DashBoardCard from "../../components/card/DashBoardCard"
 
 const Dashboard = () => {
-  const navigate = useNavigate() // Hook for navigation
-
-  const handleManage = (path: string) => {
-    navigate(path) // Navigate to the specified route
-  }
-
   const cards =
   {
     title: 'Total Buses',
