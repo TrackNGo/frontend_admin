@@ -6,7 +6,7 @@ const DashBoardCard = (card: DashboardCardType) => {
             <div className={`flex items-center justify-center ${card.iconColor} mb-4`}>
                 <i className={`${card.iconClass} text-6xl`}></i>
             </div>
-            <h3 className="text-5xl font-bold text-gray-800 mb-2 text-center">{card.count}</h3>
+            <h3 className={`${card.iconColor} text-4xl font-bold mb-2 text-center`}>{card.count}</h3>
             <p className="text-gray-600 text-sm">{card.description}</p>
             <div className="text-center">
                 <div
