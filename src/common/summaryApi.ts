@@ -39,6 +39,18 @@ const summaryApi = {
     updateBusStatus: {
       url: `${backendUrl}api-bus/bus/status/:busNumber`, 
       method: "put"
+    },
+    totalBuses:{
+      url: `${backendUrl}api-bus/totalBuses`, 
+      method: "get"
+    },
+    totalActiveBuses:{
+      url: `${backendUrl}api-bus/activeBuses`, 
+      method: "get"
+    },
+    totalNonActiveBuses:{
+      url: `${backendUrl}api-bus/nonActiveBuses`, 
+      method: "get"
     }
   },
   timeTable: {
