@@ -31,7 +31,7 @@ const Testing = () => {
         <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Header />
 
-          <ul>
+          {/* <ul>
             <Link to="/"><li>dashboard</li></Link>
             <Link to="/login"><li>login</li></Link>
 
@@ -53,12 +53,12 @@ const Testing = () => {
             <Link to="/fareestimate"><li>fareestimate</li></Link>
             <Link to="/fareestimate/add"><li>fareestimate add</li></Link>
             <Link to="/fareestimate/view"><li>fareestimate view</li></Link>
-          </ul>
-          <hr />
+          </ul> */}
+          {/* <hr />
           <br />
           <hr />
           <br />
-          <hr />
+          <hr /> */}
           <Routes>
             <Route path='/login' element={<Login />} />
             <Route element={<ProtectedRoute />}>

@@ -12,7 +12,7 @@ const Navbar = ({ navOpen }: NavbarProps) => {
 
     const navItems = useMemo(
         () => [
-            { label: 'Home', link: '/', className: 'nav-link' },
+            // { label: 'Home', link: '/', className: 'nav-link' },
             { label: 'dashboard', link: '/dashboard', className: 'nav-link' },
             { label: 'Accounts', link: '/account', className: 'nav-link' },
             { label: 'Bus', link: '/bus', className: 'nav-link' },
