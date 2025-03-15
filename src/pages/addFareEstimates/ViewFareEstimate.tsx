@@ -179,7 +179,7 @@ const ViewFareEstimate = () => {
                             {currentFare.length > 0 ? (
                                 currentFare.map((est, key) => (
                                     <tr key={key} className="border-t hover:bg-gray-100 transition-all">
-                                        <td className="py-3 px-4">{key}</td>
+                                        <td className="py-3 px-4">{key+1}</td>
                                         <td className="py-3 px-4 capitalize">{est.routeNumber}</td>
                                         <td className="py-3 px-4 capitalize">{est.busType}</td>
                                         <td className="py-3 px-4 capitalize">{est.startStop}</td>
