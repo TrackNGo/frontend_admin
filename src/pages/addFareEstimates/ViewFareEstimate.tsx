@@ -21,16 +21,16 @@ const ViewFareEstimate = () => {
     const fetchFare = async () => {
         try {
             const response = await axios.get(summaryApi.fareEstimate.getAllFareEstimates.url)
-            if (response.data && Array.isArray(response.data.users)) {
-                setFare(response.data.users)
-                setFilteredFare(response.data.users)
+            if (response.data && Array.isArray(response.data.fareEstimates)) {
+                setFare(response.data.fareEstimates)
+                setFilteredFare(response.data.fareEstimates)
             } else {
                 console.error("Unexpected API response:", response.data)
                 setFare([])
                 setFilteredFare([])
             }
         } catch (error) {
-            console.error("Error fetching accounts:", error)
+            console.error("Error fetching fares:", error)
             setFare([])
             setFilteredFare([])
         }
@@ -48,12 +48,12 @@ const ViewFareEstimate = () => {
 
     const handleStartLocationChange = (query: string) => {
         setStartLocationQuery(query)
-        applySearchQuery(fare,routeNumberQuery, query, endLocationQuery, selectedType)
+        applySearchQuery(fare, routeNumberQuery, query, endLocationQuery, selectedType)
     }
 
     const handleEndLocationChange = (query: string) => {
         setEndLocationQuery(query)
-        applySearchQuery(fare, routeNumberQuery, startLocationQuery, query,selectedType)
+        applySearchQuery(fare, routeNumberQuery, startLocationQuery, query, selectedType)
     }
 
     const applySearchQuery = (
@@ -65,18 +65,18 @@ const ViewFareEstimate = () => {
     ) => {
         const filteredByType = type === "default"
             ? sourceAccounts
-            : sourceAccounts.filter(bus => bus.type.toLowerCase() === type.toLowerCase())
+            : sourceAccounts.filter(bus => bus.busType.toLowerCase() === type.toLowerCase())
 
         const filteredByRouteNumber = routeNumber
             ? filteredByType.filter(bus => (bus.routeNumber ?? "").toLowerCase().includes(routeNumber.toLowerCase()))
             : filteredByType
 
         const filteredByStartLocation = startLocation
-            ? filteredByRouteNumber.filter(bus => (bus.startLocation ?? "").toLowerCase().includes(startLocation.toLowerCase()))
+            ? filteredByRouteNumber.filter(bus => (bus.startStop ?? "").toLowerCase().includes(startLocation.toLowerCase()))
             : filteredByRouteNumber
 
         const filteredByEndLocation = endLocation
-            ? filteredByStartLocation.filter(bus => (bus.endLocation ?? "").toLowerCase().includes(endLocation.toLowerCase()))
+            ? filteredByStartLocation.filter(bus => (bus.endStop ?? "").toLowerCase().includes(endLocation.toLowerCase()))
             : filteredByStartLocation
 
         setFilteredFare(filteredByEndLocation)
@@ -180,11 +180,11 @@ const ViewFareEstimate = () => {
                                 currentFare.map((est, key) => (
                                     <tr key={key} className="border-t hover:bg-gray-100 transition-all">
                                         <td className="py-3 px-4">{key}</td>
-                                        <td className="py-3 px-4">{est.routeNumber}</td>
-                                        <td className="py-3 px-4">{est.type}</td>
-                                        <td className="py-3 px-4">{est.startLocation}</td>
-                                        <td className="py-3 px-4">{est.endLocation}</td>
-                                        <td className="py-3 px-4">{est.price}</td>
+                                        <td className="py-3 px-4 capitalize">{est.routeNumber}</td>
+                                        <td className="py-3 px-4 capitalize">{est.busType}</td>
+                                        <td className="py-3 px-4 capitalize">{est.startStop}</td>
+                                        <td className="py-3 px-4 capitalize">{est.endStop}</td>
+                                        <td className="py-3 px-4">{est.estimatedFare}</td>
                                         <td className="py-3 px-4">
                                             <button
                                                 onClick={() => navigate(`/fareestimate/view/${est._id}`)}
