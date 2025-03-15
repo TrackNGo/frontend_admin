@@ -201,7 +201,7 @@ const EditTimeTable = () => {
                             onClick={handleUpdate}
                             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200"
                         >
-                            Save
+                            Update
                         </button>
                         <button
                             type="button"
