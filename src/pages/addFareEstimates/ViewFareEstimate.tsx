@@ -1,6 +1,6 @@
 import { faEdit } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Headline from "../../components/headline/Headline"
 import FareDetailsType from "../../types/fareDetails/FareDetailsType"
 import { useNavigate } from "react-router-dom"
@@ -11,12 +11,17 @@ const ViewFareEstimate = () => {
     const navigate = useNavigate()
     const [fare, setFare] = useState<FareDetailsType[]>([])
     const [filteredFare, setFilteredFare] = useState<FareDetailsType[]>([])
+    const [selectedType, setSelectedType] = useState<string>("default")
+    const [busNumberQuery, setBusNumberQuery] = useState<string>("")
+    const [routeNumberQuery, setRouteNumberQuery] = useState<string>("")
+    const [startLocationQuery, setStartLocationQuery] = useState<string>("")
+    const [endLocationQuery, setEndLocationQuery] = useState<string>("")
     const [currentPage, setCurrentPage] = useState<number>(1)
     const rowsPerPage = 4 // Number of rows per page
 
     const fetchFare = async () => {
         try {
-            const response = await axios.get(summaryApi.account.getAllAccounts.url)
+            const response = await axios.get(summaryApi.fareEstimate.getAllFareEstimates.url)
             if (response.data && Array.isArray(response.data.users)) {
                 setFare(response.data.users)
                 setFilteredFare(response.data.users)
@@ -32,6 +37,71 @@ const ViewFareEstimate = () => {
         }
     }
 
+    const handleFilterChange = (type: string) => {
+        setSelectedType(type)
+        applySearchQuery(fare, busNumberQuery, routeNumberQuery, startLocationQuery, endLocationQuery, type)
+    }
+
+    const handleBusNumberChange = (query: string) => {
+        setBusNumberQuery(query)
+        applySearchQuery(fare, query, routeNumberQuery, startLocationQuery, endLocationQuery,  selectedType)
+    }
+
+    const handleRouteNumberChange = (query: string) => {
+        setRouteNumberQuery(query)
+        applySearchQuery(fare, busNumberQuery, query, startLocationQuery, endLocationQuery, selectedType)
+    }
+
+    const handleStartLocationChange = (query: string) => {
+        setStartLocationQuery(query)
+        applySearchQuery(fare, busNumberQuery, routeNumberQuery, query, endLocationQuery, selectedType)
+    }
+
+    const handleEndLocationChange = (query: string) => {
+        setEndLocationQuery(query)
+        applySearchQuery(fare, busNumberQuery, routeNumberQuery, startLocationQuery, query,selectedType)
+    }
+
+    const applySearchQuery = (
+        sourceAccounts: FareDetailsType[],
+        busNumber: string,
+        routeNumber: string,
+        startLocation: string,
+        endLocation: string,
+        type: string,
+    ) => {
+        const filteredByType = type === "default"
+            ? sourceAccounts
+            : sourceAccounts.filter(bus => bus.type.toLowerCase() === type.toLowerCase())
+
+        const filteredByBusNumber = busNumber
+            ? filteredByType.filter(bus => bus.busNumber.toLowerCase().includes(busNumber.toLowerCase()))
+            : filteredByType
+
+        const filteredByRouteNumber = routeNumber
+            ? filteredByBusNumber.filter(bus => (bus.routeNumber ?? "").toLowerCase().includes(routeNumber.toLowerCase()))
+            : filteredByBusNumber
+
+        const filteredByStartLocation = startLocation
+            ? filteredByRouteNumber.filter(bus => (bus.startLocation ?? "").toLowerCase().includes(startLocation.toLowerCase()))
+            : filteredByRouteNumber
+
+        const filteredByEndLocation = endLocation
+            ? filteredByStartLocation.filter(bus => (bus.endLocation ?? "").toLowerCase().includes(endLocation.toLowerCase()))
+            : filteredByStartLocation
+
+        setFilteredFare(filteredByEndLocation)
+    }
+
+    const handleResetFilters = () => {
+        setSelectedType("default")
+        setBusNumberQuery("")
+        setRouteNumberQuery("")
+        setStartLocationQuery("")
+        setEndLocationQuery("")
+        setFilteredFare(fare) // Reset to the original list
+    }
+
     // Pagination logic
     const totalPages = Math.ceil(filteredFare.length / rowsPerPage)
     const startIndex = (currentPage - 1) * rowsPerPage
@@ -43,6 +113,10 @@ const ViewFareEstimate = () => {
         }
     }
 
+    useEffect(() => {
+        fetchFare()
+    }, [])
+
     return (
         <div className='px-2'>
             <Headline title="View Fare Estimate" />
@@ -51,7 +125,7 @@ const ViewFareEstimate = () => {
                 <div className="flex items-center space-x-4 mb-4">
                     <label className="text-gray-600">Clear Filter:</label>
                     <button
-                        onClick={() => { }}
+                        onClick={handleResetFilters}
                         className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white font-normal rounded-lg shadow-md transition-all duration-200 focus:outline-none focus:ring-1 focus:ring-red-200"
                     >
                         Reset
@@ -62,7 +136,7 @@ const ViewFareEstimate = () => {
                         type="text"
                         placeholder="Search by Bus Number"
                         value={""}
-                        onChange={() => { }}
+                        onChange={(e) => handleBusNumberChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
 
@@ -71,7 +145,7 @@ const ViewFareEstimate = () => {
                         type="text"
                         placeholder="Search by Route Number"
                         value={""}
-                        onChange={() => { }}
+                        onChange={(e) => handleRouteNumberChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
 
@@ -83,7 +157,7 @@ const ViewFareEstimate = () => {
                         type="text"
                         placeholder="Search by Start Location"
                         value={""}
-                        onChange={() => { }}
+                        onChange={(e) => handleStartLocationChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
 
@@ -92,14 +166,14 @@ const ViewFareEstimate = () => {
                         type="text"
                         placeholder="Search by End Location"
                         value={""}
-                        onChange={() => { }}
+                        onChange={(e) => handleEndLocationChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
 
                     <label className="text-gray-600">Filter by Type:</label>
                     <select
                         value={""}
-                        onChange={() => { }}
+                        onChange={(e) => handleFilterChange(e.target.value)}
                         className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all"
                     >
                         <option value="default">All</option>
