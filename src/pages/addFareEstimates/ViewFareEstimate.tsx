@@ -187,7 +187,7 @@ const ViewFareEstimate = () => {
                                         <td className="py-3 px-4">{est.price}</td>
                                         <td className="py-3 px-4">
                                             <button
-                                                onClick={() => navigate(`/account/view/${est.busNumber}`)}
+                                                onClick={() => navigate(`/fareestimate/view/${est._id}`)}
                                                 className="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md border-2 border-transparent hover:border-yellow-600 hover:ring-2 hover:ring-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all duration-300"
                                             >
                                                 <FontAwesomeIcon icon={faEdit} className="w-5 h-5" />
