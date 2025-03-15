@@ -10,7 +10,6 @@ import summaryApi from "../../common/summaryApi"
 
 const AddFareEstimates = () => {
   const [formData, setFormData] = useState<FareDetailsType>({
-    busNumber: "",
     type: "",
     price: "",
     startLocation: "",
@@ -36,7 +35,6 @@ const AddFareEstimates = () => {
 
   const formClear = () => {
     setFormData({
-      busNumber: "",
       type: "",
       price: "",
       startLocation: "",
@@ -47,10 +45,17 @@ const AddFareEstimates = () => {
 
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault()
-    console.log(formData) // This is where the form data will be available
-    // You can send formData to an API or perform other actions here
+
+    const requestData = {
+      routeNumber: formData.routeNumber,
+      busType: formData.type,  // Rename 'type' to 'busType'
+      startStop: formData.startLocation, // Rename 'startLocation' to 'startStop'
+      endStop: formData.endLocation, // Rename 'endLocation' to 'endStop'
+      estimatedFare: Number(formData.price) // Rename 'price' to 'estimatedFare' and ensure it's a number
+    }
+
     try {
-      const response = await axios.post(summaryApi.fareEstimate.createFareEstimate.url, formData)
+      const response = await axios.post(summaryApi.fareEstimate.createFareEstimate.url, requestData)
       console.log("Fare Estimate created successfully:", response.data)
       toast.success('Fare Estimate Added Successfully!')
     } catch (error: any) {
@@ -122,7 +127,7 @@ const AddFareEstimates = () => {
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-150 ease-in-out"
             />
           </div>
-          
+
           <div className="mt-4">
             <PrimaryBtn
               title="Confirm"
