@@ -70,7 +70,7 @@ const ViewTimeTable = () => {
         setSearchEnd("") // Reset searchEnd
         setSearchRouteNumber("") // Reset searchRouteNumber
         setPriceSort("none") // Reset priceSort to its default state
-    }    
+    }
 
     if (loading) {
         return <div>Loading...</div>
@@ -84,7 +84,7 @@ const ViewTimeTable = () => {
         <div>
             <Headline title={"View Time Table"} />
             <div className="overflow-x-auto bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex flex-wrap items-center space-x-4 mb-4">
+                <div className="flex flex-wrap items-center space-x-4 mb-4 pl-0">
                     <div className="flex items-center space-x-4 mt-4 px-4">
                         <label className="text-gray-600">Clear Filter:</label>
                         <button
@@ -143,43 +143,45 @@ const ViewTimeTable = () => {
                     </div>
                 </div>
 
-                <table className="min-w-full table-auto text-sm text-left">
-                    <thead className="bg-zinc-800 text-white">
-                        <tr>
-                            <th className="py-3 px-4">Start Location</th>
-                            <th className="py-3 px-4">End Location</th>
-                            <th className="py-3 px-4">Bus Route Number</th>
-                            <th className="py-3 px-4">Bus Type</th>
-                            <th className="py-3 px-4">Max Price</th>
-                            <th className="py-3 px-4">Start Time</th>
-                            <th className="py-3 px-4">End Time</th>
-                            <th className="py-3 px-4">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {currentTimeTables.map((timeTable) => (
-                            <tr key={timeTable._id} className="border-t hover:bg-gray-100 transition-all">
-                                <td className="py-3 px-4">{timeTable.startLocation}</td>
-                                <td className="py-3 px-4">{timeTable.endLocation}</td>
-                                <td className="py-3 px-4">{timeTable.busRouteNumber}</td>
-                                <td className="py-3 px-4">{timeTable.busType}</td>
-                                <td className="py-3 px-4">{timeTable.price}</td>
-                                <td className="py-3 px-4">{timeTable.startTime}</td>
-                                <td className="py-3 px-4">{timeTable.endTime}</td>
-                                <td className="py-3 px-4">
-                                    <button
-                                        onClick={() => {
-                                            navigate(`/timetable/view/${timeTable._id}`)
-                                        }}
-                                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md border-2 border-transparent hover:border-yellow-600 hover:ring-2 hover:ring-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all duration-300"
-                                    >
-                                        <FontAwesomeIcon icon={faEdit} className="w-5 h-5" />
-                                    </button>
-                                </td>
+                <div className="overflow-x-auto items-center bg-white shadow-lg rounded-lg">
+                    <table className="min-w-full text-sm text-gray-800">
+                        <thead className="bg-gray-200">
+                            <tr>
+                                <th className="py-3 px-4 text-left">Start Location</th>
+                                <th className="py-3 px-4 text-left">End Location</th>
+                                <th className="py-3 px-4 text-left">Bus Route Number</th>
+                                <th className="py-3 px-4 text-left">Bus Type</th>
+                                <th className="py-3 px-4 text-left">Max Price</th>
+                                <th className="py-3 px-4 text-left">Start Time</th>
+                                <th className="py-3 px-4 text-left">End Time</th>
+                                <th className="py-3 px-4 text-left">Action</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {currentTimeTables.map((timeTable, index) => (
+                                <tr key={index} className="border-t hover:bg-gray-50 capitalize">
+                                    <td className="py-3 px-4">{timeTable.startLocation}</td>
+                                    <td className="py-3 px-4">{timeTable.endLocation}</td>
+                                    <td className="py-3 px-4">{timeTable.busRouteNumber}</td>
+                                    <td className="py-3 px-4">{timeTable.busType}</td>
+                                    <td className="py-3 px-4">{timeTable.price}</td>
+                                    <td className="py-3 px-4">{timeTable.startTime}</td>
+                                    <td className="py-3 px-4">{timeTable.endTime}</td>
+                                    <td className="py-3 px-4">
+                                        <button
+                                            onClick={() => {
+                                                navigate(`/timetable/view/${timeTable._id}`)
+                                            }}
+                                            className="px-4 py-2 bg-yellow-600 hover:bg-yellow-500 text-white rounded-md border-2 border-transparent hover:border-yellow-600 hover:ring-2 hover:ring-yellow-300 focus:outline-none focus:ring-2 focus:ring-yellow-300 transition-all duration-300"
+                                        >
+                                            <FontAwesomeIcon icon={faEdit} className="w-5 h-5" />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
 
                 {/* Displaying the number of results */}
                 <div className="mt-4 text-sm text-gray-600 capitalize">
