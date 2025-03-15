@@ -75,7 +75,7 @@ const AddFareEstimates = () => {
               title={"Start Location"}
               type={"text"}
               placeholder={"Enter Start Location"}
-              name={"startLocation"}
+              name={"startStop"}
               value={formData.startStop}
               onChange={handleChange}
             />
@@ -86,7 +86,7 @@ const AddFareEstimates = () => {
               title={"End Location"}
               type={"text"}
               placeholder={"Enter End Location"}
-              name={"endLocation"}
+              name={"endStop"}
               value={formData.endStop}
               onChange={handleChange}
             />
