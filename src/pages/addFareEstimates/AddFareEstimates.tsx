@@ -30,7 +30,7 @@ const AddFareEstimates = () => {
   const handleSelectChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
-      busType: value,
+      type: value,
     }))
   }
 
