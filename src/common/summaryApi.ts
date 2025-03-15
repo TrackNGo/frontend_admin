@@ -104,6 +104,28 @@ const summaryApi = {
       url: `${backendUrl}api-user/delete/:username`, 
       method: "delete"
     },
+  },
+  fareEstimate:{
+    createFareEstimate: {
+      url: `${backendUrl}api-fare/add`, 
+      method: "post"
+    },
+    getAllFareEstimates: {
+      url: `${backendUrl}api-fare/view`, 
+      method: "get"
+    },
+    getFareEstimateById: {
+      url: `${backendUrl}api-fare/view/:id`, 
+      method: "get"
+    },
+    updateFareEstimate: {
+      url: `${backendUrl}api-fare/update/:id`, 
+      method: "put"
+    },
+    deleteFareEstimate: {
+      url: `${backendUrl}api-fare/delete/:id`, 
+      method: "delete"
+    },
   }
 }
 

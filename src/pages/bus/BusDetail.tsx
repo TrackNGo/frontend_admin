@@ -222,6 +222,14 @@ const BusDetail = () => {
                         >
                             Delete
                         </button>
+
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="px-4 mt-5 py-2 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition duration-200"
+                        >
+                            Back
+                        </button>
                     </div>
                 )}
             </div>

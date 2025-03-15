@@ -1,8 +1,9 @@
 interface FareDetailsType{
-    type:string,
-    price:string,
-    startLocation?:string,
-    endLocation?:string,
+    _id?:any,
+    busType:string,
+    estimatedFare:any,
+    startStop?:string,
+    endStop?:string,
     routeNumber?:string
 }
 

@@ -6,6 +6,7 @@ import summaryApi from "../../common/summaryApi"
 import TimeTableType from "../../types/timeTable/TimeTableType"
 import SelectBox from "../../components/selectBox/SelectBox"
 import TextBox from "../../components/textBox/TextBox"
+import Headline from "../../components/headline/Headline"
 
 const EditTimeTable = () => {
     const { id } = useParams<{ id: string }>()
@@ -26,7 +27,7 @@ const EditTimeTable = () => {
         endTime: ''
     })
 
-    const formClear=()=>{
+    const formClear = () => {
         setFormData({
             startLocation: '',
             endLocation: '',
@@ -123,7 +124,7 @@ const EditTimeTable = () => {
 
     return (
         <div className="px-2">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-6">Edit Time Table</h1>
+            <Headline title="Edit Time Table" />
 
             <div className="mb-4">{timeTable && (
                 <form className="bg-white p-4 rounded-lg shadow-lg max-w-lg mx-auto">
@@ -198,10 +199,17 @@ const EditTimeTable = () => {
                     <div className="mt-4 flex justify-center space-x-4">
                         <button
                             type="button"
+                            onClick={() => setFormData(timeTable || formData)}
+                            className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-md transition duration-200"
+                        >
+                            Reset
+                        </button>
+                        <button
+                            type="button"
                             onClick={handleUpdate}
                             className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition duration-200"
                         >
-                            Save
+                            Update
                         </button>
                         <button
                             type="button"
@@ -209,6 +217,13 @@ const EditTimeTable = () => {
                             className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-md transition duration-200"
                         >
                             Delete
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition duration-200"
+                        >
+                            Back
                         </button>
                     </div>
                 </form>

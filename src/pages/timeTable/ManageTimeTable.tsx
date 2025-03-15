@@ -34,7 +34,7 @@ const ManageTimeTable = () => {
             busType: value,
         }))
     }
-    
+
 
     const formClear = () => {
         setFormData({
@@ -67,9 +67,9 @@ const ManageTimeTable = () => {
     return (
         <div className="px-2">
             <Headline title={"Manage Time Table"} />
-            <form className="py-2 pb-10" onSubmit={handleSubmit}>
-                <div>
-                    <div>
+            <div className="py-4 max-w-md mx-auto">
+                <form className="py-2 pb-10" onSubmit={handleSubmit}>
+                    <div className="mb-2">
                         <TextBox
                             title={"Start Location"}
                             type={"text"}
@@ -79,7 +79,7 @@ const ManageTimeTable = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div>
+                    <div className="mb-2">
                         <TextBox
                             title={"End Location"}
                             type={"text"}
@@ -89,9 +89,7 @@ const ManageTimeTable = () => {
                             onChange={handleChange}
                         />
                     </div>
-                </div>
-                <div>
-                    <div>
+                    <div className="mb-2">
                         <TextBox
                             title={"Route Number"}
                             type={"text"}
@@ -101,7 +99,7 @@ const ManageTimeTable = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div>
+                    <div className="mb-2">
                         <SelectBox
                             title="Bus Type"
                             name="busType"
@@ -111,7 +109,7 @@ const ManageTimeTable = () => {
                             onChange={handleSelectChange}
                         />
                     </div>
-                    <div>
+                    <div className="mb-2">
                         <TextBox
                             title={"Ticket Price"}
                             type={"number"}
@@ -121,9 +119,7 @@ const ManageTimeTable = () => {
                             onChange={handleChange}
                         />
                     </div>
-                </div>
-                <div>
-                    <div>
+                    <div className="mb-2">
                         <TextBox
                             title={"Start Time"}
                             type={"time"}
@@ -132,7 +128,7 @@ const ManageTimeTable = () => {
                             onChange={handleChange}
                         />
                     </div>
-                    <div>
+                    <div className="mb-2">
                         <TextBox
                             title={"End Time"}
                             type={"time"}
@@ -141,16 +137,16 @@ const ManageTimeTable = () => {
                             onChange={handleChange}
                         />
                     </div>
-                </div>
-                <div className="mt-4">
-                    <PrimaryBtn
-                        title="Confirm"
-                        type="submit"
-                        classes="bg-blue-700 text-white border-transparent font-semibold rounded-md hover:bg-blue-800"
-                    />
-                </div>
-            </form>
-            <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+                    <div className="mt-4">
+                        <PrimaryBtn
+                            title="Confirm"
+                            type="submit"
+                            classes="bg-blue-700 text-white border-transparent font-semibold rounded-md hover:bg-blue-800"
+                        />
+                    </div>
+                </form>
+                <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
+            </div>
         </div>
     )
 }
