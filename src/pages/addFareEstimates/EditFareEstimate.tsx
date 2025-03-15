@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import FareDetailsType from "../../types/fareDetails/FareDetailsType"
 import axios from "axios"
 import summaryApi from "../../common/summaryApi"
+import Headline from "../../components/headline/Headline"
 
 const EditFareEstimate = () => {
     const { id } = useParams<{ id: string }>()
@@ -91,7 +92,7 @@ const EditFareEstimate = () => {
             try {
                 await axios({
                     method: summaryApi.fareEstimate.deleteFareEstimate.method,
-                    url: summaryApi.timeTable.deleteTimeTable.url.replace(':id', id || '')
+                    url: summaryApi.fareEstimate.deleteFareEstimate.url.replace(':id', id || '')
                 })
                 toast.success('Fare Estimate Deleted Successfully!')
                 navigate("/fareestimate/view")
@@ -114,7 +115,7 @@ const EditFareEstimate = () => {
 
     return (
         <div className="px-2">
-            <h1 className="text-2xl font-semibold text-gray-800 mb-6">Edit Fare Estimate</h1>
+            <Headline title="Edit Fare Estimate" />
 
             <div className="mb-4">{fare && (
                 <form className="bg-white p-4 rounded-lg shadow-lg max-w-lg mx-auto">
@@ -123,7 +124,7 @@ const EditFareEstimate = () => {
                             title={"Start Location"}
                             type={"text"}
                             placeholder={"Enter Start Location"}
-                            name={"startLocation"}
+                            name={"startStop"}
                             value={formData.startStop}
                             onChange={handleChange}
                         />
@@ -134,7 +135,7 @@ const EditFareEstimate = () => {
                             title={"End Location"}
                             type={"text"}
                             placeholder={"Enter End Location"}
-                            name={"endLocation"}
+                            name={"endStop"}
                             value={formData.endStop}
                             onChange={handleChange}
                         />
@@ -168,7 +169,7 @@ const EditFareEstimate = () => {
                             type={"number"}
                             min={0}
                             placeholder="Enter Ticket Price"
-                            name={"price"}
+                            name={"estimatedFare"}  // <-- Changed from "price" to "estimatedFare"
                             value={formData.estimatedFare.toString()}
                             onChange={handleChange}
                             required
@@ -176,6 +177,14 @@ const EditFareEstimate = () => {
                         />
                     </div>
                     <div className="mt-4 flex justify-center space-x-4">
+                        <button
+                            type="button"
+                            onClick={() => setFormData(fare || formData)}
+                            className="px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white rounded-md transition duration-200"
+                        >
+                            Reset
+                        </button>
+
                         <button
                             type="button"
                             onClick={handleUpdate}
