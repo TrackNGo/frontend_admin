@@ -29,7 +29,7 @@ const AddFareEstimates = () => {
   const handleSelectChange = (value: string) => {
     setFormData((prev) => ({
       ...prev,
-      type: value,
+      busType: value,
     }))
   }
 
@@ -120,7 +120,7 @@ const AddFareEstimates = () => {
               type={"number"}
               min={0}
               placeholder="Enter Ticket Price"
-              name={"price"}
+              name={"estimatedFare"}
               value={formData.estimatedFare.toString()}
               onChange={handleChange}
               required
