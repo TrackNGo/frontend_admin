@@ -199,6 +199,13 @@ const EditFareEstimate = () => {
                         >
                             Delete
                         </button>
+                        <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition duration-200"
+                        >
+                            Back
+                        </button>
                     </div>
                 </form>
             )}
