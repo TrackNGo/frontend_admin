@@ -123,7 +123,7 @@ const ViewFareEstimate = () => {
                     <input
                         type="text"
                         placeholder="Search by Route Number"
-                        value={""}
+                        value={routeNumberQuery}
                         onChange={(e) => handleRouteNumberChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
@@ -135,7 +135,7 @@ const ViewFareEstimate = () => {
                     <input
                         type="text"
                         placeholder="Search by Start Location"
-                        value={""}
+                        value={startLocationQuery}
                         onChange={(e) => handleStartLocationChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
@@ -144,14 +144,14 @@ const ViewFareEstimate = () => {
                     <input
                         type="text"
                         placeholder="Search by End Location"
-                        value={""}
+                        value={endLocationQuery}
                         onChange={(e) => handleEndLocationChange(e.target.value)}
                         className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
                     />
 
                     <label className="text-gray-600">Filter by Type:</label>
                     <select
-                        value={""}
+                        value={selectedType}
                         onChange={(e) => handleFilterChange(e.target.value)}
                         className="px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none transition-all"
                     >
