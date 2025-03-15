@@ -69,79 +69,73 @@ const ManageTimeTable = () => {
             <Headline title={"Manage Time Table"} />
             <div className="py-4 max-w-md mx-auto">
                 <form className="py-2 pb-10" onSubmit={handleSubmit}>
-                    <div>
-                        <div>
-                            <TextBox
-                                title={"Start Location"}
-                                type={"text"}
-                                placeholder={"Enter Start Location"}
-                                name={"startLocation"}
-                                value={formData.startLocation}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <TextBox
-                                title={"End Location"}
-                                type={"text"}
-                                placeholder={"Enter End Location"}
-                                name={"endLocation"}
-                                value={formData.endLocation}
-                                onChange={handleChange}
-                            />
-                        </div>
+                    <div className="mb-2">
+                        <TextBox
+                            title={"Start Location"}
+                            type={"text"}
+                            placeholder={"Enter Start Location"}
+                            name={"startLocation"}
+                            value={formData.startLocation}
+                            onChange={handleChange}
+                        />
                     </div>
-                    <div>
-                        <div>
-                            <TextBox
-                                title={"Route Number"}
-                                type={"text"}
-                                placeholder={"Enter Route Number"}
-                                name={"busRouteNumber"}
-                                value={formData.busRouteNumber}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <SelectBox
-                                title="Bus Type"
-                                name="busType"
-                                options={["Normal", "Semi-Luxury", "Luxury"]}
-                                value={formData.busType}
-                                placeholder="Select Bus Type"
-                                onChange={handleSelectChange}
-                            />
-                        </div>
-                        <div>
-                            <TextBox
-                                title={"Ticket Price"}
-                                type={"number"}
-                                placeholder={"Enter Ticket Price"}
-                                name={"price"}
-                                value={formData.price.toString()}
-                                onChange={handleChange}
-                            />
-                        </div>
+                    <div className="mb-2">
+                        <TextBox
+                            title={"End Location"}
+                            type={"text"}
+                            placeholder={"Enter End Location"}
+                            name={"endLocation"}
+                            value={formData.endLocation}
+                            onChange={handleChange}
+                        />
                     </div>
-                    <div>
-                        <div>
-                            <TextBox
-                                title={"Start Time"}
-                                type={"time"}
-                                name={"startTime"}
-                                value={formData.startTime}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div>
-                            <TextBox
-                                title={"End Time"}
-                                type={"time"}
-                                name={"endTime"}
-                                value={formData.endTime}
-                                onChange={handleChange}
-                            />
-                        </div>
+                    <div className="mb-2">
+                        <TextBox
+                            title={"Route Number"}
+                            type={"text"}
+                            placeholder={"Enter Route Number"}
+                            name={"busRouteNumber"}
+                            value={formData.busRouteNumber}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <SelectBox
+                            title="Bus Type"
+                            name="busType"
+                            options={["Normal", "Semi-Luxury", "Luxury"]}
+                            value={formData.busType}
+                            placeholder="Select Bus Type"
+                            onChange={handleSelectChange}
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <TextBox
+                            title={"Ticket Price"}
+                            type={"number"}
+                            placeholder={"Enter Ticket Price"}
+                            name={"price"}
+                            value={formData.price.toString()}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <TextBox
+                            title={"Start Time"}
+                            type={"time"}
+                            name={"startTime"}
+                            value={formData.startTime}
+                            onChange={handleChange}
+                        />
+                    </div>
+                    <div className="mb-2">
+                        <TextBox
+                            title={"End Time"}
+                            type={"time"}
+                            name={"endTime"}
+                            value={formData.endTime}
+                            onChange={handleChange}
+                        />
                     </div>
                     <div className="mt-4">
                         <PrimaryBtn
