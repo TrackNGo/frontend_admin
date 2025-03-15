@@ -50,6 +50,14 @@ const BusSearch = () => {
                 >
                     Search
                 </button>
+                
+                <button
+                            type="button"
+                            onClick={() => navigate(-1)}
+                            className="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition duration-200"
+                        >
+                            Back
+                        </button>
             </div>
             {error && <div className="mt-4 text-red-500 text-center">{error}</div>}
         </div>
