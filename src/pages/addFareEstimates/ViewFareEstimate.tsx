@@ -12,7 +12,6 @@ const ViewFareEstimate = () => {
     const [fare, setFare] = useState<FareDetailsType[]>([])
     const [filteredFare, setFilteredFare] = useState<FareDetailsType[]>([])
     const [selectedType, setSelectedType] = useState<string>("default")
-    const [busNumberQuery, setBusNumberQuery] = useState<string>("")
     const [routeNumberQuery, setRouteNumberQuery] = useState<string>("")
     const [startLocationQuery, setStartLocationQuery] = useState<string>("")
     const [endLocationQuery, setEndLocationQuery] = useState<string>("")
@@ -39,32 +38,26 @@ const ViewFareEstimate = () => {
 
     const handleFilterChange = (type: string) => {
         setSelectedType(type)
-        applySearchQuery(fare, busNumberQuery, routeNumberQuery, startLocationQuery, endLocationQuery, type)
-    }
-
-    const handleBusNumberChange = (query: string) => {
-        setBusNumberQuery(query)
-        applySearchQuery(fare, query, routeNumberQuery, startLocationQuery, endLocationQuery,  selectedType)
+        applySearchQuery(fare, routeNumberQuery, startLocationQuery, endLocationQuery, type)
     }
 
     const handleRouteNumberChange = (query: string) => {
         setRouteNumberQuery(query)
-        applySearchQuery(fare, busNumberQuery, query, startLocationQuery, endLocationQuery, selectedType)
+        applySearchQuery(fare, query, startLocationQuery, endLocationQuery, selectedType)
     }
 
     const handleStartLocationChange = (query: string) => {
         setStartLocationQuery(query)
-        applySearchQuery(fare, busNumberQuery, routeNumberQuery, query, endLocationQuery, selectedType)
+        applySearchQuery(fare,routeNumberQuery, query, endLocationQuery, selectedType)
     }
 
     const handleEndLocationChange = (query: string) => {
         setEndLocationQuery(query)
-        applySearchQuery(fare, busNumberQuery, routeNumberQuery, startLocationQuery, query,selectedType)
+        applySearchQuery(fare, routeNumberQuery, startLocationQuery, query,selectedType)
     }
 
     const applySearchQuery = (
         sourceAccounts: FareDetailsType[],
-        busNumber: string,
         routeNumber: string,
         startLocation: string,
         endLocation: string,
@@ -74,13 +67,9 @@ const ViewFareEstimate = () => {
             ? sourceAccounts
             : sourceAccounts.filter(bus => bus.type.toLowerCase() === type.toLowerCase())
 
-        const filteredByBusNumber = busNumber
-            ? filteredByType.filter(bus => bus.busNumber.toLowerCase().includes(busNumber.toLowerCase()))
-            : filteredByType
-
         const filteredByRouteNumber = routeNumber
-            ? filteredByBusNumber.filter(bus => (bus.routeNumber ?? "").toLowerCase().includes(routeNumber.toLowerCase()))
-            : filteredByBusNumber
+            ? filteredByType.filter(bus => (bus.routeNumber ?? "").toLowerCase().includes(routeNumber.toLowerCase()))
+            : filteredByType
 
         const filteredByStartLocation = startLocation
             ? filteredByRouteNumber.filter(bus => (bus.startLocation ?? "").toLowerCase().includes(startLocation.toLowerCase()))
@@ -95,7 +84,6 @@ const ViewFareEstimate = () => {
 
     const handleResetFilters = () => {
         setSelectedType("default")
-        setBusNumberQuery("")
         setRouteNumberQuery("")
         setStartLocationQuery("")
         setEndLocationQuery("")
@@ -130,15 +118,6 @@ const ViewFareEstimate = () => {
                     >
                         Reset
                     </button>
-
-                    <label className="text-gray-600">Search by Bus Number:</label>
-                    <input
-                        type="text"
-                        placeholder="Search by Bus Number"
-                        value={""}
-                        onChange={(e) => handleBusNumberChange(e.target.value)}
-                        className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
-                    />
 
                     <label className="text-gray-600">Search by Route Number:</label>
                     <input
@@ -187,7 +166,7 @@ const ViewFareEstimate = () => {
                     <table className="min-w-full text-sm text-gray-800">
                         <thead className="bg-gray-200 text-left">
                             <tr>
-                                <th className="py-3 px-4">Bus No</th>
+                                <th className="py-3 px-4">No</th>
                                 <th className="py-3 px-4">Bus Route</th>
                                 <th className="py-3 px-4">Bus Type</th>
                                 <th className="py-3 px-4">Start Location</th>
@@ -200,7 +179,7 @@ const ViewFareEstimate = () => {
                             {currentFare.length > 0 ? (
                                 currentFare.map((est, key) => (
                                     <tr key={key} className="border-t hover:bg-gray-100 transition-all">
-                                        <td className="py-3 px-4">{est.busNumber}</td>
+                                        <td className="py-3 px-4">{key}</td>
                                         <td className="py-3 px-4">{est.routeNumber}</td>
                                         <td className="py-3 px-4">{est.type}</td>
                                         <td className="py-3 px-4">{est.startLocation}</td>
