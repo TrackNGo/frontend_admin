@@ -1,4 +1,5 @@
 interface FareDetailsType{
+    busNumber:string,
     type:string,
     price:string,
     startLocation?:string,
