@@ -15,14 +15,14 @@ const FareEstimate = () => {
             description: 'Check and view the list of Fare Estimate in the system.',
             iconClass: 'fas fa-search',
             iconColor: 'text-blue-500',
-            action: () => handleManage('/fareestimate/add'), // Route to "View Buses" page
+            action: () => handleManage('/fareestimate/view'), // Route to "View Buses" page
         },
         {
             title: 'Add Fare Estimate',
             description: 'Add a new Fare Estimate to the system with all details.',
             iconClass: 'fas fa-plus-circle',
             iconColor: 'text-green-500',
-            action: () => handleManage('/fareestimate/view'), // Route to "Add Bus" page
+            action: () => handleManage('/fareestimate/add'), // Route to "Add Bus" page
         },
     ]
 
