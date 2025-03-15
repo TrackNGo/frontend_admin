@@ -10,10 +10,10 @@ import summaryApi from "../../common/summaryApi"
 
 const AddFareEstimates = () => {
   const [formData, setFormData] = useState<FareDetailsType>({
-    type: "",
-    price: "",
-    startLocation: "",
-    endLocation: "",
+    busType: "",
+    estimatedFare: "",
+    startStop: "",
+    endStop: "",
     routeNumber: ""
   })
 
@@ -35,10 +35,10 @@ const AddFareEstimates = () => {
 
   const formClear = () => {
     setFormData({
-      type: "",
-      price: "",
-      startLocation: "",
-      endLocation: "",
+      busType: "",
+      estimatedFare: "",
+      startStop: "",
+      endStop: "",
       routeNumber: ""
     })
   }
@@ -48,10 +48,10 @@ const AddFareEstimates = () => {
 
     const requestData = {
       routeNumber: formData.routeNumber,
-      busType: formData.type,  // Rename 'type' to 'busType'
-      startStop: formData.startLocation, // Rename 'startLocation' to 'startStop'
-      endStop: formData.endLocation, // Rename 'endLocation' to 'endStop'
-      estimatedFare: Number(formData.price) // Rename 'price' to 'estimatedFare' and ensure it's a number
+      busType: formData.busType,  // Rename 'type' to 'busType'
+      startStop: formData.startStop, // Rename 'startLocation' to 'startStop'
+      endStop: formData.endStop, // Rename 'endLocation' to 'endStop'
+      estimatedFare: Number(formData.estimatedFare) // Rename 'price' to 'estimatedFare' and ensure it's a number
     }
 
     try {
@@ -76,7 +76,7 @@ const AddFareEstimates = () => {
               type={"text"}
               placeholder={"Enter Start Location"}
               name={"startLocation"}
-              value={formData.startLocation}
+              value={formData.startStop}
               onChange={handleChange}
             />
           </div>
@@ -87,7 +87,7 @@ const AddFareEstimates = () => {
               type={"text"}
               placeholder={"Enter End Location"}
               name={"endLocation"}
-              value={formData.endLocation}
+              value={formData.endStop}
               onChange={handleChange}
             />
           </div>
@@ -108,7 +108,7 @@ const AddFareEstimates = () => {
               title="Bus Type"
               name="busType"
               options={["Normal", "Semi-Luxury", "Luxury"]}
-              value={formData.type}
+              value={formData.busType}
               placeholder="Select Bus Type"
               onChange={handleSelectChange}
             />
@@ -121,7 +121,7 @@ const AddFareEstimates = () => {
               min={0}
               placeholder="Enter Ticket Price"
               name={"price"}
-              value={formData.price.toString()}
+              value={formData.estimatedFare.toString()}
               onChange={handleChange}
               required
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-black focus:border-black transition duration-150 ease-in-out"
