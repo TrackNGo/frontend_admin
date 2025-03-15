@@ -114,16 +114,8 @@ const summaryApi = {
       url: `${backendUrl}api-fare/view`, 
       method: "get"
     },
-    getFareEstimateByRouteNumber: {
-      url: `${backendUrl}api-fare/route/:routeNumber`, 
-      method: "get"
-    },
-    getFareEstimateByBusType: {
-      url: `${backendUrl}api-fare/bus-type/:busType`, 
-      method: "get"
-    },
-    getFareEstimateByRouteAndBusType: {
-      url: `${backendUrl}api-fare/route/:routeNumber/bus-type/:busType`, 
+    getFareEstimateById: {
+      url: `${backendUrl}api-fare/view/:id`, 
       method: "get"
     },
     updateFareEstimate: {
