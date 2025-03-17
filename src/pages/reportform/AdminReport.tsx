@@ -40,7 +40,7 @@ const AdminReports = () => {
       <table className="mt-4 w-full border-collapse">
         <thead>
           <tr>
-            <th className="border px-4 py-2">Bus ID</th>
+            <th className="border px-4 py-2">Bus Number</th>
             <th className="border px-4 py-2">Issue Type</th>
             <th className="border px-4 py-2">Description</th>
             <th className="border px-4 py-2">Date</th>
