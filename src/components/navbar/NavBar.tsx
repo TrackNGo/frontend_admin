@@ -18,7 +18,8 @@ const Navbar = ({ navOpen }: NavbarProps) => {
             { label: 'Bus', link: '/bus', className: 'nav-link' },
             { label: 'Time Table', link: '/timetable', className: 'nav-link' },
             { label: 'Fare Estimate', link: '/fareestimate', className: 'nav-link' },
-            { label: 'about', link: '/about', className: 'nav-link md:hidden' }
+            { label: 'about', link: '/about', className: 'nav-link md:hidden' },
+            {label: 'Reports', link: '/reportform', className: 'nav-link'}
         ],
         []
     )
