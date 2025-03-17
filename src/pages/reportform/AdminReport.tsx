@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 interface Report {
   _id: string;
-  busId: string;
+  busNUmber: string;
   issueType: string;
   description: string;
   contactDetails: string;
@@ -57,7 +57,7 @@ const AdminReports = () => {
           ) : (
             reports.map((report) => (
               <tr key={report._id}>
-                <td className="border px-4 py-2">{report.busId}</td>
+                <td className="border px-4 py-2">{report.busNUmber}</td>
                 <td className="border px-4 py-2">{report.issueType}</td>
                 <td className="border px-4 py-2">{report.description}</td>
                 <td className="border px-4 py-2">{new Date(report.createdAt).toLocaleString()}</td>
