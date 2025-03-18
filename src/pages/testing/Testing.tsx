@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom"
+import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Login from "../auth/Login"
 import ChangePassword from "../auth/ChangePassword"
 import CreateAccount from "../auth/CreateAccount"
@@ -23,6 +23,8 @@ import FareEstimate from "../addFareEstimates/FareEstimate"
 import AddFareEstimates from "../addFareEstimates/AddFareEstimates"
 import ViewFareEstimate from "../addFareEstimates/ViewFareEstimate"
 import EditFareEstimate from "../addFareEstimates/EditFareEstimate"
+import AdminReports from "../reportform/AdminReport"
+import AdminReportDetails from "../reportform/AdminReportDetails"
 
 const Testing = () => {
   return (
@@ -87,6 +89,9 @@ const Testing = () => {
               <Route path='/fareestimate/add' element={<AddFareEstimates />} />
               <Route path='/fareestimate/view' element={<ViewFareEstimate />} />
               <Route path='/fareestimate/view/:id' element={<EditFareEstimate />} />
+
+              <Route path='/reportform' element={<AdminReports />} />
+              <Route path='/reportform/:id' element={<AdminReportDetails />} />
             </Route>
           </Routes>
         </BrowserRouter>
