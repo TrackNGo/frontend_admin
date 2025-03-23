@@ -91,7 +91,7 @@ const Testing = () => {
               <Route path='/fareestimate/view/:id' element={<EditFareEstimate />} />
 
               <Route path='/reportform' element={<AdminReports />} />
-              <Route path='/reportform/:id' element={<AdminReportDetails />} />
+              <Route path='/reports/:id' element={<AdminReportDetails />} />
             </Route>
           </Routes>
         </BrowserRouter>
