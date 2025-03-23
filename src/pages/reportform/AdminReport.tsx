@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/api/admin", // Replace with your backend API URL
+  baseURL: "http://localhost:8080/api-report", // Replace with your backend API URL
   timeout: 1000,
   headers: { "X-Custom-Header": "foobar" },
 });
@@ -24,7 +24,7 @@ const AdminReports = () => {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axiosInstance.get("/reports");
+        const response = await axiosInstance.get("/view");
         setReports(response.data.reports);
       } catch {
         setError("Error fetching reports");
