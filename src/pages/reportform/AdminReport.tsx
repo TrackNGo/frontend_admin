@@ -1,130 +1,85 @@
+// pages/AdminReports.tsx
 import { useEffect, useState } from "react";
-import axios from "axios";
-import {  useParams } from "react-router-dom";
-
-const axiosInstance = axios.create({
-  baseURL: "http://localhost:8080/api-report", // Replace with your backend API URL
-  timeout: 1000,
-  headers: { "X-Custom-Header": "foobar" },
-});
+import { adminApi } from "../../services/api";
+import { Link } from "react-router-dom";
 
 interface Report {
   _id: string;
   busNumber: string;
   issueType: string;
   description: string;
-  contactDetails?: string;
   reportedAt: string;
-  adminComment?: string;
 }
 
 const AdminReports = () => {
   const [reports, setReports] = useState<Report[]>([]);
-  const [error, setError] = useState<string>("");
-  const { id } = useParams<{ id: string }>();
-  const [commentInput, setCommentInput] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(false);
-
-  useEffect(() => {
-    fetchReportDetails();
-  }, [id]);
-
-  const fetchReportDetails = async () => {
-    try {
-      const response = await axiosInstance.get(`/reports/${id}`);
-      setReports(response.data.report);
-    } catch {
-      setError("Error fetching report details");
-    }
-  };
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const response = await axiosInstance.get("/view");
-        setReports(response.data.reports);
+        const { data } = await adminApi.get("/reports");
+        setReports(data);
       } catch {
-        setError("Error fetching reports");
+        setError("Failed to load reports");
       }
     };
     fetchReports();
   }, []);
 
-  const handleCommentSubmit = async () => {
-    if (!commentInput.trim()) return;
-
-    setLoading(true);
-    try {
-      await axiosInstance.put(`/reports/${id}/comment`, {
-        comment: commentInput,
-      });
-      setCommentInput("");
-      await fetchReportDetails(); // Refresh the report data
-    } catch {
-      setError("Failed to save comment");
+  const handleDelete = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this report?")) {
+      try {
+        await adminApi.delete(`/reports/${id}`);
+        setReports(reports.filter(report => report._id !== id));
+      } catch {
+        setError("Failed to delete report");
+      }
     }
-    setLoading(false);
   };
 
-  if (error) return <div>{error}</div>;
-
   return (
-    <div className="px-2">
-      <h2 className="text-xl font-semibold">Report Details</h2>
-      {reports ? (
-        <div className="space-y-4">
-          {/* Existing details */}
-          {reports.map((report) => (
-            <div key={report._id} className="space-y-2">
-              <p>
-                <strong>Bus ID:</strong> {report.busNumber}
-              </p>
-              <p>
-                <strong>Issue Type:</strong> {report.issueType}
-              </p>
-              <p>
-                <strong>Description:</strong> {report.description}
-              </p>
-              <p>
-                <strong>Contact Details:</strong>{" "}
-                {report.contactDetails || "Not provided"}
-              </p>
-              <p>
-                <strong>Reported On:</strong>{" "}
-                {new Date(report.reportedAt).toLocaleString()}
-              </p>
-            </div>
-          ))}
-
-          {/* Comment Section */}
-          <div className="mt-4">
-            <h3 className="font-semibold mb-2">Admin Comments</h3>
-            {reports.map((report) => (
-              report.adminComment && (
-                <div key={report._id} className="bg-gray-100 p-3 rounded mb-3">
-                  {report.adminComment}
-                </div>
-              )
+    <div className="container mx-auto p-4">
+      <h1 className="text-2xl font-bold mb-4">Reports Management</h1>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
+      
+      <div className="overflow-x-auto">
+        <table className="min-w-full bg-white border">
+          <thead>
+            <tr>
+              <th className="py-2 px-4 border-b">Bus Number</th>
+              <th className="py-2 px-4 border-b">Issue Type</th>
+              <th className="py-2 px-4 border-b">Reported At</th>
+              <th className="py-2 px-4 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {reports.map(report => (
+              <tr key={report._id}>
+                <td className="py-2 px-4 border-b">{report.busNumber}</td>
+                <td className="py-2 px-4 border-b">{report.issueType}</td>
+                <td className="py-2 px-4 border-b">
+                  {new Date(report.reportedAt).toLocaleDateString()}
+                </td>
+                <td className="py-2 px-4 border-b space-x-2">
+                  <Link
+                    to={`/reports/${report._id}`}
+                    className="text-blue-500 hover:text-blue-700"
+                  >
+                    View
+                  </Link>
+                  <button
+                    onClick={() => handleDelete(report._id)}
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
             ))}
-            <textarea
-              value={commentInput}
-              onChange={(e) => setCommentInput(e.target.value)}
-              className="w-full p-2 border rounded"
-              placeholder="Add a comment..."
-              rows={3}
-            />
-            <button
-              onClick={handleCommentSubmit}
-              disabled={loading}
-              className="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-gray-400"
-            >
-              {loading ? "Saving..." : "Save Comment"}
-            </button>
-          </div>
-        </div>
-      ) : (
-        <p>Loading...</p>
-      )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };
