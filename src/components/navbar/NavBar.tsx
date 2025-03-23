@@ -13,12 +13,12 @@ const Navbar = ({ navOpen }: NavbarProps) => {
     const navItems = useMemo(
         () => [
             // { label: 'Home', link: '/', className: 'nav-link' },
-            { label: 'dashboard', link: '/dashboard', className: 'nav-link' },
+            { label: 'Dashboard', link: '/dashboard', className: 'nav-link' },
             { label: 'Accounts', link: '/account', className: 'nav-link' },
             { label: 'Bus', link: '/bus', className: 'nav-link' },
             { label: 'Time Table', link: '/timetable', className: 'nav-link' },
             { label: 'Fare Estimate', link: '/fareestimate', className: 'nav-link' },
-            { label: 'about', link: '/about', className: 'nav-link md:hidden' },
+            { label: 'About', link: '/about', className: 'nav-link md:hidden' },
             {label: 'Reports', link: '/reportform', className: 'nav-link'}
         ],
         []
