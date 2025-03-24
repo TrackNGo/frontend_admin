@@ -25,6 +25,7 @@ import ViewFareEstimate from "../addFareEstimates/ViewFareEstimate"
 import EditFareEstimate from "../addFareEstimates/EditFareEstimate"
 import AdminReports from "../reportform/AdminReport"
 import AdminReportDetails from "../reportform/AdminReportDetails"
+import ContactSubmission from "../contactus/contactSubmission"
 
 const Testing = () => {
   return (
@@ -92,6 +93,8 @@ const Testing = () => {
 
               <Route path='/reportform' element={<AdminReports />} />
               <Route path='/reports/:id' element={<AdminReportDetails />} />
+
+              <Route path='/contact-submissions' element={<ContactSubmission />} />
             </Route>
           </Routes>
         </BrowserRouter>
