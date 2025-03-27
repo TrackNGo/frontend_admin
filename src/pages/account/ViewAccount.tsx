@@ -13,6 +13,7 @@ const ViewAccount = () => {
     const [filteredAccounts, setFilteredAccounts] = useState<UserTypes[]>([])
     const [selectedType, setSelectedType] = useState<string>("default")
     const [usernameSearchQuery, setUsernameSearchQuery] = useState<string>("")
+    const [busNumberSearchQuery, setBusNumberSearchQuery] = useState<string>("")
     const [nicSearchQuery, setNicSearchQuery] = useState<string>("")
     const [mobileSearchQuery, setMobileSearchQuery] = useState<string>("")
     const [currentPage, setCurrentPage] = useState<number>(1)
@@ -38,26 +39,35 @@ const ViewAccount = () => {
 
     const handleFilterChange = (type: string) => {
         setSelectedType(type)
-        applySearchQuery(accounts, usernameSearchQuery, nicSearchQuery, mobileSearchQuery, type)
+        applySearchQuery(accounts, busNumberSearchQuery, usernameSearchQuery, nicSearchQuery, mobileSearchQuery, type)
+    }
+    
+    const handleBusNumberSearchChanges = (query: string) => {
+        console.log(query)
+        setBusNumberSearchQuery(query)
+        applySearchQuery(accounts, query, usernameSearchQuery, nicSearchQuery, mobileSearchQuery, selectedType)
     }
 
     const handleUsernameSearchChange = (query: string) => {
-        setUsernameSearchQuery(query)
-        applySearchQuery(accounts, query, nicSearchQuery, mobileSearchQuery, selectedType)
-    }
+        console.log(query)
 
+        setUsernameSearchQuery(query)
+        applySearchQuery(accounts, busNumberSearchQuery, query, nicSearchQuery, mobileSearchQuery, selectedType)
+    }
+    
     const handleNicSearchChange = (query: string) => {
         setNicSearchQuery(query)
-        applySearchQuery(accounts, usernameSearchQuery, query, mobileSearchQuery, selectedType)
+        applySearchQuery(accounts, busNumberSearchQuery, usernameSearchQuery, query, mobileSearchQuery, selectedType)
     }
 
     const handleMobileSearchChange = (query: string) => {
         setMobileSearchQuery(query)
-        applySearchQuery(accounts, usernameSearchQuery, nicSearchQuery, query, selectedType)
+        applySearchQuery(accounts, busNumberSearchQuery, usernameSearchQuery, nicSearchQuery, query, selectedType)
     }
 
     const applySearchQuery = (
         sourceAccounts: UserTypes[],
+        busnumberQuery: string,
         usernameQuery: string,
         nicQuery: string,
         mobileQuery: string,
@@ -67,9 +77,13 @@ const ViewAccount = () => {
             ? sourceAccounts
             : sourceAccounts.filter(account => account.accType.toLowerCase() === type.toLowerCase())
 
-        const filteredByUsername = usernameQuery
-            ? filteredByType.filter(account => account.username.toLowerCase().includes(usernameQuery.toLowerCase()))
+        const fiteredBybusnumber = busnumberQuery
+            ? filteredByType.filter(account => account.busNumber.toLowerCase().includes(busnumberQuery.toLowerCase()))
             : filteredByType
+
+        const filteredByUsername = usernameQuery
+            ? fiteredBybusnumber.filter(account => account.username.toLowerCase().includes(usernameQuery.toLowerCase()))
+            : fiteredBybusnumber
 
         const filteredByNic = nicQuery
             ? filteredByUsername.filter(account => account.nic.toLowerCase().includes(nicQuery.toLowerCase()))
@@ -122,6 +136,15 @@ const ViewAccount = () => {
                 </div>
 
                 <div className="flex items-center space-x-4 mb-4">
+                    <label className="text-gray-600">Search by Bus Number:</label>
+                    <input
+                        type="text"
+                        placeholder="Search by Bus Number"
+                        value={busNumberSearchQuery}
+                        onChange={(e) => handleBusNumberSearchChanges(e.target.value)}
+                        className="p-2 border rounded-lg shadow-sm focus:ring-2 focus:ring-gray-300 focus:outline-none"
+                    />
+
                     <label className="text-gray-600">Search by Username:</label>
                     <input
                         type="text"
@@ -165,6 +188,7 @@ const ViewAccount = () => {
                     <table className="min-w-full text-sm text-gray-800">
                         <thead className="bg-gray-200 text-left">
                             <tr>
+                                <th className="py-3 px-4">Bus Number</th>
                                 <th className="py-3 px-4">Username</th>
                                 <th className="py-3 px-4">First Name</th>
                                 <th className="py-3 px-4">Last Name</th>
@@ -178,6 +202,7 @@ const ViewAccount = () => {
                             {currentAccount.length > 0 ? (
                                 currentAccount.map((account, key) => (
                                     <tr key={key} className="border-t hover:bg-gray-100 transition-all">
+                                        <td className="py-3 px-4">{account.busNumber}</td>
                                         <td className="py-3 px-4">{account.username}</td>
                                         <td className="py-3 px-4">{account.firstName}</td>
                                         <td className="py-3 px-4">{account.lastName}</td>

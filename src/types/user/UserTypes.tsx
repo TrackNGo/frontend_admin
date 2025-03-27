@@ -1,4 +1,5 @@
 interface UserTypes {
+    busNumber: string,
     nic: string
     username: string
     firstName: string
