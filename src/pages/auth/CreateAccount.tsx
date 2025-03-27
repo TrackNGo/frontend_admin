@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react"
+import { ChangeEvent, useEffect, useState } from "react"
 import axios from "axios"
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
@@ -12,8 +12,13 @@ import summaryApi from "../../common/summaryApi"
 const CreateAccount = () => {
   const [error, setError] = useState<{ [key: string]: string }>({})
   const [confirmPassword, setConfirmPassword] = useState('Abcd@123') // New state for confirm password
+  const [busNumberField, setShowBusNumberField] = useState(true);
+  const [allBuses, setAllBuses] = useState([]);
+  const [filteredBus, setFilteredBus] = useState([]);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false)
 
   const [formData, setFormData] = useState<UserTypes>({
+    busNumber: '',
     nic: '',
     username: '',
     firstName: '',
@@ -22,6 +27,67 @@ const CreateAccount = () => {
     password: 'Abcd@123',
     accType: 'General',
   })
+
+  async function getAllBus() {
+    const response = await axios({
+      method: summaryApi.bus.getAllBuses.method,
+      url: summaryApi.bus.getAllBuses.url
+    })
+    if (response) {
+      setAllBuses(response.data);
+    }
+  }
+
+  useEffect(() => {
+    getAllBus();
+  })
+
+  useEffect(() => {
+    if (formData.busNumber) {
+      getAllBusByFiltering(formData.busNumber)
+    }
+  }, [formData.busNumber])
+
+  async function getAllBusByFiltering(userInput: any) {
+
+    if (userInput) {
+      const respose = allBuses.filter((bus: any) => bus.busNumber.includes(userInput))
+      if (respose) {
+        setFilteredBus(respose);
+        setShowDropdown(true);
+      }
+      else {
+        setShowDropdown(false);
+      }
+    }
+  }
+
+  async function suggessionOnClick(userSelectBusNumber: any) {
+    if (userSelectBusNumber) {
+      setFilteredBus([]);
+      const name = 'busNumber';
+      let value = userSelectBusNumber;
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value
+      }))
+    }
+  }
+
+  useEffect(() => {
+    if (formData.accType == 'General') {
+      setShowBusNumberField(true);
+    }
+    else {
+      setShowBusNumberField(false)
+      const name = 'busNumber';
+      let value = 'NULL';
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value
+      }))
+    }
+  }, [formData.accType])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = event.target
@@ -48,7 +114,7 @@ const CreateAccount = () => {
   const handleSubmit = async (event: any) => {
     event.preventDefault()
     const newError: { [key: string]: string } = {}
-
+    if (busNumberField && !formData.busNumber) newError.busNumber = 'Bus Number is required for a conductor'
     if (!formData.nic) newError.nic = "NIC is required"
     if (!formData.username) newError.username = "Username is required"
     if (!formData.firstName) newError.firstName = "First Name is required"
@@ -62,6 +128,7 @@ const CreateAccount = () => {
     } else {
       setError({})
       const data = {
+        busNumber: formData.busNumber,
         nic: formData.nic,
         username: formData.username,
         firstName: formData.firstName,
@@ -73,9 +140,11 @@ const CreateAccount = () => {
 
       try {
         const response = await axios.post(summaryApi.account.createAccount.url, data)
+        setFilteredBus([]);
         console.log('Account created successfully:', response.data)
         toast.success('Account created successfully!')
         setFormData({
+          busNumber: '',
           nic: '',
           username: '',
           firstName: '',
@@ -111,6 +180,56 @@ const CreateAccount = () => {
             <Headline title={"create account"} />
             {error.general && <div className="text-red-600 text-sm">{error.general}</div>}
           </div>
+          <div>
+            <SelectBox
+              title="Account Type"
+              name="accType"
+              value={formData.accType}
+              onChange={handleAccTypeChange}
+              options={['General', 'Admin']}
+              placeholder="Select Account Type"
+            />
+            <div className={`text-sm capitalize ${error.accType ? "text-red-600" : "text-slate-400"}`}>
+              {error.accType || "Required"}
+            </div>
+          </div>
+
+          {
+            busNumberField && (
+              <div>
+                <TextBox
+                  title="Bus Number"
+                  name="busNumber"
+                  value={formData.busNumber}
+                  onChange={handleInputChange}
+                  placeholder="Enter Bus Number"
+                  type="text"
+                />
+              </div>)
+
+          }
+          {
+            busNumberField && showDropdown && filteredBus.length > 0 && (
+              <>
+                <ul className="bg-white border border-gray-600 rounded-lg shadow-lg mt-1 max-h-40 overflow-auto z-10">
+                  {filteredBus.map((bus: any, index: any) => (
+                    <li
+                      key={index}
+                      value={formData.busNumber}
+                      onClick={() => { suggessionOnClick(bus.busNumber) }}
+                      className="p-3 cursor-pointer hover:bg-gray-200"
+                    >
+                      {bus.busNumber}
+                    </li>
+                  ))}
+                </ul>
+                <div className={`text-sm capitalize ${error.busNumber ? "text-red-600" : "text-slate-400"}`}>
+                  {error.busNumber || "Required"}
+                </div>
+              </>
+            )
+          }
+
           <div>
             <TextBox
               title="NIC"
@@ -178,20 +297,6 @@ const CreateAccount = () => {
             />
             <div className={`text-sm capitalize ${error.mobile ? "text-red-600" : "text-slate-400"}`}>
               {error.mobile || "Required"}
-            </div>
-          </div>
-
-          <div>
-            <SelectBox
-              title="Account Type"
-              name="accType"
-              value={formData.accType}
-              onChange={handleAccTypeChange}
-              options={['General', 'Admin']}
-              placeholder="Select Account Type"
-            />
-            <div className={`text-sm capitalize ${error.accType ? "text-red-600" : "text-slate-400"}`}>
-              {error.accType || "Required"}
             </div>
           </div>
 
