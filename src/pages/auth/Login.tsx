@@ -13,7 +13,7 @@ const Login = () => {
   const [credentials, setCredentials] = useState<{ credentialsUsername: string; password: string; accType: string }>({
     credentialsUsername: "",
     password: "",
-    accType: "General",
+    accType: "Admin",
   })
 
   const navigate = useNavigate()
@@ -31,17 +31,17 @@ const Login = () => {
     setCredentials({
       credentialsUsername: "",
       password: "",
-      accType: "General",
+      accType: "Admin",
     })
   }
 
-  const handleSelectChange = (value: string) => {
-    setCredentials((prev) => ({
-      ...prev,
-      accType: value
-    }))
-    setError((prev) => ({ ...prev, accType: "" }))
-  }
+  // const handleSelectChange = (value: string) => {
+  //   setCredentials((prev) => ({
+  //     ...prev,
+  //     accType: value
+  //   }))
+  //   setError((prev) => ({ ...prev, accType: "" }))
+  // }
 
   async function submit(event: any) {
     event.preventDefault()
@@ -101,7 +101,7 @@ const Login = () => {
               value={credentials.credentialsUsername}
               title={"Username"}
               type={"text"}
-              placeholder={"Username or Email or Mobile Number"}
+              placeholder={"Enter Admin Username"}
               name={"credentialsUsername"}
             />
             <div className={`text-sm capitalize ${error.credentialsUsername ? "text-red-600" : "text-slate-400"}`}>
@@ -109,19 +109,19 @@ const Login = () => {
             </div>
           </div>
 
-          <div className="mt-2">
+          {/* <div className="mt-2">
             <SelectBox
               title="Account Type"
               name="accType"
               value={credentials.accType}
               onChange={handleSelectChange}
-              options={["General", "Admin"]}
+              options={["Admin"]}
               placeholder="Select Account Type"
             />
             <div className={`text-sm capitalize ${error.accType ? "text-red-600" : "text-slate-400"}`}>
               {error.accType || "required"}
             </div>
-          </div>
+          </div> */}
 
           <div className="mt-2">
             <TextBox
