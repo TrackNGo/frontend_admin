@@ -6,3 +6,9 @@ export const adminApi = axios.create({
   timeout: 5000,
   headers: { "Content-Type": "application/json" },
 });
+
+export const adminApiform = axios.create({
+  baseURL: "http://localhost:3000/api-contact",
+  timeout: 5000,
+  headers: { "Content-Type": "application/json" },
+});
