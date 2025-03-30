@@ -32,6 +32,13 @@ const Bus = () => {
             action: () => handleManage('/bus/addbus'), // Route to "Add Bus" page
         },
         {
+            title: 'Add and Update Bus Routes',
+            description: 'Add a bus route for a bus.',
+            iconClass: 'fas fa-edit',
+            iconColor: 'text-green-500',
+            action: () => handleManage('/bus/addbusroute'), // Route to "Add Bus" page
+        },
+        {
             title: 'Update & Modify Bus Details',
             description: 'Edit existing bus information as needed.',
             iconClass: 'fas fa-edit',
