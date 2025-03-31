@@ -2,8 +2,12 @@ import { useState, ChangeEvent } from "react";
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn";
 import TextBox from "../../components/textBox/TextBox";
 import Headline from "../../components/headline/Headline";
+import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
+import summaryApi from "../../common/summaryApi";
 
 const ChangePassword = () => {
+    const {userName, logout} = useAuth()
     const [error, setError] = useState<{ currentPassword?: string; newPassword?: string; confirmPassword?: string }>({})
     const [credentials, setCredentials] = useState<{ currentPassword: string; newPassword: string, confirmPassword: string }>({
         currentPassword: "",
@@ -44,7 +48,30 @@ const ChangePassword = () => {
         } else {
             setError({});
             console.log("Password successfully changed:", credentials.newPassword);
-            //backend connection
+            setError({});
+
+            if(userName) {
+
+                console.log(userName)
+                const res = await axios.put(`${summaryApi.user.adminChangePassword.url}`,
+                    {
+                      userName: userName.user.username,
+                      password : credentials.confirmPassword
+                    }
+                  );
+            
+                  if (!res.data.error) {
+                      console.log(res.data)
+                      logout();
+                  }
+                  else {
+                    setError((pre) => (
+                        {...pre,
+                            confirmPassword : res.data.error 
+                        }
+                    ))
+                  }
+            }
         }
 
     }
@@ -107,19 +134,25 @@ const ChangePassword = () => {
                             />
                         </div>
 
-                        <div className="mt-3">
+                        {/* <div className="mt-3">
                             <PrimaryBtn
                                 type={"button"}
                                 onClick={() => { console.log(credentials) }}
                                 title={"forgot password"}
                                 classes={'bg-gradient-to-r from-white to-white hover:from-slate-100 hover:to-slate-200 border-solid border-1 border-black text-black'}
                             />
-                        </div>
+                        </div> */}
 
                         <div className="mt-3">
                             <PrimaryBtn
                                 type={"button"}
-                                onClick={() => { console.log(credentials) }}
+                                onClick={() => { 
+                                    setCredentials({
+                                        currentPassword:'',
+                                        newPassword:'',
+                                        confirmPassword:''
+                                    }) 
+                                }}
                                 title={"cancel"}
                                 classes={'bg-gradient-to-r from-white to-white hover:from-slate-100 hover:to-slate-200 border-solid border-1 border-black text-black'}
                             />
