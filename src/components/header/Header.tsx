@@ -17,28 +17,25 @@ const Header = () => {
                         <img className="p-0" src={trackngologo} width="150px" height="100px" alt="trackngo" />
                     </Link>
 
-                    <div className="relative md:justify-self-center">
-                        <button onClick={toggleNav} className="menu-btn md:hidden">
-                            <div className="material-symbols-rounded">
-                                {navOpen ? 'close' : 'menu'}
+                    {isAuthenticated && (
+                        <>
+                            <div className="relative md:justify-self-center">
+                                <button onClick={toggleNav} className="menu-btn md:hidden">
+                                    <div className="material-symbols-rounded">
+                                        {navOpen ? 'close' : 'menu'}
+                                    </div>
+                                </button>
+                                <NavBar navOpen={navOpen} />
                             </div>
-                        </button>
-                        <NavBar navOpen={navOpen} />
-                    </div>
+                            <Link
+                                to="/"
+                                onClick={logout}
+                                className="max-w-max h-10 flex items-center gap-2 px-4 rounded-xl font-medium text-sm ring-1 ring-zinc-500 ring-inset transition-[background-color] text-white bg-zinc-800 active:bg-zinc-700 capitalize hover:bg-red-600 max-md:hidden md:justify-self-end"
+                            >
+                                Logout
+                            </Link>
+                        </>
 
-                    {isAuthenticated ? (
-                        <Link
-                            to="/"
-                            onClick={logout}
-                            className="max-w-max h-10 flex items-center gap-2 px-4 rounded-xl font-medium text-sm ring-1 ring-zinc-500 ring-inset transition-[background-color] text-white bg-zinc-800 active:bg-zinc-700 capitalize hover:bg-red-600 max-md:hidden md:justify-self-end"
-                        >
-                            Logout
-                        </Link>
-
-                    ) : (
-                        <Link to="/login" className="btn1 btn1-secondary max-md:hidden md:justify-self-end">
-                            Login
-                        </Link>
                     )}
                 </div>
             </header>

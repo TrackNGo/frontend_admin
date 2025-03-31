@@ -1,4 +1,5 @@
 interface AuthContextType {
+    userName: any,
     isAuthenticated: boolean,
     jwtToken: string | null,
     loading: boolean,

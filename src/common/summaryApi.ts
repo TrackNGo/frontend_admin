@@ -137,6 +137,12 @@ const summaryApi = {
       method: 'get'
     }
 
+  },
+  user: {
+    adminChangePassword: {
+      url:`${backendUrl}api-user/change-admin-password`,
+      method: 'put'
+    }
   }
 }
 

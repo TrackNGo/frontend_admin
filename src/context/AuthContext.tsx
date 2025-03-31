@@ -3,6 +3,7 @@ import AuthContextType from "../types/auth/AuthContextType";
 import AuthProviderPropsType from "../types/auth/AuthProviderPropsType";
 
 export const AuthContext = createContext<AuthContextType>({
+    userName: null,
     isAuthenticated: false,
     jwtToken: null,
     loading: true,
@@ -11,11 +12,13 @@ export const AuthContext = createContext<AuthContextType>({
 })
 
 export function AuthProvider({ children }: AuthProviderPropsType) {
+    const [userName, setName] = useState<string | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [jwtToken, setJwtToken] = useState<string | null>(null)
     const [loading, setLoading] = useState<boolean>(true)
 
     function login(jwtToken: string) {
+        setName(jwtToken)
         setIsAuthenticated(true)
         setJwtToken(jwtToken)
         localStorage.setItem("token", jwtToken)
@@ -39,7 +42,7 @@ export function AuthProvider({ children }: AuthProviderPropsType) {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ isAuthenticated, jwtToken, loading, login, logout }}>
+        <AuthContext.Provider value={{ userName, isAuthenticated,jwtToken, loading, login, logout }}>
             {children}
         </AuthContext.Provider>
     )
