@@ -41,7 +41,7 @@ const ContactUs = () => {
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this submission?')) {
       try {
-        await adminApiform.delete(`/forms/${id}`);
+        await adminApiform.delete(`/contact-us/${id}`);
         setSubmissions(submissions.filter(sub => sub._id !== id));
       } catch {
         setError('Failed to delete submission');
