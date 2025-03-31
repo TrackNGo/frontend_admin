@@ -126,6 +126,17 @@ const summaryApi = {
       url: `${backendUrl}api-fare/delete/:id`, 
       method: "delete"
     },
+  },
+  route: {
+    addAndUpdateBusRoute: {
+      url: `${backendUrl}api-busroutes/createBusRoute`,
+      method: 'post'
+    },
+    getSpecificBusRoute: {
+      url:`${backendUrl}api-busroutes/busRoute/:busNumber`,
+      method: 'get'
+    }
+
   }
 }
 

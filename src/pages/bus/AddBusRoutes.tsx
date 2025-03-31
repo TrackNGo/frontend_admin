@@ -1,13 +1,10 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import BusRouteTypes from "../../types/busRoute/BusRouteTypes"
 import TextBox from "../../components/textBox/TextBox"
 import PrimaryBtn from "../../components/btn/primaryBtn/PrimaryBtn"
 import Headline from "../../components/headline/Headline"
-
-const buses: BusRouteTypes[] = [
-  { busNumber: "123", routeNumber: "R1", startLocation: "City A", endLocation: "City B", routeStops: ["colombo"], status: false },
-  { busNumber: "456", routeNumber: "R2", startLocation: "City C", endLocation: "City D", routeStops: [], status: false },
-]
+import axios from "axios"
+import summaryApi from "../../common/summaryApi"
 
 const AddBusRoutes = () => {
   const [selectedBus, setSelectedBus] = useState<BusRouteTypes | null>(null)
@@ -17,12 +14,52 @@ const AddBusRoutes = () => {
   const [showStops, setShowStops] = useState<boolean>(false)
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [originalStopValue, setOriginalStopValue] = useState<string>("")
+  const [allBuses, setAllBuses] = useState([])
+  interface NewBus {busNumber:string, routeNumber:string, startLocation:string, endLocation:string, routeStops:[]}
+  interface Bus {busNumber:string, createdAt:string, endLocation:string, fareEstimate:string, routeNumber:string, startLocation:string, status:boolean, type:string}
+  const suggesionArray = ['Polonnoruwa', 'Kurunagala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura']
+  const [busNumber, setBusNumber] = useState("")
+  useEffect(() => {
 
-  const handleBusSelect = (event: any) => {
+    async function getAllBus() {
+      const response = await axios.get(summaryApi.bus.getAllBuses.url)
+
+      if (response.data.length > 0) {
+        setAllBuses(response.data);
+      }
+    }
+    getAllBus();
+  })
+
+  const handleBusSelect = async (event: any) => {
     const busNumber = event.target.value
-    const bus = buses.find(b => b.busNumber === busNumber) || null
-    setSelectedBus(bus)
-    setRouteStops(bus ? bus.routeStops : [])
+    const bus : Bus = allBuses.find((b: any) => b.busNumber === busNumber) || {} as Bus
+    if (bus) {
+      const tempData = await axios.get(summaryApi.route.getSpecificBusRoute.url.replace(':busNumber',bus.busNumber))
+      
+      if(tempData) {
+        const setNewBus : NewBus = {
+          busNumber: tempData.data.busNumber,
+          routeNumber: tempData.data.routeNumber,
+          startLocation: tempData.data.startLocation,
+          endLocation: tempData.data.endLocation,
+          routeStops: tempData.data.routeStops
+        }
+        setSelectedBus(setNewBus);
+        setBusNumber(tempData.data.busNumber)
+        setRouteStops(tempData.data.routeStops)
+      }
+      else {
+        const setNewBus : NewBus = {
+          busNumber: bus.busNumber,
+          routeNumber: bus.routeNumber,
+          startLocation: bus.startLocation,
+          endLocation: bus.endLocation,
+          routeStops: []
+        }
+        setSelectedBus(setNewBus)
+      }
+    }
   }
 
   const handleInputChange = (index: number, value: string) => {
@@ -35,7 +72,10 @@ const AddBusRoutes = () => {
     if (!currentStop || currentStop.trim() === "") {
       setError("Please enter a stop")
     } else {
-      setRouteStops([...routeStops, currentStop])
+      setRouteStops(() => (
+        [...routeStops,
+          currentStop]
+      ))
       setCurrentStop("")
       setError("")
     }
@@ -68,11 +108,25 @@ const AddBusRoutes = () => {
     setRouteStops(updatedRouteStops)
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (selectedBus) {
       const updatedBus = { ...selectedBus, routeStops }
       console.log("Saving bus routes:", updatedBus)
-      // backend connection
+      const response = await axios.post(summaryApi.route.addAndUpdateBusRoute.url, {
+        busNumber: updatedBus.busNumber,
+        routeNumber: updatedBus.routeNumber,
+        startLocation : updatedBus.startLocation,
+        endLocation : updatedBus.endLocation,
+        routeStops : updatedBus.routeStops
+      })
+      
+      if(response) {
+        setSelectedBus(null)
+        setRouteStops([])
+        setCurrentStop('')
+        setShowStops(false)
+        setBusNumber("")
+      }
     }
   }
 
@@ -82,13 +136,15 @@ const AddBusRoutes = () => {
 
       <div className="mb-4 pt-4 pb-2 max-w-md mx-auto">
         <label className="block font-medium">Select Bus</label>
-        <select onChange={handleBusSelect} className="w-full mt-1 p-2 border border-gray-300 rounded-md">
+        <select onChange={handleBusSelect} value={busNumber || ""} className="w-full mt-1 p-2 border border-gray-300 rounded-md">
           <option value="">Select a bus</option>
-          {buses.map(bus => (
-            <option key={bus.busNumber} value={bus.busNumber}>
-              {bus.busNumber} - {bus.routeNumber}
-            </option>
-          ))}
+          {allBuses.length > 0 && allBuses.map((bus: any) => {
+            return (
+              <option key={bus.busNumber} value={bus.busNumber}>
+                {bus.busNumber} - {bus.routeNumber}
+              </option>
+            )
+          })}
         </select>
       </div>
 
