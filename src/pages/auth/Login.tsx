@@ -6,6 +6,7 @@ import summaryApi from "../../common/summaryApi"
 import { useAuth } from "../../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
+import 'react-toastify/dist/ReactToastify.css'
 
 const Login = () => {
   const { login } = useAuth()
@@ -27,7 +28,7 @@ const Login = () => {
     setError((prev) => ({ ...prev, [name]: "" }))
   }
 
-  const clearForm=()=>{
+  const clearForm = () => {
     setCredentials({
       credentialsUsername: "",
       password: "",
@@ -35,20 +36,20 @@ const Login = () => {
     })
   }
 
-  async function submit(event: any) {
+  const handleSubmit = async (event: any) => {
     event.preventDefault()
     const newError: { credentialsUsername?: string; password?: string; accType?: string } = {}
-  
+
     if (!credentials.credentialsUsername) {
       newError.credentialsUsername = "Username Required!"
     }
     if (!credentials.password) {
       newError.password = "Password Required!"
     }
-  
+
     if (Object.keys(newError).length > 0) {
       setError(newError)
-      toast.error("Please fill in all required fields!")
+      toast.warning("Please fill in all required fields!")
     } else {
       setError({})
       const data = {
@@ -57,16 +58,17 @@ const Login = () => {
         accType: credentials.accType,                    // Include accType if your backend handles it
       }
       console.log("Logging in with data:", data)
-  
+
       try {
         const response = await axios.post(summaryApi.auth.login.url, data)
-  
+
         if (response.status === 200) {
           //console.log("Login Success")
           toast.success("Login Successful!")
           login(response.data) // Assuming `login` saves the token and user data
           navigate("/") // Redirect to dashboard
         } else {
+          toast.warning("Login failed. Please try again.")
           console.error("Unexpected response status:", response.status)
         }
         clearForm()
@@ -122,7 +124,7 @@ const Login = () => {
           <div className="mt-4">
             <PrimaryBtn
               type={"button"}
-              onClick={submit}
+              onClick={handleSubmit}
               title={"Login"}
               classes={"bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 border-solid border-1 border-blue-900 text-white"}
             />
