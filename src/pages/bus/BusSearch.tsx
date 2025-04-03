@@ -27,11 +27,11 @@ const BusSearch = () => {
     })
 
 
-    async function getAllBusByFiltering(userInput : any) {
+    async function getAllBusByFiltering(userInput: any) {
 
-        if(userInput) {
-            const respose = allBuses.filter((bus : any) => bus.busNumber.includes(userInput))
-            if(respose) {
+        if (userInput) {
+            const respose = allBuses.filter((bus: any) => bus.busNumber.includes(userInput))
+            if (respose) {
                 setFilteredBus(respose);
                 setShowDropdown(true);
             }
@@ -41,15 +41,15 @@ const BusSearch = () => {
         }
     }
 
-    async function suggessionOnClick(userSelectBusNumber : any) {
-        if(userSelectBusNumber) {
+    async function suggessionOnClick(userSelectBusNumber: any) {
+        if (userSelectBusNumber) {
             handleSearchClick(userSelectBusNumber)
         }
     }
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchBusNumber(e.target.value)
-        if(e.target.value) {
+        if (e.target.value) {
             getAllBusByFiltering(e.target.value)
         }
         else {
@@ -58,7 +58,7 @@ const BusSearch = () => {
         }
     }
 
-    const handleSearchClick = (searchBusNumber : any) => {
+    const handleSearchClick = (searchBusNumber: any) => {
         if (searchBusNumber) {
             const fetchBusDetailsBySearch = async () => {
                 try {
@@ -80,45 +80,49 @@ const BusSearch = () => {
     }
 
     return (
-        <div className="container mx-auto p-5">
-            <div className="flex items-center justify-center space-x-3">
-                <input
-                    type="text"
-                    placeholder="Enter bus number"
-                    value={searchBusNumber}
-                    onChange={handleSearchChange}
-                    className="p-3 w-64 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
-                />
-                {showDropdown && filteredBus.length > 0 && (
-                    <ul className="w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-40 overflow-auto z-10">
-                        {filteredBus.map((bus : any, index : any) => (
-                            <li
-                                key={index}
-                                value={searchBusNumber}
-                                onClick={() => {suggessionOnClick(bus.busNumber)}}
-                                className="p-2 cursor-pointer hover:bg-gray-200"
-                            >
-                                {bus.busNumber}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                <button
-                    onClick={() => handleSearchClick(searchBusNumber)}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md transform transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                    Search
-                </button>
+        <div className="flex justify-center pt-10">
+            <div className="p-5 bg-white">
+                <div className="flex items-center space-x-3 relative">
+                    <div className="relative">
+                        <input
+                            type="text"
+                            placeholder="Enter bus number"
+                            value={searchBusNumber}
+                            onChange={handleSearchChange}
+                            className="p-3 w-64 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300"
+                        />
+                        {showDropdown && filteredBus.length > 0 && (
+                            <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-lg shadow-lg mt-1 max-h-40 overflow-auto z-10">
+                                {filteredBus.map((bus: any, index: any) => (
+                                    <li
+                                        key={index}
+                                        onClick={() => suggessionOnClick(bus.busNumber)}
+                                        className="p-2 cursor-pointer hover:bg-gray-200"
+                                    >
+                                        {bus.busNumber}
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                    </div>
 
-                <button
-                    type="button"
-                    onClick={() => navigate(-1)}
-                    className="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition duration-200"
-                >
-                    Back
-                </button>
+                    <button
+                        onClick={() => handleSearchClick(searchBusNumber)}
+                        className="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md transform transition-all duration-300 hover:bg-blue-700 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        Search
+                    </button>
+
+                    <button
+                        type="button"
+                        onClick={() => navigate(-1)}
+                        className="px-6 py-3 bg-gray-400 hover:bg-gray-500 text-white rounded-md transition duration-200"
+                    >
+                        Back
+                    </button>
+                </div>
+                {error && <div className="mt-4 text-red-500 text-center">{error}</div>}
             </div>
-            {error && <div className="mt-4 text-red-500 text-center">{error}</div>}
         </div>
     )
 }
