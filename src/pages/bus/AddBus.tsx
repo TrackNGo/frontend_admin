@@ -7,7 +7,7 @@ import TextBox from "../../components/textBox/TextBox"
 import SelectBox from "../../components/selectBox/SelectBox"
 import axios from "axios"
 import summaryApi from "../../common/summaryApi"
-import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
+import BusDetailsType from "../../types/busDetails/busDetailsTypes"
 
 const AddBus = () => {
   const [busDetails, setBusDetails] = useState<BusDetailsType>({

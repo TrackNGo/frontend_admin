@@ -66,7 +66,7 @@ const Login = () => {
           //console.log("Login Success")
           toast.success("Login Successful!")
           login(response.data) // Assuming `login` saves the token and user data
-          navigate("/") // Redirect to dashboard
+          navigate("/dashboard") // Redirect to dashboard
         } else {
           toast.warning("Login failed. Please try again.")
           console.error("Unexpected response status:", response.status)
