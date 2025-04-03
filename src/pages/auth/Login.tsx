@@ -130,14 +130,14 @@ const Login = () => {
             />
           </div>
 
-          <div className="mt-3">
+          {/* <div className="mt-3">
             <PrimaryBtn
               type={"button"}
               onClick={() => { console.log(credentials) }}
               title={"Forgot Password"}
               classes={'bg-gradient-to-r from-white to-white hover:from-slate-100 hover:to-slate-200 border-solid border-black border-1 text-black'}
             />
-          </div>
+          </div> */}
         </form>
       </div>
     </div>
