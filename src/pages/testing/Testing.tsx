@@ -68,6 +68,7 @@ const Testing = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
 
               <Route path="/account/" element={<Account />} />
