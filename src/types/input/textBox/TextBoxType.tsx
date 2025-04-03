@@ -4,6 +4,7 @@ interface TextBoxType{
     placeholder?:string,
     name:string,
     onChange?:any,
+    onClick?:any,
     value?:string,
     readOnly?: boolean
 }
