@@ -15,10 +15,11 @@ const AddBusRoutes = () => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null)
   const [originalStopValue, setOriginalStopValue] = useState<string>("")
   const [allBuses, setAllBuses] = useState([])
-  interface NewBus {busNumber:string, routeNumber:string, startLocation:string, endLocation:string, routeStops:[]}
-  interface Bus {busNumber:string, createdAt:string, endLocation:string, fareEstimate:string, routeNumber:string, startLocation:string, status:boolean, type:string}
-  const suggesionArray = ['Polonnoruwa', 'Kurunagala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura']
+  interface NewBus { busNumber: string, routeNumber: string, startLocation: string, endLocation: string, routeStops: [] }
+  interface Bus { busNumber: string, createdAt: string, endLocation: string, fareEstimate: string, routeNumber: string, startLocation: string, status: boolean, type: string }
+  const [suggesionArray, setSuggesionArray] = useState(['Polonnaruwa', 'Kurunegala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura', 'Kandy Rd, Medawachchiya', 'Kandy Rd, Kekirawa', 'Dambulla', 'Kurunegala', 'Mihinthale', 'Maradankadawala', 'Maradankadawala-Habarana-Thirukkondaiadimadu Hwy, Minneriya'])
   const [busNumber, setBusNumber] = useState("")
+  const [isVisible, setIsVisible] = useState(false);
   useEffect(() => {
 
     async function getAllBus() {
@@ -31,14 +32,38 @@ const AddBusRoutes = () => {
     getAllBus();
   })
 
+  function getSuggestion(textChanges: string) {
+    if (textChanges) {
+      const response = suggesionArray.filter(location => location.includes(textChanges))
+      if (response) {
+        setSuggesionArray(response)
+      }
+      else {
+        setSuggesionArray(['Polonnaruwa', 'Kurunegala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura', 'Kandy Rd, Medawachchiya', 'Kandy Rd, Kekirawa', 'Dambulla', 'Mihinthale', 'Maradankadawala', 'Maradankadawala-Habarana-Thirukkondaiadimadu Hwy, Minneriya'])
+      }
+    }
+    else {
+      setSuggesionArray(['Polonnaruwa', 'Kurunegala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura', 'Kandy Rd, Medawachchiya', 'Kandy Rd, Kekirawa', 'Dambulla', 'Mihinthale', 'Maradankadawala', 'Maradankadawala-Habarana-Thirukkondaiadimadu Hwy, Minneriya'])
+    }
+  }
+
+  function setFiteredArray() {
+    const status = suggesionArray.find(location => location === currentStop)
+    if (status) {
+      const filteredArray = suggesionArray.filter(location => location !== currentStop)
+      console.log(filteredArray)
+      setSuggesionArray(filteredArray)
+    }
+  }
+
   const handleBusSelect = async (event: any) => {
     const busNumber = event.target.value
-    const bus : Bus = allBuses.find((b: any) => b.busNumber === busNumber) || {} as Bus
+    const bus: Bus = allBuses.find((b: any) => b.busNumber === busNumber) || {} as Bus
     if (bus) {
-      const tempData = await axios.get(summaryApi.route.getSpecificBusRoute.url.replace(':busNumber',bus.busNumber))
-      
-      if(tempData) {
-        const setNewBus : NewBus = {
+      const tempData = await axios.get(summaryApi.route.getSpecificBusRoute.url.replace(':busNumber', bus.busNumber))
+
+      if (tempData) {
+        const setNewBus: NewBus = {
           busNumber: tempData.data.busNumber,
           routeNumber: tempData.data.routeNumber,
           startLocation: tempData.data.startLocation,
@@ -50,7 +75,7 @@ const AddBusRoutes = () => {
         setRouteStops(tempData.data.routeStops)
       }
       else {
-        const setNewBus : NewBus = {
+        const setNewBus: NewBus = {
           busNumber: bus.busNumber,
           routeNumber: bus.routeNumber,
           startLocation: bus.startLocation,
@@ -105,6 +130,15 @@ const AddBusRoutes = () => {
 
   const handleDeleteStop = (index: number) => {
     const updatedRouteStops = routeStops.filter((_, i) => i !== index)
+    const addLocation = routeStops.find((_, i) => i === index)
+
+    const tempLocation = suggesionArray.filter(location => location === addLocation)
+    if(tempLocation.length == 0) {
+      setSuggesionArray((pre:any) => ([
+        addLocation,
+        ...pre
+      ]))
+    }
     setRouteStops(updatedRouteStops)
   }
 
@@ -115,12 +149,12 @@ const AddBusRoutes = () => {
       const response = await axios.post(summaryApi.route.addAndUpdateBusRoute.url, {
         busNumber: updatedBus.busNumber,
         routeNumber: updatedBus.routeNumber,
-        startLocation : updatedBus.startLocation,
-        endLocation : updatedBus.endLocation,
-        routeStops : updatedBus.routeStops
+        startLocation: updatedBus.startLocation,
+        endLocation: updatedBus.endLocation,
+        routeStops: updatedBus.routeStops
       })
-      
-      if(response) {
+
+      if (response) {
         setSelectedBus(null)
         setRouteStops([])
         setCurrentStop('')
@@ -240,15 +274,45 @@ const AddBusRoutes = () => {
                 type="text"
                 placeholder="Enter Stop"
                 value={currentStop}
-                onChange={(e: any) => setCurrentStop(e.target.value)}
+                onChange={(e: any) => {
+                  setCurrentStop(e.target.value)
+                  getSuggestion(e.target.value)
+                  setIsVisible(true)
+                }}
+                onClick={() => { setIsVisible(true) }}
                 name={""}
               />
+            </div>
+
+            <div className="mt-2">
+              {
+                isVisible && (
+                  <ul className="max-h-40 overflow-auto z-10">
+                    {suggesionArray.map((location: any, index: any) => (
+                      <li
+                        key={index}
+                        onClick={() => {
+                          setCurrentStop(location)
+                          setIsVisible(false)
+                        }}
+                        className="p-2 cursor-pointer hover:bg-gray-200"
+                      >
+                        {location}
+                      </li>
+                    ))}
+                  </ul>
+                )
+              }
             </div>
 
             <div className="flex space-x-2 mt-2">
               <PrimaryBtn
                 title="Add"
-                onClick={handleAddStop}
+                onClick={() => {
+                  setSuggesionArray(['Polonnaruwa', 'Kurunegala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura', 'Kandy Rd, Medawachchiya', 'Kandy Rd, Kekirawa', 'Dambulla', 'Mihinthale', 'Maradankadawala', 'Maradankadawala-Habarana-Thirukkondaiadimadu Hwy, Minneriya'])
+                  handleAddStop()
+                  setFiteredArray()
+                }}
                 type="button"
                 classes="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-800 border-transparent"
               />
@@ -277,7 +341,11 @@ const AddBusRoutes = () => {
           <div>
             <PrimaryBtn
               title="Save Routes"
-              onClick={handleSave}
+              onClick={() => {
+                handleSave()
+                setSuggesionArray(['Polonnaruwa', 'Kurunegala', 'Habarana', 'Dambulla', 'Kurunegala - Dambulla Road, galewela', 'Kurunegala - Dambulla Road, malsiripura', 'Kandy Rd, Medawachchiya', 'Kandy Rd, Kekirawa', 'Dambulla', 'Mihinthale', 'Maradankadawala', 'Maradankadawala-Habarana-Thirukkondaiadimadu Hwy, Minneriya'])
+
+              }}
               type="button"
               classes="mt-4 w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
             />
