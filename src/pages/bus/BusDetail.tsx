@@ -7,7 +7,7 @@ import summaryApi from "../../common/summaryApi"
 import BusDetailsTable from "../../components/busDetailTable/BusDetailsTable"
 import ErrorMessage from "../../components/errorMessage/ErrorMessage"
 import LoadingSpinner from "../../components/loadingSpinner/LoadingSpinner"
-import BusDetailsType from "../../types/busDetails/BusDetailsTypes"
+import BusDetailsType from "../../types/busDetails/busDetailsTypes"
 
 const BusDetail = () => {
     const { busNumber } = useParams<{ busNumber: any }>()
@@ -158,7 +158,7 @@ const BusDetail = () => {
 
     return (
         <div className="container mx-auto p-5">
-            <div className="flex items-center justify-center space-x-3">
+            {/* <div className="flex items-center justify-center space-x-3">
                 <input
                     type="text"
                     placeholder="Enter bus number"
@@ -172,7 +172,7 @@ const BusDetail = () => {
                 >
                     Search
                 </button>
-            </div>
+            </div> */}
 
             {error && <ErrorMessage message={error} />}
 
