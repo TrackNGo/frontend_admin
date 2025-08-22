@@ -19,6 +19,7 @@ type Submission = {
 };
 
 const ContactUsDetails = () => {
+  const navigation  = useNavigate();
   const { id } = useParams();
   const navigate = useNavigate();
   const [submission, setSubmission] = useState<Submission | null>(null);
@@ -49,10 +50,14 @@ const ContactUsDetails = () => {
         comment,
         status,
       });
+
+      console.log(data);
       setSubmission(data);
       setComment('');
-    } catch {
-      setError('Failed to update submission');
+      navigation("/contact-us")
+      
+    } catch(error) {
+      setError(`Failed to update submission ${error}`);
     } finally {
       setLoading(false);
     }
@@ -98,7 +103,7 @@ const ContactUsDetails = () => {
           )}
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-gray-500">Status</div>
+            <div className="text-gray-500">Status (Required)</div>
             <div className="col-span-2">
               <select
                 value={status}
@@ -154,7 +159,7 @@ const ContactUsDetails = () => {
           </div>
 
           <div className="pt-6">
-            <h3 className="text-lg font-medium mb-4">Admin Comments</h3>
+            <h3 className="text-lg font-medium mb-4">Admin Comments (Required)</h3>
             <textarea
               value={comment}
               onChange={(e) => setComment(e.target.value)}
